@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Country Wordle</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="game-container">
+
+        <header>
+            <h1>Country Wordle</h1>
+            <p>Errate das gesuchte Land.</p>
+        </header>
+
+        <section class="game">
+
+            <div class="guess-container">
+
+                <input
+                    type="text"
+                    id="countryInput"
+                    placeholder="Land eingeben..."
+                    autocomplete="off"
+                >
+
+                <button id="guessButton">
+                    Raten
+                </button>
+
+            </div>
+
+            <p id="message"></p>
+
+            <div id="guesses"></div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
