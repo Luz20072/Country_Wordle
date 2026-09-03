@@ -1,3 +1,7 @@
+/* ==========================================
+   GRUNDLEGENDES
+   ========================================== */
+
 * {
     box-sizing: border-box;
 }
@@ -5,14 +9,25 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+
     background: #f4f4f4;
     color: #222;
 }
+
+
+/* ==========================================
+   HAUPTCONTAINER
+   ========================================== */
 
 .game-container {
     width: min(700px, 90%);
     margin: 50px auto;
 }
+
+
+/* ==========================================
+   HEADER
+   ========================================== */
 
 header {
     text-align: center;
@@ -27,48 +42,424 @@ header p {
     color: #666;
 }
 
+
+/* ==========================================
+   SPIELBEREICH
+   ========================================== */
+
 .game {
     background: white;
+
     padding: 25px;
+
     border-radius: 10px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+
+    box-shadow:
+        0 3px 15px rgba(0, 0, 0, 0.1);
 }
+
+
+/* ==========================================
+   EINGABE
+   ========================================== */
 
 .guess-container {
     display: flex;
     gap: 10px;
 }
 
-#countryInput {
+
+/* ==========================================
+   AUTOCOMPLETE CONTAINER
+   ========================================== */
+
+.autocomplete-container {
+    position: relative;
+
     flex: 1;
+
+    min-width: 0;
+}
+
+
+/* ==========================================
+   EINGABEFELD
+   ========================================== */
+
+#countryInput {
+    width: 100%;
+
     padding: 12px;
+
     font-size: 16px;
+
     border: 1px solid #ccc;
+
     border-radius: 5px;
 }
 
+#countryInput:focus {
+    outline: none;
+
+    border-color: #777;
+}
+
+
+/* ==========================================
+   AUTOCOMPLETE VORSCHLÄGE
+   ========================================== */
+
+#countrySuggestions {
+    position: absolute;
+
+    top: 100%;
+
+    left: 0;
+
+    right: 0;
+
+    background: white;
+
+    border: 1px solid #ccc;
+
+    border-top: none;
+
+    z-index: 100;
+
+    max-height: 300px;
+
+    overflow-y: auto;
+}
+
+
+.country-suggestion {
+    padding: 10px 12px;
+
+    cursor: pointer;
+
+    background: white;
+}
+
+
+/* ==========================================
+   AUSGEWÄHLTER VORSCHLAG
+   ========================================== */
+
+.country-suggestion.selected {
+    background: #e8e8e8;
+}
+
+
+/* ==========================================
+   BUTTON
+   ========================================== */
+
 button {
     padding: 12px 20px;
+
     border: none;
+
     border-radius: 5px;
+
     background: #333;
+
     color: white;
+
     cursor: pointer;
+
+    font-size: 15px;
 }
 
 button:hover {
     background: #555;
 }
 
+button:disabled {
+    background: #999;
+
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   NEUES SPIEL BUTTON
+   ========================================== */
+
+.restart-container {
+    margin-top: 10px;
+
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+
+#restartButton {
+    background: #666;
+}
+
+
+#restartButton:hover {
+    background: #444;
+}
+
+
+/* ==========================================
+   NACHRICHT
+   ========================================== */
+
 #message {
     min-height: 20px;
+
     margin: 15px 0;
+
     font-weight: bold;
 }
 
+
+/* ==========================================
+   GUESSES
+   ========================================== */
+
+#guesses {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
 .guess {
-    padding: 12px;
-    margin-top: 10px;
+    padding: 15px;
+
     background: #eee;
+
+    border-radius: 7px;
+}
+
+
+/* ==========================================
+   GUESS-HEADER
+   ========================================== */
+
+.guess-header {
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.guess-header strong {
+    font-size: 18px;
+}
+
+
+/* ==========================================
+   KATEGORIEN
+   ========================================== */
+
+.category-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+
+/* ==========================================
+   KATEGORIE-BOX
+   ========================================== */
+
+.category-box {
+    position: relative;
+
+    min-height: 85px;
+
+    padding: 10px;
+
+    border-radius: 6px;
+
+    border: 2px solid transparent;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    cursor: default;
+}
+
+.category-box strong {
+    font-size: 14px;
+
+    margin-bottom: 6px;
+}
+
+.category-box span {
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   ÜBEREINSTIMMUNG
+   ========================================== */
+
+.category-box.match {
+    background: #dff2df;
+
+    border-color: #5aaa5a;
+}
+
+
+/* ==========================================
+   KEINE ÜBEREINSTIMMUNG
+   ========================================== */
+
+.category-box.no-match {
+    background: #f4dddd;
+
+    border-color: #c76666;
+}
+
+
+/* ==========================================
+   TOOLTIP
+   ========================================== */
+
+.custom-tooltip {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: calc(100% + 8px);
+
+    transform: translateX(-50%);
+
+    width: max-content;
+
+    max-width: 280px;
+
+    padding: 8px 10px;
+
+    background: #222;
+
+    color: white;
+
     border-radius: 5px;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    white-space: pre-line;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.15s ease,
+        visibility 0.15s ease;
+
+    z-index: 10;
+}
+
+
+/*
+   Tooltip wird NUR beim Hover angezeigt.
+*/
+
+.category-box:hover .custom-tooltip {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* ==========================================
+   TOOLTIP PFEIL
+   ========================================== */
+
+.custom-tooltip::after {
+    content: "";
+
+    position: absolute;
+
+    top: 100%;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-width: 5px;
+
+    border-style: solid;
+
+    border-color:
+        #222 transparent transparent transparent;
+}
+
+
+/* ==========================================
+   RICHTIGES LAND
+   ========================================== */
+
+.correct-message {
+    padding: 12px;
+
+    background: #dff2df;
+
+    border: 2px solid #5aaa5a;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .game-container {
+        width: 95%;
+
+        margin: 25px auto;
+    }
+
+    .game {
+        padding: 15px;
+    }
+
+    .guess-container {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .autocomplete-container {
+        width: 100%;
+    }
+
+    .restart-container {
+        justify-content: stretch;
+    }
+
+    #restartButton {
+        width: 100%;
+    }
+
 }

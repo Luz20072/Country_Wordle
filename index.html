@@ -15,26 +15,51 @@
     <main class="game-container">
 
         <header>
-            <h1>Country Wordle</h1>
-            <p>Errate das gesuchte Land.</p>
+
+            <h1>
+                Country Wordle
+            </h1>
+
+            <p>
+                Errate das gesuchte Land anhand von Hinweisen.
+            </p>
+
         </header>
+
 
         <section class="game">
 
             <div class="guess-container">
 
-                <input
-                    type="text"
-                    id="countryInput"
-                    placeholder="Land eingeben..."
-                    autocomplete="off"
-                >
+                <div class="autocomplete-container">
+
+                    <input
+                        type="text"
+                        id="countryInput"
+                        placeholder="Land eingeben..."
+                        autocomplete="off"
+                    >
+
+                    <div id="countrySuggestions"></div>
+
+                </div>
+
 
                 <button id="guessButton">
                     Raten
                 </button>
 
             </div>
+
+
+            <div class="restart-container">
+
+                <button id="restartButton">
+                    Neues Spiel
+                </button>
+
+            </div>
+
 
             <p id="message"></p>
 
@@ -44,7 +69,11 @@
 
     </main>
 
-    <script src="script.js"></script>
+
+    <script src="js/gameData.js"></script>
+    <script src="js/comparison.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
 
 </body>
 
