@@ -1,6 +1,7 @@
 // ==========================================
-// SUPABASE
+// SPIELDATEN
 // ==========================================
+
 
 const SUPABASE_URL =
     "https://utxbkbmdjhgsnlksjkst.supabase.co";
@@ -14,7 +15,9 @@ const SUPABASE_KEY =
 // SUPABASE REQUEST
 // ==========================================
 
-async function supabaseRequest(endpoint) {
+async function supabaseRequest(
+    endpoint
+) {
 
     const response =
         await fetch(
@@ -29,9 +32,7 @@ async function supabaseRequest(endpoint) {
         );
 
 
-    if (
-        !response.ok
-    ) {
+    if (!response.ok) {
 
         throw new Error(
             `HTTP ${response.status}: ${await response.text()}`
@@ -65,7 +66,7 @@ function getSelectedContinents() {
 
 
 // ==========================================
-// ZUFÄLLIGES LAND LADEN
+// ZUFÄLLIGES ZIELLAND
 // ==========================================
 
 async function getRandomCountry() {
@@ -114,7 +115,8 @@ async function getRandomCountry() {
 
     const randomIndex =
         Math.floor(
-            Math.random() * result.length
+            Math.random() *
+            result.length
         );
 
 
@@ -124,10 +126,12 @@ async function getRandomCountry() {
 
 
 // ==========================================
-// LAND NACH NAMEN LADEN
+// LAND NACH NAMEN
 // ==========================================
 
-async function getCountryByName(name) {
+async function getCountryByName(
+    name
+) {
 
     const encodedName =
         encodeURIComponent(name);
@@ -155,10 +159,58 @@ async function getCountryByName(name) {
 
 
 // ==========================================
-// FLAGGENFARBEN LADEN
+// LÄNDER FÜR STÜTZRÄDER
+// ==========================================
+//
+// Enthält genau die Länder, die als Zielland
+// überhaupt in Frage kommen.
+//
+// Die Kontinentauswahl bestimmt also weiterhin
+// den möglichen Zielpool.
 // ==========================================
 
-async function getCountryColors(countryId) {
+async function getHintCountries() {
+
+    const selectedContinents =
+        getSelectedContinents();
+
+
+    if (
+        selectedContinents.length === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    const continentFilter =
+        selectedContinents
+            .map(
+                continent =>
+                    `"${continent}"`
+            )
+            .join(",");
+
+
+    const result =
+        await supabaseRequest(
+            `countries?select=id,name,continent,region,seas,languages,borders&continent=in.(${encodeURIComponent(continentFilter)})&order=name`
+        );
+
+
+    return result || [];
+
+}
+
+
+// ==========================================
+// FLAGGENFARBEN
+// ==========================================
+
+async function getCountryColors(
+    countryId
+) {
 
     const result =
         await supabaseRequest(
@@ -172,17 +224,21 @@ async function getCountryColors(countryId) {
 
 
 // ==========================================
-// FLAGGENFARBEN IN ARRAY UMWANDELN
+// FARBEN NORMALISIEREN
 // ==========================================
 
-function getColorArray(colors) {
+function getColorArray(
+    colors
+) {
 
     return [
         ...new Set(
             colors
                 .map(
                     entry =>
-                        String(entry.color)
+                        String(
+                            entry.color
+                        )
                             .trim()
                             .toLowerCase()
                 )
@@ -197,17 +253,13 @@ function getColorArray(colors) {
 
 
 // ==========================================
-// BEZIEHUNGEN ZWISCHEN ZWEI LÄNDERN
+// BEZIEHUNGEN
 // ==========================================
 
 async function getCountryRelationships(
     countryId,
     targetId
 ) {
-
-    // ==========================================
-    // BEIDE LÄNDER LADEN
-    // ==========================================
 
     const countries =
         await supabaseRequest(
@@ -254,9 +306,9 @@ async function getCountryRelationships(
     const relationships = [];
 
 
-    // ==========================================
-    // GEMEINSAME GRENZE
-    // ==========================================
+    // ======================================
+    // NACHBARN
+    // ======================================
 
     const bordersA =
         countryA.borders || [];
@@ -267,8 +319,12 @@ async function getCountryRelationships(
 
 
     if (
-        bordersA.includes(Number(countryB.id)) ||
-        bordersB.includes(Number(countryA.id))
+        bordersA.includes(
+            Number(countryB.id)
+        ) ||
+        bordersB.includes(
+            Number(countryA.id)
+        )
     ) {
 
         relationships.push({
@@ -278,9 +334,9 @@ async function getCountryRelationships(
     }
 
 
-    // ==========================================
-    // GLEICHE UN-M49-REGION
-    // ==========================================
+    // ======================================
+    // UN-REGION
+    // ======================================
 
     if (
         countryA.region &&
@@ -295,9 +351,9 @@ async function getCountryRelationships(
     }
 
 
-    // ==========================================
-    // GLEICHES MEER / OZEAN
-    // ==========================================
+    // ======================================
+    // GEMEINSAME GEWÄSSER
+    // ======================================
 
     const seasA =
         countryA.seas || [];
@@ -326,9 +382,10 @@ async function getCountryRelationships(
     );
 
 
-    // ==========================================
-    // FRÜHERE POLITISCHE UNION
-    // ==========================================
+
+    // ======================================
+    // FRÜHERE UNION
+    // ======================================
 
     const unionsA =
         countryA.former_unions || [];
@@ -338,9 +395,15 @@ async function getCountryRelationships(
         countryB.former_unions || [];
 
 
+    const commonUnions =
+        unionsA.filter(
+            union =>
+                unionsB.includes(union)
+        );
+
+
     if (
-        unionsA.includes(Number(countryB.id)) ||
-        unionsB.includes(Number(countryA.id))
+        commonUnions.length > 0
     ) {
 
         relationships.push({
@@ -350,9 +413,11 @@ async function getCountryRelationships(
     }
 
 
-    // ==========================================
+
+
+    // ======================================
     // KOLONIALE BEZIEHUNG
-    // ==========================================
+    // ======================================
 
     const colonialPowersA =
         countryA.colonial_powers || [];
@@ -363,8 +428,12 @@ async function getCountryRelationships(
 
 
     if (
-        colonialPowersA.includes(Number(countryB.id)) ||
-        colonialPowersB.includes(Number(countryA.id))
+        colonialPowersA.includes(
+            Number(countryB.id)
+        ) ||
+        colonialPowersB.includes(
+            Number(countryA.id)
+        )
     ) {
 
         relationships.push({
@@ -374,9 +443,9 @@ async function getCountryRelationships(
     }
 
 
-    // ==========================================
-    // GEMEINSAME AMTSSPRACHE
-    // ==========================================
+    // ======================================
+    // GEMEINSAME SPRACHEN
+    // ======================================
 
     const languagesA =
         countryA.languages || [];
@@ -406,9 +475,9 @@ async function getCountryRelationships(
     }
 
 
-    // ==========================================
+    // ======================================
     // BESONDERE BEZIEHUNGEN
-    // ==========================================
+    // ======================================
 
     const specialRelationships =
         await supabaseRequest(
@@ -419,18 +488,14 @@ async function getCountryRelationships(
 
 
     for (
-        const relationship of
-        specialRelationships || []
+        const relationship
+        of specialRelationships || []
     ) {
 
         relationships.push({
-
-            type:
-                "special",
-
+            type: "special",
             description:
                 relationship.description
-
         });
 
     }
@@ -442,10 +507,12 @@ async function getCountryRelationships(
 
 
 // ==========================================
-// KRIEGE EINES LANDES LADEN
+// KRIEGE EINES LANDES
 // ==========================================
 
-async function getCountryWars(countryId) {
+async function getCountryWars(
+    countryId
+) {
 
     const result =
         await supabaseRequest(
@@ -459,10 +526,12 @@ async function getCountryWars(countryId) {
 
 
 // ==========================================
-// KRIEGE NACH IDS LADEN
+// KRIEGE NACH IDS
 // ==========================================
 
-async function getWarsByIds(warIds) {
+async function getWarsByIds(
+    warIds
+) {
 
     if (
         !warIds ||
@@ -481,6 +550,57 @@ async function getWarsByIds(warIds) {
     const result =
         await supabaseRequest(
             `wars?select=*&id=in.(${ids})`
+        );
+
+
+    return result || [];
+
+}
+
+
+// ==========================================
+// LÄNDER NACH IDS
+// ==========================================
+
+async function getCountriesByIds(
+    countryIds
+) {
+
+    if (
+        !countryIds ||
+        countryIds.length === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    const ids =
+        countryIds
+            .map(
+                id =>
+                    Number(id)
+            )
+            .filter(
+                id =>
+                    Number.isFinite(id)
+            )
+            .join(",");
+
+
+    if (
+        ids === ""
+    ) {
+
+        return [];
+
+    }
+
+
+    const result =
+        await supabaseRequest(
+            `countries?select=id,name,iso_code&id=in.(${ids})&order=name`
         );
 
 

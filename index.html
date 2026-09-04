@@ -1,79 +1,343 @@
 <!DOCTYPE html>
+
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Country Wordle</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="style.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Country Wordle
+</title>
+
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/guesses.css">
+<link rel="stylesheet" href="css/hints.css">
+<link rel="stylesheet" href="css/victory.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+
 </head>
 
 <body>
 
-    <main class="game-container">
+<main class="game-container">
 
-        <header>
+    <header>
 
-            <h1>
-                Country Wordle
-            </h1>
+        <h1>
+            Country Wordle
+        </h1>
 
-            <p>
-                Errate das gesuchte Land anhand von Hinweisen.
-            </p>
+        <p>
+            Errate das gesuchte Land anhand von Hinweisen.
+        </p>
 
-        </header>
+    </header>
 
 
-        <section class="game">
+    <section class="game">
 
-            <div class="guess-container">
+        <!-- ======================================
+             SPIELBEREICH
+             ====================================== -->
 
-                <div class="autocomplete-container">
+        <div class="game-layout">
 
-                    <input
-                        type="text"
-                        id="countryInput"
-                        placeholder="Land eingeben..."
-                        autocomplete="off"
+            <!-- ==================================
+                 LINKER BEREICH
+                 ================================== -->
+
+            <div
+                id="game-area"
+                class="game-main"
+            >
+
+                <!-- ==============================
+                     EINGABE
+                     ============================== -->
+
+                <div class="guess-container">
+
+                    <div class="autocomplete-container">
+
+                        <input
+                            type="text"
+                            id="countryInput"
+                            placeholder="Land eingeben..."
+                            autocomplete="off"
+                        >
+
+                        <div
+                            id="countrySuggestions"
+                        ></div>
+
+                    </div>
+
+
+                    <button
+                        id="guessButton"
                     >
-
-                    <div id="countrySuggestions"></div>
+                        Raten
+                    </button>
 
                 </div>
 
 
-                <button id="guessButton">
-                    Raten
-                </button>
+                <!-- ==============================
+                     SPIEL-BUTTONS
+                     ============================== -->
+
+                <div class="restart-container">
+
+                    <!--
+                        Während des gesamten Spiels
+                        verfügbar.
+                    -->
+
+                    <button
+                        id="backToStartButton"
+                    >
+                        Zur Startseite
+                    </button>
+
+
+                    <!--
+                        Wird während des laufenden
+                        Spiels ausgeblendet und erst
+                        nach einem Sieg angezeigt.
+                    -->
+
+                    <button
+                        id="restartButton"
+                        style="display: none;"
+                    >
+                        Neues Spiel
+                    </button>
+
+                </div>
+
+
+                <!-- ==============================
+                     STATUS
+                     ============================== -->
+
+                <!-- ==============================
+                 STATUS
+                ============================== -->
+
+                <div class="status-container">
+
+                    <p id="message"></p>
+
+                    <button
+                        id="showVictoryButton"
+                        style="display: none;"
+                    >
+                        Ergebnis anzeigen
+                    </button>
+                </div>
+
+
+
+                <!-- ==============================
+                     GUESSES
+                     ============================== -->
+
+                <div id="guesses"></div>
 
             </div>
 
 
-            <div class="restart-container">
+            <!-- ==================================
+                 RECHTER BEREICH – INDIZIEN
+                 ================================== -->
 
-                <button id="restartButton">
-                    Neues Spiel
-                </button>
+            <aside
+                id="hints-container"
+            >
 
+                <h2>
+                    Indizien
+                </h2>
+
+
+                <div id="hints-content">
+
+                    <!--
+                        Der Inhalt wird vollständig
+                        durch hints.js erzeugt.
+                    -->
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ==========================================
+     SIEGES-POPUP
+     ========================================== -->
+
+<div
+    id="victoryModal"
+    class="victory-modal"
+    aria-hidden="true"
+>
+
+    <div
+        class="victory-overlay"
+    ></div>
+
+
+    <div
+        class="victory-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="victoryTitle"
+    >
+
+        <!-- ==============================
+             SCHLIESSEN
+             ============================== -->
+
+        <button
+            id="victoryCloseButton"
+            class="victory-close"
+            aria-label="Popup schließen"
+        >
+            ×
+        </button>
+
+
+        <!-- ==============================
+             HEADER
+             ============================== -->
+
+        <div class="victory-header">
+
+            <div class="victory-icon">
+                ✓
             </div>
 
 
-            <p id="message"></p>
-
-            <div id="guesses"></div>
-
-        </section>
-
-    </main>
+            <p class="victory-label">
+                Richtig geraten
+            </p>
 
 
-    <script src="js/gameData.js"></script>
-    <script src="js/comparison.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/game.js"></script>
+            <h2 id="victoryTitle">
+                Gewonnen!
+            </h2>
+
+        </div>
+
+
+        <!-- ==============================
+             FLAGGE
+             ============================== -->
+
+        <div
+            class="victory-flag-container"
+        >
+
+            <div
+                class="victory-flag-glow"
+            ></div>
+
+
+            <img
+                id="victoryFlag"
+                class="victory-flag"
+                src=""
+                alt=""
+            >
+
+        </div>
+
+
+        <!-- ==============================
+             LAND
+             ============================== -->
+
+        <h3 id="victoryCountryName">
+        </h3>
+
+
+        <!-- ==============================
+             DATEN
+             ============================== -->
+
+        <div
+            id="victoryData"
+            class="victory-data"
+        >
+        </div>
+
+
+        <!-- ==============================
+             NACHBARLÄNDER
+             ============================== -->
+
+        <div
+            id="victoryBorders"
+            class="victory-borders"
+        >
+        </div>
+
+
+        <!-- ==============================
+             BUTTONS
+             ============================== -->
+
+        <div class="victory-buttons">
+
+            <button
+                id="victoryRestartButton"
+            >
+                Neues Spiel
+            </button>
+
+
+            <button
+                id="victoryContinueButton"
+                class="secondary-button"
+            >
+                Schließen
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+
+<script src="js/gameData.js"></script>
+
+<script src="js/comparison.js"></script>
+
+<script src="js/hints.js"></script>
+
+<script src="js/ui.js"></script>
+
+<script src="js/game.js"></script>
+```
 
 </body>
 

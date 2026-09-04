@@ -14,7 +14,9 @@ function addGuess(
 ) {
 
     const element =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     element.classList.add(
@@ -22,12 +24,14 @@ function addGuess(
     );
 
 
-    // --------------------------------------
+    // ======================================
     // LANDNAME
-    // --------------------------------------
+    // ======================================
 
     const countryName =
-        document.createElement("strong");
+        document.createElement(
+            "strong"
+        );
 
 
     countryName.textContent =
@@ -39,14 +43,29 @@ function addGuess(
     );
 
 
-    // --------------------------------------
-    // RICHTIG
-    // --------------------------------------
+    // ======================================
+    // RICHTIG GERATEN
+    // ======================================
 
-    if (correct) {
+    if (
+        correct
+    ) {
+
+        const correctRow =
+            document.createElement(
+                "div"
+            );
+
+
+        correctRow.classList.add(
+            "correct-row"
+        );
+
 
         const correctMessage =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         correctMessage.classList.add(
@@ -58,12 +77,36 @@ function addGuess(
             "Richtig! Du hast das gesuchte Land gefunden.";
 
 
-        element.appendChild(
+        correctRow.appendChild(
             correctMessage
         );
 
 
-        guessesContainer.appendChild(
+        /*
+         * Der vorhandene Button "Ergebnis anzeigen"
+         * wird direkt neben die Siegmeldung verschoben.
+         *
+         * Der Event-Listener aus game.js bleibt erhalten,
+         * da dasselbe DOM-Element nur verschoben wird.
+         */
+
+        if (
+            showVictoryButton
+        ) {
+
+            correctRow.appendChild(
+                showVictoryButton
+            );
+
+        }
+
+
+        element.appendChild(
+            correctRow
+        );
+
+
+        guessesContainer.prepend(
             element
         );
 
@@ -73,12 +116,14 @@ function addGuess(
     }
 
 
-    // --------------------------------------
-    // 2 × 2 GRID
-    // --------------------------------------
+    // ======================================
+    // NORMALES GERATENES LAND
+    // ======================================
 
     const categoryGrid =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     categoryGrid.classList.add(
@@ -115,7 +160,11 @@ function addGuess(
     );
 
 
-    guessesContainer.appendChild(
+    // ======================================
+    // NEUESTEN GUESS OBEN
+    // ======================================
+
+    guessesContainer.prepend(
         element
     );
 
@@ -132,7 +181,9 @@ function addCategoryBox(
 ) {
 
     const box =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     box.classList.add(
@@ -159,36 +210,42 @@ function addCategoryBox(
     }
 
 
-    // --------------------------------------
+    // ======================================
     // TITEL
-    // --------------------------------------
+    // ======================================
 
     const title =
-        document.createElement("strong");
+        document.createElement(
+            "strong"
+        );
 
 
     title.textContent =
         category.title;
 
 
-    // --------------------------------------
+    // ======================================
     // WERT
-    // --------------------------------------
+    // ======================================
 
     const value =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
 
     value.textContent =
         category.value;
 
 
-    // --------------------------------------
+    // ======================================
     // TOOLTIP
-    // --------------------------------------
+    // ======================================
 
     const tooltip =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     tooltip.classList.add(

@@ -8,27 +8,109 @@
 // ==========================================
 
 const countryInput =
-    document.getElementById("countryInput");
+    document.getElementById(
+        "countryInput"
+    );
 
 
 const guessButton =
-    document.getElementById("guessButton");
+    document.getElementById(
+        "guessButton"
+    );
 
 
 const restartButton =
-    document.getElementById("restartButton");
+    document.getElementById(
+        "restartButton"
+    );
+
+
+const backToStartButton =
+    document.getElementById(
+        "backToStartButton"
+    );
+
+
+const showVictoryButton =
+    document.getElementById(
+        "showVictoryButton"
+    );
 
 
 const guessesContainer =
-    document.getElementById("guesses");
+    document.getElementById(
+        "guesses"
+    );
 
 
 const message =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
 
 const suggestionsContainer =
-    document.getElementById("countrySuggestions");
+    document.getElementById(
+        "countrySuggestions"
+    );
+
+
+// ==========================================
+// SIEGES-POPUP ELEMENTE
+// ==========================================
+
+const victoryModal =
+    document.getElementById(
+        "victoryModal"
+    );
+
+
+const victoryFlag =
+    document.getElementById(
+        "victoryFlag"
+    );
+
+
+const victoryCountryName =
+    document.getElementById(
+        "victoryCountryName"
+    );
+
+
+const victoryData =
+    document.getElementById(
+        "victoryData"
+    );
+
+
+const victoryBorders =
+    document.getElementById(
+        "victoryBorders"
+    );
+
+
+const victoryCloseButton =
+    document.getElementById(
+        "victoryCloseButton"
+    );
+
+
+const victoryRestartButton =
+    document.getElementById(
+        "victoryRestartButton"
+    );
+
+
+const victoryContinueButton =
+    document.getElementById(
+        "victoryContinueButton"
+    );
+
+
+const victoryOverlay =
+    document.querySelector(
+        ".victory-overlay"
+    );
 
 
 // ==========================================
@@ -47,6 +129,137 @@ let gameOver = false;
 
 
 // ==========================================
+// SIEGES-POPUP DATEN
+// ==========================================
+
+/*
+ * Das zuletzt gewonnene Land wird gespeichert,
+ * damit das Victory-Modal nach dem Schließen
+ * erneut geöffnet werden kann.
+ */
+
+let victoryCountry = null;
+
+
+// ==========================================
+// INDIzien EINSTELLUNG
+// ==========================================
+
+function areHintsEnabled() {
+
+    return (
+        localStorage.getItem(
+            "hintsEnabled"
+        ) !== "false"
+    );
+
+}
+
+
+// ==========================================
+// INDIzien SICHTBARKEIT
+// ==========================================
+
+function updateHintsVisibility() {
+
+    const hintsContainer =
+        document.getElementById(
+            "hints-container"
+        );
+
+
+    if (!hintsContainer) {
+        return;
+    }
+
+
+    hintsContainer.style.display =
+        areHintsEnabled()
+            ? ""
+            : "none";
+
+}
+
+
+// ==========================================
+// SPIEL-BUTTONS AKTUALISIEREN
+// ==========================================
+
+function updateGameButtons() {
+
+    /*
+     * Während des Spiels:
+     *
+     * Neues Spiel       → unsichtbar
+     * Zur Startseite    → sichtbar
+     * Ergebnis anzeigen → unsichtbar
+     *
+     * Nach dem Sieg:
+     *
+     * Neues Spiel       → sichtbar
+     * Zur Startseite    → sichtbar
+     * Ergebnis anzeigen → zunächst unsichtbar
+     */
+
+    if (restartButton) {
+
+        restartButton.style.display =
+            gameOver
+                ? ""
+                : "none";
+
+    }
+
+
+    if (backToStartButton) {
+
+        backToStartButton.style.display =
+            "";
+
+    }
+
+
+    /*
+     * "Ergebnis anzeigen" wird beim Sieg
+     * zunächst versteckt.
+     *
+     * Nach dem Schließen des Victory-Modals
+     * wird der Button über
+     * showVictoryButtonAfterClose()
+     * wieder eingeblendet.
+     */
+
+    if (showVictoryButton) {
+
+        showVictoryButton.style.display =
+            "none";
+
+    }
+
+}
+
+
+// ==========================================
+// ERGEBNIS-BUTTON ANZEIGEN
+// ==========================================
+
+function showVictoryButtonAfterClose() {
+
+    if (
+        !showVictoryButton ||
+        !victoryCountry
+    ) {
+        return;
+    }
+
+
+    showVictoryButton.style.display =
+        "";
+
+}
+
+
+// ==========================================
 // AUTOCOMPLETE-DATEN
 // ==========================================
 
@@ -58,48 +271,17 @@ let selectedSuggestionIndex = -1;
 
 
 // ==========================================
-// ALLE LÄNDER DER AUSGEWÄHLTEN
-// KONTINENTE LADEN
+// ALLE LÄNDER DER DATENBANK LADEN
 // ==========================================
 
 async function loadCountries() {
 
     try {
 
-        const selectedContinents =
-            getSelectedContinents();
-
-
-        if (
-            selectedContinents.length === 0
-        ) {
-
-            throw new Error(
-                "Keine Kontinente ausgewählt."
-            );
-
-        }
-
-
-        const continentFilter =
-            selectedContinents
-                .map(
-                    continent =>
-                        `"${continent}"`
-                )
-                .join(",");
-
-
         allCountries =
             await supabaseRequest(
-                `countries?select=id,name&continent=in.(${encodeURIComponent(continentFilter)})&order=name`
+                `countries?select=id,name&order=name`
             );
-
-
-        console.log(
-            "Ausgewählte Kontinente:",
-            selectedContinents
-        );
 
 
         console.log(
@@ -133,11 +315,16 @@ function showCountrySuggestions() {
             .toLowerCase();
 
 
-    suggestionsContainer.innerHTML = "";
+    suggestionsContainer.innerHTML =
+        "";
 
-    currentSuggestions = [];
 
-    selectedSuggestionIndex = -1;
+    currentSuggestions =
+        [];
+
+
+    selectedSuggestionIndex =
+        -1;
 
 
     if (
@@ -157,14 +344,22 @@ function showCountrySuggestions() {
                         .toLowerCase()
                         .includes(input)
             )
-            .slice(0, 8);
+            .slice(
+                0,
+                8
+            );
 
 
     currentSuggestions.forEach(
-        (country, index) => {
+        (
+            country,
+            index
+        ) => {
 
             const suggestion =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             suggestion.classList.add(
@@ -184,7 +379,9 @@ function showCountrySuggestions() {
                 "click",
                 () => {
 
-                    selectSuggestion(index);
+                    selectSuggestion(
+                        index
+                    );
 
                 }
             );
@@ -204,7 +401,9 @@ function showCountrySuggestions() {
 // VORSCHLAG AUSWÄHLEN
 // ==========================================
 
-function selectSuggestion(index) {
+function selectSuggestion(
+    index
+) {
 
     if (
         index < 0 ||
@@ -227,9 +426,13 @@ function selectSuggestion(index) {
     suggestionsContainer.innerHTML =
         "";
 
-    currentSuggestions = [];
 
-    selectedSuggestionIndex = -1;
+    currentSuggestions =
+        [];
+
+
+    selectedSuggestionIndex =
+        -1;
 
 
     countryInput.focus();
@@ -250,7 +453,10 @@ function updateSuggestionHighlight() {
 
 
     suggestions.forEach(
-        (suggestion, index) => {
+        (
+            suggestion,
+            index
+        ) => {
 
             if (
                 index ===
@@ -290,7 +496,8 @@ function updateSuggestionHighlight() {
         ) {
 
             selected.scrollIntoView({
-                block: "nearest"
+                block:
+                    "nearest"
             });
 
         }
@@ -319,9 +526,14 @@ countryInput.addEventListener(
             suggestionsContainer.innerHTML =
                 "";
 
-            currentSuggestions = [];
 
-            selectedSuggestionIndex = -1;
+            currentSuggestions =
+                [];
+
+
+            selectedSuggestionIndex =
+                -1;
+
 
             return;
 
@@ -359,12 +571,14 @@ countryInput.addEventListener(
 
             else {
 
-                selectedSuggestionIndex = 0;
+                selectedSuggestionIndex =
+                    0;
 
             }
 
 
             updateSuggestionHighlight();
+
 
             return;
 
@@ -409,6 +623,7 @@ countryInput.addEventListener(
 
             updateSuggestionHighlight();
 
+
             return;
 
         }
@@ -429,9 +644,11 @@ countryInput.addEventListener(
 
                 event.preventDefault();
 
+
                 selectSuggestion(
                     selectedSuggestionIndex
                 );
+
 
                 return;
 
@@ -440,6 +657,7 @@ countryInput.addEventListener(
 
             suggestionsContainer.innerHTML =
                 "";
+
 
             makeGuess();
 
@@ -481,7 +699,9 @@ async function loadTargetCountry() {
 
         console.log(
             "Flaggenfarben:",
-            getColorArray(targetColors)
+            getColorArray(
+                targetColors
+            )
         );
 
 
@@ -513,36 +733,126 @@ async function loadTargetCountry() {
 
 
 // ==========================================
+// INDIzien INITIALISIEREN
+// ==========================================
+
+async function initializeHints() {
+
+    if (!areHintsEnabled()) {
+        return;
+    }
+
+
+    try {
+
+        const hintCountries =
+            await getHintCountries();
+
+
+        resetHints();
+
+
+        initializeHintCandidates(
+            hintCountries
+        );
+
+
+        renderHints();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Fehler beim Initialisieren der Indizien:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
 // NEUES SPIEL
 // ==========================================
 
 async function restartGame() {
 
-    targetCountry = null;
-
-    targetColors = [];
-
-    targetWars = [];
-
-    guessedCountries = [];
-
-    gameOver = false;
+    closeVictoryPopup();
 
 
-    currentSuggestions = [];
+    targetCountry =
+        null;
 
-    selectedSuggestionIndex = -1;
+
+    targetColors =
+        [];
 
 
-    countryInput.value = "";
+    targetWars =
+        [];
 
-    countryInput.disabled = false;
 
-    guessButton.disabled = false;
+    guessedCountries =
+        [];
 
-    suggestionsContainer.innerHTML = "";
 
-    guessesContainer.innerHTML = "";
+    victoryCountry =
+        null;
+
+
+    gameOver =
+        false;
+
+
+    currentSuggestions =
+        [];
+
+
+    selectedSuggestionIndex =
+        -1;
+
+
+    countryInput.value =
+        "";
+
+
+    countryInput.disabled =
+        false;
+
+
+    guessButton.disabled =
+        false;
+
+
+    suggestionsContainer.innerHTML =
+        "";
+
+
+    guessesContainer.innerHTML =
+        "";
+
+
+    resetHints();
+
+
+    updateHintsVisibility();
+
+
+    /*
+     * Buttons wieder in den Zustand
+     * eines laufenden Spiels versetzen.
+     */
+
+    updateGameButtons();
+
+
+    if (areHintsEnabled()) {
+
+        renderHints();
+
+    }
 
 
     message.textContent =
@@ -550,6 +860,13 @@ async function restartGame() {
 
 
     await loadTargetCountry();
+
+
+    if (areHintsEnabled()) {
+
+        await initializeHints();
+
+    }
 
 }
 
@@ -580,6 +897,7 @@ async function makeGuess() {
         message.textContent =
             "Bitte ein Land eingeben.";
 
+
         return;
 
     }
@@ -598,26 +916,15 @@ async function makeGuess() {
         message.textContent =
             "Dieses Land befindet sich nicht in der Datenbank.";
 
-        return;
-
-    }
-
-
-    if (
-        !allCountries.some(
-            availableCountry =>
-                Number(availableCountry.id) ===
-                Number(country.id)
-        )
-    ) {
-
-        message.textContent =
-            "Dieses Land gehört nicht zu den ausgewählten Kontinenten.";
 
         return;
 
     }
 
+
+    // ======================================
+    // JEDES LAND DARF GERATEN WERDEN
+    // ======================================
 
     if (
         guessedCountries.includes(
@@ -627,6 +934,7 @@ async function makeGuess() {
 
         message.textContent =
             "Dieses Land hast du bereits geraten.";
+
 
         return;
 
@@ -638,13 +946,20 @@ async function makeGuess() {
     );
 
 
-    countryInput.value = "";
+    countryInput.value =
+        "";
 
-    suggestionsContainer.innerHTML = "";
 
-    currentSuggestions = [];
+    suggestionsContainer.innerHTML =
+        "";
 
-    selectedSuggestionIndex = -1;
+
+    currentSuggestions =
+        [];
+
+
+    selectedSuggestionIndex =
+        -1;
 
 
     // ======================================
@@ -652,8 +967,8 @@ async function makeGuess() {
     // ======================================
 
     if (
-        country.id ===
-        targetCountry.id
+        Number(country.id) ===
+        Number(targetCountry.id)
     ) {
 
         addGuess(
@@ -663,8 +978,17 @@ async function makeGuess() {
         );
 
 
+        /*
+         * Die separate "Gewonnen!"-Meldung
+         * wird nicht mehr verwendet.
+         *
+         * Die eigentliche Siegmeldung wird
+         * direkt in ui.js innerhalb des
+         * Guess-Elements erzeugt.
+         */
+
         message.textContent =
-            "Gewonnen!";
+            "";
 
 
         gameOver =
@@ -679,13 +1003,39 @@ async function makeGuess() {
             true;
 
 
+        /*
+         * Das gewonnene Land speichern,
+         * damit das Ergebnis später erneut
+         * geöffnet werden kann.
+         */
+
+        victoryCountry =
+            country;
+
+
+        /*
+         * Nach dem Sieg:
+         *
+         * Neues Spiel → sichtbar
+         * Zur Startseite → sichtbar
+         * Ergebnis anzeigen → zunächst versteckt
+         */
+
+        updateGameButtons();
+
+
+        showVictoryPopup(
+            country
+        );
+
+
         return;
 
     }
 
 
     // ======================================
-    // VERGLEICH DURCHFÜHREN
+    // VERGLEICH
     // ======================================
 
     try {
@@ -748,6 +1098,24 @@ async function makeGuess() {
             );
 
 
+        // ==================================
+        // INDIzien AKTUALISIEREN
+        // ==================================
+
+        if (areHintsEnabled()) {
+
+            updateHints(
+                country,
+                comparison
+            );
+
+        }
+
+
+        // ==================================
+        // GUESS ANZEIGEN
+        // ==================================
+
         addGuess(
             country,
             comparison
@@ -776,6 +1144,467 @@ async function makeGuess() {
 
 
 // ==========================================
+// SIEGES-POPUP
+// ==========================================
+
+async function showVictoryPopup(
+    country
+) {
+
+    if (!country) {
+        return;
+    }
+
+
+    // ======================================
+    // LANDESNAME
+    // ======================================
+
+    victoryCountryName.textContent =
+        country.name;
+
+
+    // ======================================
+    // FLAGGE
+    // ======================================
+
+    if (
+        country.iso_code
+    ) {
+
+        const isoCode =
+            country.iso_code
+                .toLowerCase();
+
+
+        victoryFlag.src =
+            `https://flagcdn.com/w640/${isoCode}.png`;
+
+
+        victoryFlag.alt =
+            `Flagge von ${country.name}`;
+
+
+        victoryFlag.style.display =
+            "block";
+
+    }
+
+    else {
+
+        victoryFlag.removeAttribute(
+            "src"
+        );
+
+
+        victoryFlag.alt =
+            "";
+
+
+        victoryFlag.style.display =
+            "none";
+
+    }
+
+
+    // ======================================
+    // DATEN ZURÜCKSETZEN
+    // ======================================
+
+    victoryData.innerHTML =
+        "";
+
+
+    victoryBorders.innerHTML =
+        "";
+
+
+    // ======================================
+    // HAUPTSTADT
+    // ======================================
+
+    addVictoryData(
+        "Hauptstadt",
+        country.capital
+    );
+
+
+    // ======================================
+    // KONTINENT
+    // ======================================
+
+    addVictoryData(
+        "Kontinent",
+        country.continent
+    );
+
+
+    // ======================================
+    // UN-M49-REGION
+    // ======================================
+
+    addVictoryData(
+        "Region",
+        country.region
+    );
+
+
+    // ======================================
+    // UNABHÄNGIGKEIT
+    // ======================================
+
+    if (
+        country.independence_date
+    ) {
+
+        const date =
+            new Date(
+                `${country.independence_date}T00:00:00`
+            );
+
+
+        addVictoryData(
+            "Unabhängigkeit",
+            date.toLocaleDateString(
+                "de-DE"
+            )
+        );
+
+    }
+
+
+    // ======================================
+    // SPRACHEN
+    // ======================================
+
+    if (
+        Array.isArray(
+            country.languages
+        ) &&
+        country.languages.length > 0
+    ) {
+
+        addVictoryData(
+            "Sprachen",
+            country.languages.join(
+                ", "
+            )
+        );
+
+    }
+
+
+    // ======================================
+    // MEERE / OZEANE
+    // ======================================
+
+    if (
+        Array.isArray(
+            country.seas
+        ) &&
+        country.seas.length > 0
+    ) {
+
+        addVictoryData(
+            "Meere / Ozeane",
+            country.seas.join(
+                ", "
+            )
+        );
+
+    }
+
+
+    // ======================================
+    // NACHBARLÄNDER
+    // ======================================
+
+    if (
+        Array.isArray(
+            country.borders
+        ) &&
+        country.borders.length > 0
+    ) {
+
+        try {
+
+            const borderCountries =
+                await getCountriesByIds(
+                    country.borders
+                );
+
+
+            if (
+                borderCountries.length > 0
+            ) {
+
+                const title =
+                    document.createElement(
+                        "h4"
+                    );
+
+
+                title.textContent =
+                    "Nachbarländer";
+
+
+                victoryBorders.appendChild(
+                    title
+                );
+
+
+                const borderList =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                borderList.className =
+                    "border-list";
+
+
+                borderCountries.forEach(
+                    borderCountry => {
+
+                        const border =
+                            document.createElement(
+                                "span"
+                            );
+
+
+                        border.className =
+                            "border-country";
+
+
+                        border.textContent =
+                            borderCountry.name;
+
+
+                        borderList.appendChild(
+                            border
+                        );
+
+                    }
+                );
+
+
+                victoryBorders.appendChild(
+                    borderList
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Fehler beim Laden der Nachbarländer:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ======================================
+    // POPUP ÖFFNEN
+    // ======================================
+
+    victoryModal.classList.add(
+        "visible"
+    );
+
+
+    victoryModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+
+    /*
+     * Beim Öffnen des Ergebnisses darf der
+     * erneute Ergebnis-Button nicht sichtbar
+     * sein.
+     */
+
+    if (showVictoryButton) {
+
+        showVictoryButton.style.display =
+            "none";
+
+    }
+
+
+    setTimeout(
+        () => {
+
+            victoryCloseButton.focus();
+
+        },
+        100
+    );
+
+}
+
+
+// ==========================================
+// DATENZEILE ERSTELLEN
+// ==========================================
+
+function addVictoryData(
+    label,
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return;
+
+    }
+
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+
+    item.className =
+        "victory-data-item";
+
+
+    const labelElement =
+        document.createElement(
+            "span"
+        );
+
+
+    labelElement.className =
+        "victory-data-label";
+
+
+    labelElement.textContent =
+        label;
+
+
+    const valueElement =
+        document.createElement(
+            "span"
+        );
+
+
+    valueElement.className =
+        "victory-data-value";
+
+
+    valueElement.textContent =
+        value;
+
+
+    item.appendChild(
+        labelElement
+    );
+
+
+    item.appendChild(
+        valueElement
+    );
+
+
+    victoryData.appendChild(
+        item
+    );
+
+}
+
+
+// ==========================================
+// POPUP SCHLIESSEN
+// ==========================================
+
+function closeVictoryPopup() {
+
+    victoryModal.classList.remove(
+        "visible"
+    );
+
+
+    victoryModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+
+    /*
+     * Nur nach einem abgeschlossenen Spiel
+     * darf das Ergebnis erneut geöffnet werden.
+     */
+
+    if (
+        gameOver &&
+        victoryCountry &&
+        showVictoryButton
+    ) {
+
+        showVictoryButtonAfterClose();
+
+    }
+
+}
+
+
+// ==========================================
+// ZUR STARTSEITE
+// ==========================================
+
+function backToStart() {
+
+    window.location.href =
+        "start.html";
+
+}
+
+
+// ==========================================
+// ERGEBNIS ERNEUT ÖFFNEN
+// ==========================================
+
+function reopenVictoryPopup() {
+
+    if (
+        !gameOver ||
+        !victoryCountry
+    ) {
+
+        return;
+
+    }
+
+
+    showVictoryPopup(
+        victoryCountry
+    );
+
+}
+
+
+// ==========================================
 // BUTTONS
 // ==========================================
 
@@ -788,6 +1617,73 @@ guessButton.addEventListener(
 restartButton.addEventListener(
     "click",
     restartGame
+);
+
+
+if (backToStartButton) {
+
+    backToStartButton.addEventListener(
+        "click",
+        backToStart
+    );
+
+}
+
+
+if (showVictoryButton) {
+
+    showVictoryButton.addEventListener(
+        "click",
+        reopenVictoryPopup
+    );
+
+}
+
+
+victoryCloseButton.addEventListener(
+    "click",
+    closeVictoryPopup
+);
+
+
+victoryContinueButton.addEventListener(
+    "click",
+    closeVictoryPopup
+);
+
+
+victoryRestartButton.addEventListener(
+    "click",
+    restartGame
+);
+
+
+victoryOverlay.addEventListener(
+    "click",
+    closeVictoryPopup
+);
+
+
+// ==========================================
+// ESCAPE
+// ==========================================
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            victoryModal.classList.contains(
+                "visible"
+            )
+        ) {
+
+            closeVictoryPopup();
+
+        }
+
+    }
 );
 
 
@@ -818,9 +1714,13 @@ document.addEventListener(
             suggestionsContainer.innerHTML =
                 "";
 
-            currentSuggestions = [];
 
-            selectedSuggestionIndex = -1;
+            currentSuggestions =
+                [];
+
+
+            selectedSuggestionIndex =
+                -1;
 
         }
 
@@ -834,9 +1734,39 @@ document.addEventListener(
 
 async function startGame() {
 
+    /*
+     * Zu Beginn eines Spiels sind:
+     *
+     * Neues Spiel       → versteckt
+     * Zur Startseite    → sichtbar
+     * Ergebnis anzeigen → versteckt
+     */
+
+    gameOver =
+        false;
+
+
+    victoryCountry =
+        null;
+
+
+    updateGameButtons();
+
+
+    updateHintsVisibility();
+
+
     await loadCountries();
 
+
     await loadTargetCountry();
+
+
+    if (areHintsEnabled()) {
+
+        await initializeHints();
+
+    }
 
 }
 

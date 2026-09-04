@@ -1,0 +1,276 @@
+/* ==========================================
+   GUESSES
+   ========================================== */
+
+#guesses {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.guess {
+    padding: 15px;
+
+    background: #f0f0f0;
+
+    border-radius: 9px;
+
+    border: 1px solid #ddd;
+
+    animation:
+        guessAppear 0.3s ease;
+}
+
+
+/* ==========================================
+   GUESS-HEADER
+   ========================================== */
+
+.guess-header {
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+
+.guess-header strong {
+    font-size: 18px;
+}
+
+
+/* ==========================================
+   KATEGORIEN
+   ========================================== */
+
+.category-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+}
+
+
+/* ==========================================
+   KATEGORIE-BOX
+   ========================================== */
+
+.category-box {
+    position: relative;
+
+    min-height: 85px;
+
+    padding: 10px;
+
+    border-radius: 7px;
+
+    border:
+        2px solid
+        transparent;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    cursor: default;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.category-box:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 5px 12px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+.category-box strong {
+    font-size: 14px;
+
+    margin-bottom: 6px;
+}
+
+
+.category-box span {
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   ÜBEREINSTIMMUNG
+   ========================================== */
+
+.category-box.match {
+    background: #dff2df;
+
+    border-color:
+        #5aaa5a;
+}
+
+
+/* ==========================================
+   KEINE ÜBEREINSTIMMUNG
+   ========================================== */
+
+.category-box.no-match {
+    background: #f4dddd;
+
+    border-color:
+        #c76666;
+}
+
+
+/* ==========================================
+   TOOLTIP
+   ========================================== */
+
+.custom-tooltip {
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+        calc(
+            100% + 8px
+        );
+
+    transform:
+        translateX(-50%);
+
+    width: max-content;
+
+    max-width: 280px;
+
+    padding:
+        8px 10px;
+
+    background: #222;
+
+    color: white;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    white-space: pre-line;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.15s ease,
+        visibility 0.15s ease;
+
+    z-index: 10;
+
+    box-shadow:
+        0 5px 15px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/*
+ * Tooltip wird nur beim Hover angezeigt.
+ */
+
+.category-box:hover
+.custom-tooltip {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* ==========================================
+   TOOLTIP PFEIL
+   ========================================== */
+
+.custom-tooltip::after {
+    content: "";
+
+    position: absolute;
+
+    top: 100%;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    border-width: 5px;
+
+    border-style: solid;
+
+    border-color:
+        #222
+        transparent
+        transparent
+        transparent;
+}
+
+
+/* ==========================================
+   RICHTIGES LAND
+   ========================================== */
+
+.correct-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    gap: 15px;
+
+    margin-top: 10px;
+}
+
+
+.correct-message {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 12px;
+
+    background: #dff2df;
+
+    border:
+        2px solid
+        #5aaa5a;
+
+    border-radius: 7px;
+
+    font-weight: bold;
+}
+
+
+.correct-row #showVictoryButton {
+    flex:
+        0 0 auto;
+
+    margin: 0;
+
+    white-space: nowrap;
+}

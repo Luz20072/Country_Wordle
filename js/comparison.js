@@ -13,16 +13,23 @@ function compareColors(
 ) {
 
     const guessedColorArray =
-        getColorArray(guessedColors);
+        getColorArray(
+            guessedColors
+        );
+
 
     const targetColorArray =
-        getColorArray(targetColors);
+        getColorArray(
+            targetColors
+        );
 
 
     const sharedColors =
         guessedColorArray.filter(
             color =>
-                targetColorArray.includes(color)
+                targetColorArray.includes(
+                    color
+                )
         );
 
 
@@ -61,7 +68,6 @@ function compareWars(
     commonWars
 ) {
 
-    // Keine gemeinsamen Kriege
     if (
         commonWars.length === 0
     ) {
@@ -87,7 +93,6 @@ function compareWars(
     const details = [];
 
 
-    // Alle gemeinsamen Kriege überprüfen
     for (
         const war of commonWars
     ) {
@@ -95,14 +100,16 @@ function compareWars(
         const guessed =
             guessedWars.find(
                 entry =>
-                    entry.war_id === war.id
+                    entry.war_id ===
+                    war.id
             );
 
 
         const target =
             targetWars.find(
                 entry =>
-                    entry.war_id === war.id
+                    entry.war_id ===
+                    war.id
             );
 
 
@@ -116,9 +123,13 @@ function compareWars(
         }
 
 
-        // Beide Länder auf derselben Seite
+        // ==================================
+        // GLEICHE SEITE
+        // ==================================
+
         if (
-            guessed.side === target.side
+            guessed.side ===
+            target.side
         ) {
 
             details.push(
@@ -128,25 +139,31 @@ function compareWars(
         }
 
 
-        // Beide Länder auf verschiedenen
-        // nicht-neutralen Seiten
+        // ==================================
+        // UNTERSCHIEDLICHE SEITE,
+        // ABER GLEICHES ERGEBNIS
+        // ==================================
+
         else if (
-            guessed.side !== "Neutral" &&
-            target.side !== "Neutral"
+            guessed.result ===
+            target.result
         ) {
 
             details.push(
-                `${war.name}: Gegner`
+                `${war.name}: gleiches Ergebnis`
             );
 
         }
 
 
-        // Einer der beiden war neutral
+        // ==================================
+        // UNTERSCHIEDLICHE ERGEBNISSE
+        // ==================================
+
         else {
 
             details.push(
-                `${war.name}: Beteiligung`
+                `${war.name}: Gegner`
             );
 
         }
@@ -167,7 +184,10 @@ function compareWars(
         tooltip:
             details.length > 0
                 ? details.join("\n")
-                : "Gemeinsamer Krieg vorhanden."
+                : "Gemeinsamer Krieg vorhanden.",
+
+        sharedWars:
+            commonWars
 
     };
 
@@ -175,7 +195,7 @@ function compareWars(
 
 
 // ==========================================
-// SONSTIGE BEZIEHUNGEN VERGLEICHEN
+// SONSTIGE BEZIEHUNGEN
 // ==========================================
 
 function compareRelationships(
@@ -212,10 +232,6 @@ function compareRelationships(
         const relationship of relationships
     ) {
 
-        // ==================================
-        // KRIEGSBEZIEHUNGEN IGNORIEREN
-        // ==================================
-
         if (
             relationship.type === "war_enemy" ||
             relationship.type === "war_ally"
@@ -226,17 +242,9 @@ function compareRelationships(
         }
 
 
-        // ==================================
-        // BEZIEHUNGSKATEGORIEN
-        // ==================================
-
         switch (
             relationship.type
         ) {
-
-            // ----------------------------------
-            // GEMEINSAME GRENZE
-            // ----------------------------------
 
             case "border":
 
@@ -247,10 +255,6 @@ function compareRelationships(
                 break;
 
 
-            // ----------------------------------
-            // GLEICHE UN-REGION
-            // ----------------------------------
-
             case "same_region":
 
                 relationshipNames.push(
@@ -259,10 +263,6 @@ function compareRelationships(
 
                 break;
 
-
-            // ----------------------------------
-            // GLEICHES MEER
-            // ----------------------------------
 
             case "same_sea":
 
@@ -273,10 +273,6 @@ function compareRelationships(
                 break;
 
 
-            // ----------------------------------
-            // FRÜHERE POLITISCHE UNION
-            // ----------------------------------
-
             case "former_union":
 
                 relationshipNames.push(
@@ -285,10 +281,6 @@ function compareRelationships(
 
                 break;
 
-
-            // ----------------------------------
-            // FRÜHERE KOLONIE
-            // ----------------------------------
 
             case "former_colonie":
 
@@ -299,10 +291,6 @@ function compareRelationships(
                 break;
 
 
-            // ----------------------------------
-            // GEMEINSAME AMTSSPRACHE
-            // ----------------------------------
-
             case "cultural":
 
                 relationshipNames.push(
@@ -312,10 +300,6 @@ function compareRelationships(
                 break;
 
 
-            // ----------------------------------
-            // BESONDERE BEZIEHUNG
-            // ----------------------------------
-
             case "special":
 
                 relationshipNames.push(
@@ -324,10 +308,6 @@ function compareRelationships(
 
                 break;
 
-
-            // ----------------------------------
-            // UNBEKANNTER TYP
-            // ----------------------------------
 
             default:
 
@@ -342,10 +322,6 @@ function compareRelationships(
     }
 
 
-    // ==========================================
-    // DOPPELTE BEZIEHUNGEN ENTFERNEN
-    // ==========================================
-
     const uniqueRelationships =
         [
             ...new Set(
@@ -353,10 +329,6 @@ function compareRelationships(
             )
         ];
 
-
-    // ==========================================
-    // NUR KRIEGSBEZIEHUNGEN VORHANDEN
-    // ==========================================
 
     if (
         uniqueRelationships.length === 0
@@ -380,10 +352,6 @@ function compareRelationships(
     }
 
 
-    // ==========================================
-    // ERGEBNIS
-    // ==========================================
-
     return {
 
         match: true,
@@ -395,7 +363,10 @@ function compareRelationships(
             `${uniqueRelationships.length} Übereinstimmung${uniqueRelationships.length === 1 ? "" : "en"}`,
 
         tooltip:
-            uniqueRelationships.join("\n")
+            uniqueRelationships.join("\n"),
+
+        rawRelationships:
+            relationships
 
     };
 
@@ -403,7 +374,7 @@ function compareRelationships(
 
 
 // ==========================================
-// ALLE VIER KATEGORIEN ERSTELLEN
+// ALLE VERGLEICHE ERSTELLEN
 // ==========================================
 
 function createComparison(
@@ -439,7 +410,7 @@ function createComparison(
 
                 ? `Beide Länder liegen in ${targetCountry.continent}.`
 
-                : `Geraten: ${country.continent}\nGesucht: ${targetCountry.continent}`
+                : "Das geratene Land liegt auf einem anderen Kontinent."
 
     };
 
@@ -475,7 +446,10 @@ function createComparison(
 
                 ? `Gemeinsame Farben: ${colorComparison.sharedColors.join(", ")}`
 
-                : "Keine gemeinsame Farbe"
+                : "Keine gemeinsame Farbe",
+
+        sharedColors:
+            colorComparison.sharedColors
 
     };
 
@@ -493,13 +467,113 @@ function createComparison(
 
 
     // ======================================
-    // SONSTIGE BEZIEHUNGEN
+    // BEZIEHUNGEN
     // ======================================
 
     const otherRelationships =
         compareRelationships(
             relationships
         );
+
+
+    // ======================================
+    // REGION
+    // ======================================
+
+    const regionMatch =
+        relationships.some(
+            relationship =>
+                relationship.type ===
+                "same_region"
+        );
+
+
+    const region = {
+
+        match:
+            regionMatch
+
+    };
+
+
+    // ======================================
+    // GEWÄSSER
+    // ======================================
+
+    const guessedSeas =
+        Array.isArray(
+            country.seas
+        )
+            ? country.seas
+            : [];
+
+
+    const targetSeas =
+        Array.isArray(
+            targetCountry.seas
+        )
+            ? targetCountry.seas
+            : [];
+
+
+    const commonSeas =
+        guessedSeas.filter(
+            sea =>
+                targetSeas.includes(
+                    sea
+                )
+        );
+
+
+    const water = {
+
+        match:
+            commonSeas.length > 0,
+
+        sharedValues:
+            commonSeas
+
+    };
+
+
+    // ======================================
+    // SPRACHEN
+    // ======================================
+
+    const guessedLanguages =
+        Array.isArray(
+            country.languages
+        )
+            ? country.languages
+            : [];
+
+
+    const targetLanguages =
+        Array.isArray(
+            targetCountry.languages
+        )
+            ? targetCountry.languages
+            : [];
+
+
+    const commonLanguages =
+        guessedLanguages.filter(
+            language =>
+                targetLanguages.includes(
+                    language
+                )
+        );
+
+
+    const language = {
+
+        match:
+            commonLanguages.length > 0,
+
+        sharedValues:
+            commonLanguages
+
+    };
 
 
     // ======================================
@@ -518,7 +592,16 @@ function createComparison(
             wars,
 
         relationships:
-            otherRelationships
+            otherRelationships,
+
+        region:
+            region,
+
+        water:
+            water,
+
+        language:
+            language
 
     };
 

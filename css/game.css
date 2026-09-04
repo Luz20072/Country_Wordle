@@ -1,0 +1,405 @@
+/* ==========================================
+   HAUPTCONTAINER – SPIEL
+   ========================================== */
+
+.game-container {
+    width: min(1100px, 94%);
+
+    margin: 50px auto;
+
+    animation:
+        fadeIn 0.5s ease;
+}
+
+
+/* ==========================================
+   HEADER
+   ========================================== */
+
+header {
+    text-align: center;
+
+    margin-bottom: 30px;
+
+    color: white;
+}
+
+
+header h1 {
+    margin: 0 0 8px;
+
+    font-size: 36px;
+
+    letter-spacing: 1px;
+}
+
+
+header p {
+    margin: 0;
+
+    color: #cfcfcf;
+
+    font-size: 15px;
+}
+
+
+/* ==========================================
+   SPIELBEREICH
+   ========================================== */
+
+.game {
+    background: rgba(255, 255, 255, 0.97);
+
+    padding: 25px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(8px);
+
+    animation:
+        slideUp 0.45s ease;
+}
+
+
+/* ==========================================
+   SPIEL-LAYOUT
+   ========================================== */
+
+.game-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        320px;
+
+    gap: 25px;
+
+    align-items: start;
+}
+
+
+.game-main {
+    min-width: 0;
+}
+
+
+/* ==========================================
+   EINGABE
+   ========================================== */
+
+.guess-container {
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* ==========================================
+   AUTOCOMPLETE CONTAINER
+   ========================================== */
+
+.autocomplete-container {
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+/* ==========================================
+   EINGABEFELD
+   ========================================== */
+
+#countryInput {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    font-size: 16px;
+
+    border: 2px solid #d5d5d5;
+
+    border-radius: 8px;
+
+    background: #fafafa;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+#countryInput:hover {
+    border-color: #aaa;
+}
+
+
+#countryInput:focus {
+    outline: none;
+
+    background: white;
+
+    border-color: #444;
+
+    box-shadow:
+        0 0 0 3px rgba(68, 68, 68, 0.12);
+}
+
+
+/* ==========================================
+   AUTOCOMPLETE VORSCHLÄGE
+   ========================================== */
+
+#countrySuggestions {
+    position: absolute;
+
+    top: calc(100% + 4px);
+
+    left: 0;
+
+    right: 0;
+
+    background: white;
+
+    border: 1px solid #d0d0d0;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    z-index: 100;
+
+    max-height: 300px;
+
+    overflow-y: auto;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.country-suggestion {
+    padding: 11px 13px;
+
+    cursor: pointer;
+
+    background: white;
+
+    transition:
+        background 0.15s ease,
+        padding-left 0.15s ease;
+}
+
+
+.country-suggestion:hover {
+    background: #f0f0f0;
+
+    padding-left: 17px;
+}
+
+
+/* ==========================================
+   AUSGEWÄHLTER VORSCHLAG
+   ========================================== */
+
+.country-suggestion.selected {
+    background: #e3e3e3;
+
+    padding-left: 17px;
+}
+
+
+/* ==========================================
+   BUTTON
+   ========================================== */
+
+button {
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #333,
+            #111
+        );
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+
+button:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #555,
+            #222
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+button:active {
+    transform: translateY(1px);
+
+    box-shadow: none;
+}
+
+
+button:disabled {
+    background: #999;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ==========================================
+   SPIEL-BUTTONS
+   ========================================== */
+
+.restart-container {
+    margin-top: 12px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+#backToStartButton {
+    margin-right: auto;
+}
+
+
+#restartButton {
+    margin-left: auto;
+
+    background: #666;
+
+    font-size: 14px;
+}
+
+
+#restartButton:hover {
+    background: #444;
+}
+
+
+/* ==========================================
+   STATUS / NACHRICHT
+   ========================================== */
+
+.status-container {
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 0;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+#message {
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: 20px;
+
+    margin: 17px 0;
+
+    font-weight: bold;
+
+    color: #333;
+}
+
+
+/*
+ * Wenn keine Statusmeldung vorhanden ist,
+ * wird auch kein leerer Bereich angezeigt.
+ */
+
+.status-container #message:empty {
+    display: none;
+}
+
+
+.status-container:has(#message:empty) {
+    display: none;
+}
+
+
+/* ==========================================
+   ERGEBNIS-BUTTON
+   ========================================== */
+
+#showVictoryButton {
+    flex: 0 0 auto;
+
+    margin: 0;
+
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   SPIEL + INDIZIEN
+   ========================================== */
+
+#hints-container {
+    position: sticky;
+
+    top: 20px;
+
+    width: 100%;
+
+    padding: 20px;
+
+    border:
+        1px solid
+        #ccc;
+
+    border-radius:
+        10px;
+
+    background:
+        #f8f8f8;
+
+    box-shadow:
+        0 5px 15px
+        rgba(0, 0, 0, 0.08);
+}

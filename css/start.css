@@ -1,0 +1,509 @@
+/* ==========================================
+   STARTSEITE
+   ========================================== */
+
+.start-container {
+    width:
+        min(
+            800px,
+            92%
+        );
+
+    margin:
+        60px auto;
+
+    animation:
+        fadeIn 0.5s ease;
+}
+
+
+/* ==========================================
+   STARTSEITE HEADER
+   ========================================== */
+
+.start-container header {
+    margin-bottom:
+        35px;
+
+    text-align:
+        center;
+
+    color:
+        white;
+}
+
+
+.start-container header h1 {
+    margin:
+        0 0 10px;
+
+    color:
+        white;
+
+    font-size:
+        42px;
+
+    line-height:
+        1.15;
+
+    letter-spacing:
+        1.5px;
+}
+
+
+.start-container header p {
+    max-width:
+        600px;
+
+    margin:
+        0 auto;
+
+    color:
+        #cfcfcf;
+
+    line-height:
+        1.5;
+}
+
+
+/* ==========================================
+   KONTINENT-AUSWAHL
+   ========================================== */
+
+.continent-selection {
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.97
+        );
+
+    padding:
+        30px;
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+    animation:
+        slideUp 0.45s ease;
+}
+
+
+.continent-selection h2 {
+    margin-top:
+        0;
+
+    margin-bottom:
+        22px;
+
+    text-align:
+        center;
+
+    font-size:
+        23px;
+}
+
+
+/* ==========================================
+   KONTINENT-KARTEN
+   ========================================== */
+
+.continent-options {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            1fr
+        );
+
+    gap:
+        12px;
+
+    margin-bottom:
+        20px;
+}
+
+
+.continent-options label {
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    min-height:
+        70px;
+
+    padding:
+        15px 18px;
+
+    border:
+        2px solid
+        #ddd;
+
+    border-radius:
+        10px;
+
+    background:
+        #fafafa;
+
+    cursor:
+        pointer;
+
+    font-size:
+        16px;
+
+    font-weight:
+        bold;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.continent-options label:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #999;
+
+    background:
+        white;
+
+    box-shadow:
+        0 5px 15px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+}
+
+
+/* ==========================================
+   CHECKBOX
+   ========================================== */
+
+.continent-options input {
+    width:
+        20px;
+
+    height:
+        20px;
+
+    margin:
+        0 13px 0 0;
+
+    accent-color:
+        #333;
+
+    cursor:
+        pointer;
+}
+
+
+/* ==========================================
+   AUSGEWÄHLTE KONTINENTE
+   ========================================== */
+
+.continent-options label:has(
+    input:checked
+) {
+    background:
+        #ededed;
+
+    border-color:
+        #333;
+
+    box-shadow:
+        inset
+        0 0 0 1px
+        #333;
+}
+
+
+.continent-options label:has(
+    input:checked
+)::after {
+    content:
+        "✓";
+
+    position:
+        absolute;
+
+    top:
+        10px;
+
+    right:
+        13px;
+
+    font-size:
+        17px;
+
+    color:
+        #333;
+}
+
+
+/* ==========================================
+   AUSWAHL-BUTTONS
+   ========================================== */
+
+.selection-buttons {
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    gap:
+        12px;
+
+    margin-top:
+        8px;
+
+    margin-bottom:
+        18px;
+}
+
+
+.selection-buttons button {
+    width:
+        auto;
+
+    padding:
+        10px 18px;
+
+    border:
+        1px solid
+        #cfcfcf;
+
+    border-radius:
+        8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f5f5,
+            #e5e5e5
+        );
+
+    color:
+        #333;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 2px 5px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+.selection-buttons button:hover {
+    transform:
+        translateY(-1px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #ededed
+        );
+
+    border-color:
+        #aaa;
+
+    box-shadow:
+        0 4px 10px
+        rgba(
+            0,
+            0,
+            0,
+            0.12
+        );
+}
+
+
+.selection-buttons button:active {
+    transform:
+        translateY(1px);
+
+    box-shadow:
+        0 1px 3px
+        rgba(
+            0,
+            0,
+            0,
+            0.1
+        );
+}
+
+
+/* ==========================================
+   AUSWAHL-NACHRICHT
+   ========================================== */
+
+#selectionMessage {
+    min-height:
+        20px;
+
+    margin:
+        10px 0 15px;
+
+    text-align:
+        center;
+
+    color:
+        #c0392b;
+
+    font-weight:
+        bold;
+}
+
+
+ /* ==========================================
+    START BUTTON
+    ========================================== */
+
+#startButton {
+    display:
+        block;
+
+    width:
+        100%;
+
+    padding:
+        14px 20px;
+
+    border:
+        none;
+
+    border-radius:
+        9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #333,
+            #111
+        );
+
+    color:
+        white;
+
+    cursor:
+        pointer;
+
+    font-size:
+        17px;
+
+    font-weight:
+        bold;
+
+    box-shadow:
+        0 6px 15px
+        rgba(
+            0,
+            0,
+            0,
+            0.2
+        );
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+
+#startButton:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #555,
+            #222
+        );
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 9px 20px
+        rgba(
+            0,
+            0,
+            0,
+            0.25
+        );
+}
+
+
+#startButton:active {
+    transform:
+        translateY(1px);
+
+    box-shadow:
+        0 3px 8px
+        rgba(
+            0,
+            0,
+            0,
+            0.2
+        );
+}
+
+
+#startButton:disabled {
+    background:
+        #999;
+
+    color:
+        white;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+    box-shadow:
+        none;
+}
