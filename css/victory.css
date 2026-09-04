@@ -813,6 +813,78 @@
 }
 
 
+/* ==========================================
+   NEUES SPIEL – PRIMARY BUTTON
+   ========================================== */
+
+#victoryRestartButton {
+
+    background:
+        #17191d !important;
+
+    color:
+        #ffffff !important;
+
+    border:
+        1px solid
+        #17191d !important;
+
+    box-shadow:
+        0 6px 16px
+        rgba(
+            0,
+            0,
+            0,
+            0.18
+        );
+
+}
+
+
+#victoryRestartButton:hover {
+
+    background:
+        #25282d !important;
+
+    border-color:
+        #25282d !important;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 9px 22px
+        rgba(
+            0,
+            0,
+            0,
+            0.22
+        );
+
+}
+
+
+#victoryRestartButton:active {
+
+    transform:
+        translateY(0);
+
+    box-shadow:
+        0 4px 10px
+        rgba(
+            0,
+            0,
+            0,
+            0.16
+        );
+
+}
+
+
+/* ==========================================
+   SCHLIESSEN – SECONDARY BUTTON
+   ========================================== */
+
 .secondary-button {
 
     background:
@@ -830,7 +902,6 @@
         #dfe3e7 !important;
 
 }
-
 
 /* ==========================================
    BODY WÄHREND MODAL

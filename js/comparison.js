@@ -69,12 +69,14 @@ function compareWars(
 ) {
 
     if (
+        !commonWars ||
         commonWars.length === 0
     ) {
 
         return {
 
-            match: false,
+            match:
+                false,
 
             title:
                 "Krieg",
@@ -94,22 +96,23 @@ function compareWars(
 
 
     for (
-        const war of commonWars
+        const war
+        of commonWars
     ) {
 
         const guessed =
             guessedWars.find(
                 entry =>
-                    entry.war_id ===
-                    war.id
+                    Number(entry.war_id) ===
+                    Number(war.id)
             );
 
 
         const target =
             targetWars.find(
                 entry =>
-                    entry.war_id ===
-                    war.id
+                    Number(entry.war_id) ===
+                    Number(war.id)
             );
 
 
@@ -123,63 +126,32 @@ function compareWars(
         }
 
 
-        // ==================================
-        // GLEICHE SEITE
-        // ==================================
+        /*
+         * Die eigentliche Auswertung der
+         * Beziehung zwischen den Ländern
+         * erfolgt später in hints.js.
+         *
+         * comparison.js stellt hier nur fest,
+         * dass ein gemeinsamer Krieg existiert.
+         */
 
-        if (
-            guessed.side ===
-            target.side
-        ) {
-
-            details.push(
-                `${war.name}: gleiche Seite`
-            );
-
-        }
-
-
-        // ==================================
-        // UNTERSCHIEDLICHE SEITE,
-        // ABER GLEICHES ERGEBNIS
-        // ==================================
-
-        else if (
-            guessed.result ===
-            target.result
-        ) {
-
-            details.push(
-                `${war.name}: gleiches Ergebnis`
-            );
-
-        }
-
-
-        // ==================================
-        // UNTERSCHIEDLICHE ERGEBNISSE
-        // ==================================
-
-        else {
-
-            details.push(
-                `${war.name}: Gegner`
-            );
-
-        }
+        details.push(
+            war.name
+        );
 
     }
 
 
     return {
 
-        match: true,
+        match:
+            details.length > 0,
 
         title:
             "Krieg",
 
         value:
-            `${commonWars.length} gemeinsamer${commonWars.length === 1 ? "" : "e"} Krieg${commonWars.length === 1 ? "" : "e"}`,
+            `${details.length} gemeinsamer${details.length === 1 ? "" : "e"} Krieg${details.length === 1 ? "" : "e"}`,
 
         tooltip:
             details.length > 0
@@ -209,7 +181,8 @@ function compareRelationships(
 
         return {
 
-            match: false,
+            match:
+                false,
 
             title:
                 "Beziehungen",
@@ -229,7 +202,8 @@ function compareRelationships(
 
 
     for (
-        const relationship of relationships
+        const relationship
+        of relationships
     ) {
 
         if (
@@ -336,7 +310,8 @@ function compareRelationships(
 
         return {
 
-            match: false,
+            match:
+                false,
 
             title:
                 "Beziehungen",
@@ -354,7 +329,8 @@ function compareRelationships(
 
     return {
 
-        match: true,
+        match:
+            true,
 
         title:
             "Beziehungen",

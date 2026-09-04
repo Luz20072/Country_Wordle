@@ -57,6 +57,10 @@
 }
 
 
+/* ==========================================
+   HINWEIS-ELEMENTE
+   ========================================== */
+
 .hint-item {
     display: inline-block;
 
@@ -121,6 +125,291 @@
 
     font-size:
         12px;
+}
+
+
+/* ==========================================
+   INDIZIEN – TOOLTIP-ELEMENTE
+   ========================================== */
+
+.hint-tooltip-item {
+    position:
+        relative;
+
+    display:
+        inline-block;
+
+    padding:
+        6px 10px;
+
+    border-radius:
+        6px;
+
+    background:
+        #e5e5e5;
+
+    border:
+        1px solid
+        transparent;
+
+    font-size:
+        13px;
+
+    cursor:
+        pointer;
+
+    user-select:
+        none;
+
+    outline:
+        none;
+
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
+}
+
+
+/* ==========================================
+   GESICHERTER HINWEIS
+   ========================================== */
+
+.hint-tooltip-item.hint-certain {
+    background:
+        #c8f7c5;
+
+    border:
+        1px solid
+        #8bc985;
+}
+
+
+.hint-tooltip-item.hint-certain:hover,
+.hint-tooltip-item.hint-certain:focus-visible {
+    background:
+        #b9efb5;
+
+    box-shadow:
+        0 2px 6px
+        rgba(
+            0,
+            0,
+            0,
+            0.12
+        );
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ==========================================
+   MÖGLICHER HINWEIS
+   ========================================== */
+
+.hint-tooltip-item.hint-possible {
+    background:
+        #f4d35e;
+
+    border:
+        1px solid
+        #1f1f1f;
+}
+
+
+.hint-tooltip-item.hint-possible:hover,
+.hint-tooltip-item.hint-possible:focus-visible {
+    background:
+        #f0ca3f;
+
+    box-shadow:
+        0 2px 6px
+        rgba(
+            0,
+            0,
+            0,
+            0.12
+        );
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ==========================================
+   TOOLTIP
+   ========================================== */
+
+.hint-tooltip {
+    position:
+        absolute;
+
+    z-index:
+        1000;
+
+    left:
+        50%;
+
+    bottom:
+        calc(
+            100% + 8px
+        );
+
+    transform:
+        translateX(-50%)
+        translateY(4px);
+
+    width:
+        max-content;
+
+    min-width:
+        170px;
+
+    max-width:
+        320px;
+
+    box-sizing:
+        border-box;
+
+    padding:
+        10px 12px;
+
+    border:
+        1px solid
+        #ccc;
+
+    border-radius:
+        8px;
+
+    background:
+        #222;
+
+    color:
+        #ffffff;
+
+    font-size:
+        13px;
+
+    font-weight:
+        normal;
+
+    line-height:
+        1.45;
+
+    text-align:
+        left;
+
+    white-space:
+        normal;
+
+    opacity:
+        0;
+
+    visibility:
+        hidden;
+
+    pointer-events:
+        none;
+
+    box-shadow:
+        0 4px 12px
+        rgba(
+            0,
+            0,
+            0,
+            0.18
+        );
+
+    transition:
+        opacity 0.15s ease,
+        visibility 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+/* ==========================================
+   TOOLTIP – SICHTBAR
+   ========================================== */
+
+.hint-tooltip-item:hover
+.hint-tooltip,
+
+.hint-tooltip-item:focus
+.hint-tooltip,
+
+.hint-tooltip-item
+.hint-tooltip-visible {
+    opacity:
+        1;
+
+    visibility:
+        visible;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+.hint-tooltip-visible {
+    pointer-events:
+        auto;
+}
+
+
+/* ==========================================
+   TOOLTIP – KRIEGE
+   ========================================== */
+
+.hint-tooltip > strong {
+    display:
+        block;
+
+    margin-bottom:
+        5px;
+
+    font-size:
+        14px;
+
+    color:
+        #ffffff;
+}
+
+
+.war-tooltip-group {
+    margin-top:
+        8px;
+}
+
+
+.war-tooltip-group strong {
+    display:
+        block;
+
+    margin-bottom:
+        3px;
+
+    font-size:
+        12px;
+}
+
+
+.war-tooltip-group ul {
+    margin:
+        3px 0 0 17px;
+
+    padding:
+        0;
+}
+
+
+.war-tooltip-group li {
+    margin:
+        2px 0;
+
+    color:
+        #ffffff;
 }
 
 
@@ -289,4 +578,95 @@
 + .toggle-slider::before {
     transform:
         translateX(24px);
+}
+
+
+/* ==========================================
+   MOBILE – TOOLTIP
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .hint-tooltip {
+        position:
+            fixed;
+
+        left:
+            50%;
+
+        top:
+            50%;
+
+        bottom:
+            auto;
+
+        width:
+            min(
+                86vw,
+                340px
+            );
+
+        min-width:
+            0;
+
+        max-width:
+            86vw;
+
+        padding:
+            14px;
+
+        transform:
+            translate(
+                -50%,
+                calc(
+                    -50% + 5px
+                )
+            );
+
+        font-size:
+            13px;
+
+        box-shadow:
+            0 6px 20px
+            rgba(
+                0,
+                0,
+                0,
+                0.25
+            );
+    }
+
+
+    .hint-tooltip-item:hover
+    .hint-tooltip,
+
+    .hint-tooltip-item:focus
+    .hint-tooltip,
+
+    .hint-tooltip-item
+    .hint-tooltip-visible {
+        transform:
+            translate(
+                -50%,
+                -50%
+            );
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE – SEHR KLEINE BILDSCHIRME
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .hint-tooltip {
+        width:
+            88vw;
+
+        max-width:
+            88vw;
+    }
+
 }

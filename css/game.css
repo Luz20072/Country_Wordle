@@ -303,7 +303,7 @@ button:disabled {
 #restartButton {
     margin-left: auto;
 
-    background: #666;
+    background: #000000;
 
     font-size: 14px;
 }
