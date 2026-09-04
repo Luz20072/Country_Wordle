@@ -58,17 +58,48 @@ let selectedSuggestionIndex = -1;
 
 
 // ==========================================
-// ALLE LÄNDER LADEN
+// ALLE LÄNDER DER AUSGEWÄHLTEN
+// KONTINENTE LADEN
 // ==========================================
 
 async function loadCountries() {
 
     try {
 
+        const selectedContinents =
+            getSelectedContinents();
+
+
+        if (
+            selectedContinents.length === 0
+        ) {
+
+            throw new Error(
+                "Keine Kontinente ausgewählt."
+            );
+
+        }
+
+
+        const continentFilter =
+            selectedContinents
+                .map(
+                    continent =>
+                        `"${continent}"`
+                )
+                .join(",");
+
+
         allCountries =
             await supabaseRequest(
-                "countries?select=id,name&order=name"
+                `countries?select=id,name&continent=in.(${encodeURIComponent(continentFilter)})&order=name`
             );
+
+
+        console.log(
+            "Ausgewählte Kontinente:",
+            selectedContinents
+        );
 
 
         console.log(
@@ -566,6 +597,22 @@ async function makeGuess() {
 
         message.textContent =
             "Dieses Land befindet sich nicht in der Datenbank.";
+
+        return;
+
+    }
+
+
+    if (
+        !allCountries.some(
+            availableCountry =>
+                Number(availableCountry.id) ===
+                Number(country.id)
+        )
+    ) {
+
+        message.textContent =
+            "Dieses Land gehört nicht zu den ausgewählten Kontinenten.";
 
         return;
 

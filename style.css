@@ -6,22 +6,37 @@
     box-sizing: border-box;
 }
 
+
 body {
     margin: 0;
+
     font-family: Arial, sans-serif;
 
-    background: #f4f4f4;
+    background:
+        radial-gradient(
+            circle at top,
+            #3a3a3a 0%,
+            #1f1f1f 45%,
+            #111 100%
+        );
+
     color: #222;
+
+    min-height: 100vh;
 }
 
 
 /* ==========================================
-   HAUPTCONTAINER
+   HAUPTCONTAINER – SPIEL
    ========================================== */
 
 .game-container {
     width: min(700px, 90%);
+
     margin: 50px auto;
+
+    animation:
+        fadeIn 0.5s ease;
 }
 
 
@@ -31,15 +46,28 @@ body {
 
 header {
     text-align: center;
+
     margin-bottom: 30px;
+
+    color: white;
 }
+
 
 header h1 {
-    margin-bottom: 8px;
+    margin: 0 0 8px;
+
+    font-size: 36px;
+
+    letter-spacing: 1px;
 }
 
+
 header p {
-    color: #666;
+    margin: 0;
+
+    color: #cfcfcf;
+
+    font-size: 15px;
 }
 
 
@@ -48,14 +76,19 @@ header p {
    ========================================== */
 
 .game {
-    background: white;
+    background: rgba(255, 255, 255, 0.97);
 
     padding: 25px;
 
-    border-radius: 10px;
+    border-radius: 14px;
 
     box-shadow:
-        0 3px 15px rgba(0, 0, 0, 0.1);
+        0 15px 40px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(8px);
+
+    animation:
+        slideUp 0.45s ease;
 }
 
 
@@ -65,6 +98,7 @@ header p {
 
 .guess-container {
     display: flex;
+
     gap: 10px;
 }
 
@@ -89,19 +123,37 @@ header p {
 #countryInput {
     width: 100%;
 
-    padding: 12px;
+    padding: 13px 14px;
 
     font-size: 16px;
 
-    border: 1px solid #ccc;
+    border: 2px solid #d5d5d5;
 
-    border-radius: 5px;
+    border-radius: 8px;
+
+    background: #fafafa;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
+
+
+#countryInput:hover {
+    border-color: #aaa;
+}
+
 
 #countryInput:focus {
     outline: none;
 
-    border-color: #777;
+    background: white;
+
+    border-color: #444;
+
+    box-shadow:
+        0 0 0 3px rgba(68, 68, 68, 0.12);
 }
 
 
@@ -112,7 +164,7 @@ header p {
 #countrySuggestions {
     position: absolute;
 
-    top: 100%;
+    top: calc(100% + 4px);
 
     left: 0;
 
@@ -120,24 +172,40 @@ header p {
 
     background: white;
 
-    border: 1px solid #ccc;
+    border: 1px solid #d0d0d0;
 
-    border-top: none;
+    border-radius: 8px;
+
+    overflow: hidden;
 
     z-index: 100;
 
     max-height: 300px;
 
     overflow-y: auto;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 
 .country-suggestion {
-    padding: 10px 12px;
+    padding: 11px 13px;
 
     cursor: pointer;
 
     background: white;
+
+    transition:
+        background 0.15s ease,
+        padding-left 0.15s ease;
+}
+
+
+.country-suggestion:hover {
+    background: #f0f0f0;
+
+    padding-left: 17px;
 }
 
 
@@ -146,7 +214,9 @@ header p {
    ========================================== */
 
 .country-suggestion.selected {
-    background: #e8e8e8;
+    background: #e3e3e3;
+
+    padding-left: 17px;
 }
 
 
@@ -159,25 +229,60 @@ button {
 
     border: none;
 
-    border-radius: 5px;
+    border-radius: 8px;
 
-    background: #333;
+    background:
+        linear-gradient(
+            135deg,
+            #333,
+            #111
+        );
 
     color: white;
 
     cursor: pointer;
 
     font-size: 15px;
+
+    font-weight: bold;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
 }
 
+
 button:hover {
-    background: #555;
+    background:
+        linear-gradient(
+            135deg,
+            #555,
+            #222
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.2);
 }
+
+
+button:active {
+    transform: translateY(1px);
+
+    box-shadow: none;
+}
+
 
 button:disabled {
     background: #999;
 
     cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
 }
 
 
@@ -186,7 +291,7 @@ button:disabled {
    ========================================== */
 
 .restart-container {
-    margin-top: 10px;
+    margin-top: 12px;
 
     display: flex;
 
@@ -196,6 +301,8 @@ button:disabled {
 
 #restartButton {
     background: #666;
+
+    font-size: 14px;
 }
 
 
@@ -211,9 +318,11 @@ button:disabled {
 #message {
     min-height: 20px;
 
-    margin: 15px 0;
+    margin: 17px 0;
 
     font-weight: bold;
+
+    color: #333;
 }
 
 
@@ -226,15 +335,21 @@ button:disabled {
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 12px;
 }
+
 
 .guess {
     padding: 15px;
 
-    background: #eee;
+    background: #f0f0f0;
 
-    border-radius: 7px;
+    border-radius: 9px;
+
+    border: 1px solid #ddd;
+
+    animation:
+        guessAppear 0.3s ease;
 }
 
 
@@ -249,6 +364,7 @@ button:disabled {
 
     margin-bottom: 10px;
 }
+
 
 .guess-header strong {
     font-size: 18px;
@@ -279,7 +395,7 @@ button:disabled {
 
     padding: 10px;
 
-    border-radius: 6px;
+    border-radius: 7px;
 
     border: 2px solid transparent;
 
@@ -290,13 +406,27 @@ button:disabled {
     justify-content: center;
 
     cursor: default;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
 }
+
+
+.category-box:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
 
 .category-box strong {
     font-size: 14px;
 
     margin-bottom: 6px;
 }
+
 
 .category-box span {
     font-size: 13px;
@@ -348,7 +478,7 @@ button:disabled {
 
     color: white;
 
-    border-radius: 5px;
+    border-radius: 6px;
 
     font-size: 12px;
 
@@ -367,6 +497,9 @@ button:disabled {
         visibility 0.15s ease;
 
     z-index: 10;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -416,9 +549,338 @@ button:disabled {
 
     border: 2px solid #5aaa5a;
 
-    border-radius: 6px;
+    border-radius: 7px;
 
     font-weight: bold;
+}
+
+
+/* ==========================================
+   ==========================================
+   STARTSEITE
+   ==========================================
+   ========================================== */
+
+.start-container {
+    width: min(800px, 92%);
+
+    margin: 60px auto;
+
+    animation:
+        fadeIn 0.5s ease;
+}
+
+
+/* ==========================================
+   STARTSEITE HEADER
+   ========================================== */
+
+.start-container header {
+    margin-bottom: 35px;
+}
+
+
+.start-container header h1 {
+    font-size: 42px;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 10px;
+}
+
+
+.start-container header p {
+    max-width: 600px;
+
+    margin: auto;
+
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   KONTINENT-AUSWAHL
+   ========================================== */
+
+.continent-selection {
+    background: rgba(255, 255, 255, 0.97);
+
+    padding: 30px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.35);
+
+    animation:
+        slideUp 0.45s ease;
+}
+
+
+.continent-selection h2 {
+    margin-top: 0;
+
+    margin-bottom: 22px;
+
+    text-align: center;
+
+    font-size: 23px;
+}
+
+
+/* ==========================================
+   KONTINENT-KARTEN
+   ========================================== */
+
+.continent-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+
+.continent-options label {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 70px;
+
+    padding: 15px 18px;
+
+    border: 2px solid #ddd;
+
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.continent-options label:hover {
+    transform: translateY(-2px);
+
+    border-color: #999;
+
+    background: white;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==========================================
+   CHECKBOX
+   ========================================== */
+
+.continent-options input {
+    width: 20px;
+
+    height: 20px;
+
+    margin: 0 13px 0 0;
+
+    accent-color: #333;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   AUSGEWÄHLTE KONTINENTE
+   ========================================== */
+
+.continent-options label:has(input:checked) {
+    background: #ededed;
+
+    border-color: #333;
+
+    box-shadow:
+        inset 0 0 0 1px #333;
+}
+
+
+.continent-options label:has(input:checked)::after {
+    content: "✓";
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 13px;
+
+    font-size: 17px;
+
+    color: #333;
+}
+
+
+/* ==========================================
+   AUSWAHL-BUTTONS
+   ========================================== */
+
+.selection-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.selection-buttons button {
+    background: #e5e5e5;
+
+    color: #333;
+
+    font-size: 14px;
+
+    padding: 9px 16px;
+}
+
+
+.selection-buttons button:hover {
+    background: #d5d5d5;
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ==========================================
+   AUSWAHL-NACHRICHT
+   ========================================== */
+
+#selectionMessage {
+    min-height: 20px;
+
+    margin: 10px 0 15px;
+
+    text-align: center;
+
+    color: #c0392b;
+
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   START BUTTON
+   ========================================== */
+
+#startButton {
+    display: block;
+
+    width: 100%;
+
+    padding: 15px;
+
+    font-size: 17px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #333,
+            #111
+        );
+
+    box-shadow:
+        0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+#startButton:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #555,
+            #222
+        );
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 9px 20px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   ANIMATIONEN
+   ========================================== */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes slideUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+@keyframes guessAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
 }
 
 
@@ -428,37 +890,96 @@ button:disabled {
 
 @media (max-width: 600px) {
 
+    /* ==============================
+       SPIEL
+       ============================== */
+
     .game-container {
         width: 95%;
 
         margin: 25px auto;
     }
 
+
     .game {
         padding: 15px;
     }
+
+
+    header h1 {
+        font-size: 30px;
+    }
+
 
     .guess-container {
         flex-direction: column;
     }
 
+
     button {
         width: 100%;
     }
+
 
     .category-grid {
         grid-template-columns: 1fr;
     }
 
+
     .autocomplete-container {
         width: 100%;
     }
+
 
     .restart-container {
         justify-content: stretch;
     }
 
+
     #restartButton {
+        width: 100%;
+    }
+
+
+    /* ==============================
+       STARTSEITE
+       ============================== */
+
+    .start-container {
+        width: 94%;
+
+        margin: 30px auto;
+    }
+
+
+    .start-container header h1 {
+        font-size: 32px;
+    }
+
+
+    .continent-selection {
+        padding: 20px 15px;
+    }
+
+
+    .continent-options {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .continent-options label {
+        min-height: 62px;
+    }
+
+
+    .selection-buttons {
+        flex-direction: column;
+    }
+
+
+    .selection-buttons button {
         width: 100%;
     }
 

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Country Wordle – Start</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="start-container">
+
+        <header>
+
+            <h1>
+                Country Wordle
+            </h1>
+
+            <p>
+                Wähle die Kontinente aus, aus denen Länder im Spiel vorkommen sollen.
+            </p>
+
+        </header>
+
+
+        <section class="continent-selection">
+
+            <h2>
+                Kontinente
+            </h2>
+
+
+            <div class="continent-options">
+
+                <label>
+                    <input type="checkbox" value="Afrika">
+                    Afrika
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Asien">
+                    Asien
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Europa">
+                    Europa
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Nordamerika">
+                    Nordamerika
+                </label>
+
+                <label>
+                    <input type="checkbox" value="Südamerika">
+                    Südamerika
+                </label>
+
+            </div>
+
+
+            <div class="selection-buttons">
+
+                <button id="selectAllButton">
+                    Alle
+                </button>
+
+                <button id="selectNoneButton">
+                    Keine
+                </button>
+
+            </div>
+
+
+            <p id="selectionMessage"></p>
+
+
+            <button id="startButton">
+                Spiel starten
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        const checkboxes =
+            document.querySelectorAll(
+                ".continent-options input"
+            );
+
+
+        const startButton =
+            document.getElementById(
+                "startButton"
+            );
+
+
+        const selectAllButton =
+            document.getElementById(
+                "selectAllButton"
+            );
+
+
+        const selectNoneButton =
+            document.getElementById(
+                "selectNoneButton"
+            );
+
+
+        const selectionMessage =
+            document.getElementById(
+                "selectionMessage"
+            );
+
+
+        // ==========================================
+        // VORHERIGE AUSWAHL LADEN
+        // ==========================================
+
+        const savedContinents =
+            JSON.parse(
+                localStorage.getItem(
+                    "selectedContinents"
+                ) || "[]"
+            );
+
+
+        checkboxes.forEach(
+            checkbox => {
+
+                checkbox.checked =
+                    savedContinents.includes(
+                        checkbox.value
+                    );
+
+            }
+        );
+
+
+        // ==========================================
+        // ALLE AUSWÄHLEN
+        // ==========================================
+
+        selectAllButton.addEventListener(
+            "click",
+            () => {
+
+                checkboxes.forEach(
+                    checkbox => {
+
+                        checkbox.checked = true;
+
+                    }
+                );
+
+                selectionMessage.textContent = "";
+
+            }
+        );
+
+
+        // ==========================================
+        // KEINE AUSWÄHLEN
+        // ==========================================
+
+        selectNoneButton.addEventListener(
+            "click",
+            () => {
+
+                checkboxes.forEach(
+                    checkbox => {
+
+                        checkbox.checked = false;
+
+                    }
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // SPIEL STARTEN
+        // ==========================================
+
+        startButton.addEventListener(
+            "click",
+            () => {
+
+                const selectedContinents =
+                    Array.from(
+                        checkboxes
+                    )
+                    .filter(
+                        checkbox =>
+                            checkbox.checked
+                    )
+                    .map(
+                        checkbox =>
+                            checkbox.value
+                    );
+
+
+                if (
+                    selectedContinents.length === 0
+                ) {
+
+                    selectionMessage.textContent =
+                        "Bitte mindestens einen Kontinent auswählen.";
+
+                    return;
+
+                }
+
+
+                localStorage.setItem(
+                    "selectedContinents",
+                    JSON.stringify(
+                        selectedContinents
+                    )
+                );
+
+
+                window.location.href =
+                    "index.html";
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

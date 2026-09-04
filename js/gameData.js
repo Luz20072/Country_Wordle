@@ -46,14 +46,57 @@ async function supabaseRequest(endpoint) {
 
 
 // ==========================================
+// AUSGEWÄHLTE KONTINENTE
+// ==========================================
+
+function getSelectedContinents() {
+
+    const selectedContinents =
+        JSON.parse(
+            localStorage.getItem(
+                "selectedContinents"
+            ) || "[]"
+        );
+
+
+    return selectedContinents;
+
+}
+
+
+// ==========================================
 // ZUFÄLLIGES LAND LADEN
 // ==========================================
 
 async function getRandomCountry() {
 
+    const selectedContinents =
+        getSelectedContinents();
+
+
+    if (
+        selectedContinents.length === 0
+    ) {
+
+        throw new Error(
+            "Keine Kontinente ausgewählt."
+        );
+
+    }
+
+
+    const continentFilter =
+        selectedContinents
+            .map(
+                continent =>
+                    `"${continent}"`
+            )
+            .join(",");
+
+
     const result =
         await supabaseRequest(
-            "rpc/get_random_country"
+            `countries?select=*&continent=in.(${encodeURIComponent(continentFilter)})`
         );
 
 
@@ -63,13 +106,19 @@ async function getRandomCountry() {
     ) {
 
         throw new Error(
-            "Kein Zielland erhalten."
+            "Keine Länder für die ausgewählten Kontinente gefunden."
         );
 
     }
 
 
-    return result[0];
+    const randomIndex =
+        Math.floor(
+            Math.random() * result.length
+        );
+
+
+    return result[randomIndex];
 
 }
 
@@ -212,6 +261,7 @@ async function getCountryRelationships(
     const bordersA =
         countryA.borders || [];
 
+
     const bordersB =
         countryB.borders || [];
 
@@ -252,6 +302,7 @@ async function getCountryRelationships(
     const seasA =
         countryA.seas || [];
 
+
     const seasB =
         countryB.seas || [];
 
@@ -282,6 +333,7 @@ async function getCountryRelationships(
     const unionsA =
         countryA.former_unions || [];
 
+
     const unionsB =
         countryB.former_unions || [];
 
@@ -305,6 +357,7 @@ async function getCountryRelationships(
     const colonialPowersA =
         countryA.colonial_powers || [];
 
+
     const colonialPowersB =
         countryB.colonial_powers || [];
 
@@ -327,6 +380,7 @@ async function getCountryRelationships(
 
     const languagesA =
         countryA.languages || [];
+
 
     const languagesB =
         countryB.languages || [];
