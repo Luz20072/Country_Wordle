@@ -1576,7 +1576,7 @@ function closeVictoryPopup() {
 function backToStart() {
 
     window.location.href =
-        "start.html";
+        "index.html";
 
 }
 
