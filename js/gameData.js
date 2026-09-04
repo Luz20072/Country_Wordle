@@ -5,6 +5,7 @@
 const SUPABASE_URL =
     "https://utxbkbmdjhgsnlksjkst.supabase.co";
 
+
 const SUPABASE_KEY =
     "sb_publishable_6640Ix-kp0Diy3Crqb3PDw_7g1bK4Ca";
 
@@ -28,7 +29,9 @@ async function supabaseRequest(endpoint) {
         );
 
 
-    if (!response.ok) {
+    if (
+        !response.ok
+    ) {
 
         throw new Error(
             `HTTP ${response.status}: ${await response.text()}`
@@ -118,6 +121,7 @@ async function getCountryColors(countryId) {
 
 }
 
+
 // ==========================================
 // FLAGGENFARBEN IN ARRAY UMWANDELN
 // ==========================================
@@ -144,7 +148,7 @@ function getColorArray(colors) {
 
 
 // ==========================================
-// BEZIEHUNGEN LADEN
+// BEZIEHUNGEN ZWISCHEN ZWEI LÄNDERN
 // ==========================================
 
 async function getCountryRelationships(
@@ -152,13 +156,233 @@ async function getCountryRelationships(
     targetId
 ) {
 
-    const result =
+    // ==========================================
+    // BEIDE LÄNDER LADEN
+    // ==========================================
+
+    const countries =
         await supabaseRequest(
-            `relationships?select=*&or=(and(country_a.eq.${countryId},country_b.eq.${targetId}),and(country_a.eq.${targetId},country_b.eq.${countryId}))`
+            `countries?select=id,region,seas,languages,colonial_powers,former_unions,borders&id=in.(${countryId},${targetId})`
         );
 
 
-    return result || [];
+    if (
+        !countries ||
+        countries.length !== 2
+    ) {
+
+        return [];
+
+    }
+
+
+    const countryA =
+        countries.find(
+            country =>
+                Number(country.id) ===
+                Number(countryId)
+        );
+
+
+    const countryB =
+        countries.find(
+            country =>
+                Number(country.id) ===
+                Number(targetId)
+        );
+
+
+    if (
+        !countryA ||
+        !countryB
+    ) {
+
+        return [];
+
+    }
+
+
+    const relationships = [];
+
+
+    // ==========================================
+    // GEMEINSAME GRENZE
+    // ==========================================
+
+    const bordersA =
+        countryA.borders || [];
+
+    const bordersB =
+        countryB.borders || [];
+
+
+    if (
+        bordersA.includes(Number(countryB.id)) ||
+        bordersB.includes(Number(countryA.id))
+    ) {
+
+        relationships.push({
+            type: "border"
+        });
+
+    }
+
+
+    // ==========================================
+    // GLEICHE UN-M49-REGION
+    // ==========================================
+
+    if (
+        countryA.region &&
+        countryB.region &&
+        countryA.region === countryB.region
+    ) {
+
+        relationships.push({
+            type: "same_region"
+        });
+
+    }
+
+
+    // ==========================================
+    // GLEICHES MEER / OZEAN
+    // ==========================================
+
+    const seasA =
+        countryA.seas || [];
+
+    const seasB =
+        countryB.seas || [];
+
+
+    const commonSeas =
+        seasA.filter(
+            sea =>
+                seasB.includes(sea)
+        );
+
+
+    commonSeas.forEach(
+        sea => {
+
+            relationships.push({
+                type: "same_sea",
+                description: sea
+            });
+
+        }
+    );
+
+
+    // ==========================================
+    // FRÜHERE POLITISCHE UNION
+    // ==========================================
+
+    const unionsA =
+        countryA.former_unions || [];
+
+    const unionsB =
+        countryB.former_unions || [];
+
+
+    if (
+        unionsA.includes(Number(countryB.id)) ||
+        unionsB.includes(Number(countryA.id))
+    ) {
+
+        relationships.push({
+            type: "former_union"
+        });
+
+    }
+
+
+    // ==========================================
+    // KOLONIALE BEZIEHUNG
+    // ==========================================
+
+    const colonialPowersA =
+        countryA.colonial_powers || [];
+
+    const colonialPowersB =
+        countryB.colonial_powers || [];
+
+
+    if (
+        colonialPowersA.includes(Number(countryB.id)) ||
+        colonialPowersB.includes(Number(countryA.id))
+    ) {
+
+        relationships.push({
+            type: "former_colonie"
+        });
+
+    }
+
+
+    // ==========================================
+    // GEMEINSAME AMTSSPRACHE
+    // ==========================================
+
+    const languagesA =
+        countryA.languages || [];
+
+    const languagesB =
+        countryB.languages || [];
+
+
+    const commonLanguages =
+        languagesA.filter(
+            language =>
+                languagesB.includes(language)
+        );
+
+
+    if (
+        commonLanguages.length > 0
+    ) {
+
+        relationships.push({
+            type: "cultural",
+            description:
+                commonLanguages.join(", ")
+        });
+
+    }
+
+
+    // ==========================================
+    // BESONDERE BEZIEHUNGEN
+    // ==========================================
+
+    const specialRelationships =
+        await supabaseRequest(
+            `special_relationships?select=*&or=` +
+            `(and(country_a.eq.${countryA.id},country_b.eq.${countryB.id}),` +
+            `and(country_a.eq.${countryB.id},country_b.eq.${countryA.id}))`
+        );
+
+
+    for (
+        const relationship of
+        specialRelationships || []
+    ) {
+
+        relationships.push({
+
+            type:
+                "special",
+
+            description:
+                relationship.description
+
+        });
+
+    }
+
+
+    return relationships;
 
 }
 

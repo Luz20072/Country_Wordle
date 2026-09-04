@@ -39,8 +39,6 @@ let targetCountry = null;
 
 let targetColors = [];
 
-let targetRelationships = [];
-
 let targetWars = [];
 
 let guessedCountries = [];
@@ -49,15 +47,10 @@ let gameOver = false;
 
 
 // ==========================================
-// LÄNDER FÜR AUTOCOMPLETE
+// AUTOCOMPLETE-DATEN
 // ==========================================
 
 let allCountries = [];
-
-
-// ==========================================
-// AUTOCOMPLETE
-// ==========================================
 
 let currentSuggestions = [];
 
@@ -125,10 +118,6 @@ function showCountrySuggestions() {
     }
 
 
-    // ======================================
-    // PASSENDE LÄNDER FILTERN
-    // ======================================
-
     currentSuggestions =
         allCountries
             .filter(
@@ -139,10 +128,6 @@ function showCountrySuggestions() {
             )
             .slice(0, 8);
 
-
-    // ======================================
-    // VORSCHLÄGE ERSTELLEN
-    // ======================================
 
     currentSuggestions.forEach(
         (country, index) => {
@@ -211,7 +196,6 @@ function selectSuggestion(index) {
     suggestionsContainer.innerHTML =
         "";
 
-
     currentSuggestions = [];
 
     selectedSuggestionIndex = -1;
@@ -259,10 +243,6 @@ function updateSuggestionHighlight() {
         }
     );
 
-
-    // ======================================
-    // AUSGEWÄHLTEN VORSCHLAG SICHTBAR HALTEN
-    // ======================================
 
     if (
         selectedSuggestionIndex >= 0
@@ -411,10 +391,6 @@ countryInput.addEventListener(
             event.key === "Enter"
         ) {
 
-            // ------------------------------
-            // Vorschlag ausgewählt
-            // ------------------------------
-
             if (
                 selectedSuggestionIndex >= 0 &&
                 currentSuggestions.length > 0
@@ -430,10 +406,6 @@ countryInput.addEventListener(
 
             }
 
-
-            // ------------------------------
-            // Kein Vorschlag ausgewählt
-            // ------------------------------
 
             suggestionsContainer.innerHTML =
                 "";
@@ -464,12 +436,6 @@ async function loadTargetCountry() {
             );
 
 
-        targetRelationships =
-            await supabaseRequest(
-                `relationships?select=*&or=(country_a.eq.${targetCountry.id},country_b.eq.${targetCountry.id})`
-            );
-
-
         targetWars =
             await getCountryWars(
                 targetCountry.id
@@ -491,12 +457,6 @@ async function loadTargetCountry() {
         console.log(
             "Kriege:",
             targetWars
-        );
-
-
-        console.log(
-            "Beziehungen:",
-            targetRelationships
         );
 
 
@@ -530,8 +490,6 @@ async function restartGame() {
     targetCountry = null;
 
     targetColors = [];
-
-    targetRelationships = [];
 
     targetWars = [];
 
@@ -771,7 +729,7 @@ async function makeGuess() {
 
 
 // ==========================================
-// RICHTEN BUTTON
+// BUTTONS
 // ==========================================
 
 guessButton.addEventListener(
@@ -779,10 +737,6 @@ guessButton.addEventListener(
     makeGuess
 );
 
-
-// ==========================================
-// NEUES SPIEL
-// ==========================================
 
 restartButton.addEventListener(
     "click",
