@@ -133,13 +133,21 @@ async function getCountryByName(
     name
 ) {
 
+    const normalizedName =
+        name
+            .trim()
+            .toLowerCase();
+
+
     const encodedName =
-        encodeURIComponent(name);
+        encodeURIComponent(
+            normalizedName
+        );
 
 
     const result =
         await supabaseRequest(
-            `countries?select=*&name=eq.${encodedName}`
+            `countries?select=*&name=ilike.${encodedName}`
         );
 
 

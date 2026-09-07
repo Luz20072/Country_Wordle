@@ -89,6 +89,30 @@ const victoryBorders =
     );
 
 
+const victoryAttempts =
+    document.getElementById(
+        "victoryAttempts"
+    );
+
+
+const victoryMap =
+    document.getElementById(
+        "victoryMap"
+    );
+
+
+const victoryMapCanvas =
+    document.getElementById(
+        "victoryMapCanvas"
+    );
+
+
+const victoryMapLoading =
+    document.getElementById(
+        "victoryMapLoading"
+    );
+
+
 const victoryCloseButton =
     document.getElementById(
         "victoryCloseButton"
@@ -110,6 +134,34 @@ const victoryContinueButton =
 const victoryOverlay =
     document.querySelector(
         ".victory-overlay"
+    );
+
+
+// ==========================================
+// VERGRÖSSERTE KARTE
+// ==========================================
+
+const victoryMapModal =
+    document.getElementById(
+        "victoryMapModal"
+    );
+
+
+const victoryMapLarge =
+    document.getElementById(
+        "victoryMapLarge"
+    );
+
+
+const victoryMapClose =
+    document.getElementById(
+        "victoryMapClose"
+    );
+
+
+const victoryMapModalOverlay =
+    document.querySelector(
+        ".victory-map-modal-overlay"
     );
 
 
@@ -139,6 +191,19 @@ let gameOver = false;
  */
 
 let victoryCountry = null;
+
+
+// ==========================================
+// KARTEN-DATEN
+// ==========================================
+
+let victoryMapInstance = null;
+
+let victoryMapLargeInstance = null;
+
+let victoryMapLatitude = null;
+
+let victoryMapLongitude = null;
 
 
 // ==========================================
@@ -187,20 +252,6 @@ function updateHintsVisibility() {
 
 function updateGameButtons() {
 
-    /*
-     * Während des Spiels:
-     *
-     * Neues Spiel       → unsichtbar
-     * Zur Startseite    → sichtbar
-     * Ergebnis anzeigen → unsichtbar
-     *
-     * Nach dem Sieg:
-     *
-     * Neues Spiel       → sichtbar
-     * Zur Startseite    → sichtbar
-     * Ergebnis anzeigen → zunächst unsichtbar
-     */
-
     if (restartButton) {
 
         restartButton.style.display =
@@ -218,16 +269,6 @@ function updateGameButtons() {
 
     }
 
-
-    /*
-     * "Ergebnis anzeigen" wird beim Sieg
-     * zunächst versteckt.
-     *
-     * Nach dem Schließen des Victory-Modals
-     * wird der Button über
-     * showVictoryButtonAfterClose()
-     * wieder eingeblendet.
-     */
 
     if (showVictoryButton) {
 
@@ -779,7 +820,19 @@ async function initializeHints() {
 
 async function restartGame() {
 
+    closeVictoryMap();
+
     closeVictoryPopup();
+
+
+    if (victoryMapInstance) {
+
+        victoryMapInstance.remove();
+
+        victoryMapInstance =
+            null;
+
+    }
 
 
     targetCountry =
@@ -799,6 +852,14 @@ async function restartGame() {
 
 
     victoryCountry =
+        null;
+
+
+    victoryMapLatitude =
+        null;
+
+
+    victoryMapLongitude =
         null;
 
 
@@ -839,11 +900,6 @@ async function restartGame() {
 
     updateHintsVisibility();
 
-
-    /*
-     * Buttons wieder in den Zustand
-     * eines laufenden Spiels versetzen.
-     */
 
     updateGameButtons();
 
@@ -887,8 +943,9 @@ async function makeGuess() {
 
 
     const input =
-        countryInput.value.trim();
-
+    countryInput.value
+        .trim()
+        .toLowerCase();
 
     if (
         input === ""
@@ -923,7 +980,7 @@ async function makeGuess() {
 
 
     // ======================================
-    // JEDES LAND DARF GERATEN WERDEN
+    // BEREITS GERATEN?
     // ======================================
 
     if (
@@ -962,7 +1019,7 @@ async function makeGuess() {
         -1;
 
 
-        // ======================================
+    // ======================================
     // RICHTIG GERATEN
     // ======================================
 
@@ -978,24 +1035,11 @@ async function makeGuess() {
         );
 
 
-        // ==================================
-        // STATISTIK SPEICHERN
-        // ==================================
-
         recordGame(
             targetCountry.continent,
             guessedCountries.length
         );
 
-
-        /*
-         * Die separate "Gewonnen!"-Meldung
-         * wird nicht mehr verwendet.
-         *
-         * Die eigentliche Siegmeldung wird
-         * direkt in ui.js innerhalb des
-         * Guess-Elements erzeugt.
-         */
 
         message.textContent =
             "";
@@ -1013,23 +1057,9 @@ async function makeGuess() {
             true;
 
 
-        /*
-         * Das gewonnene Land speichern,
-         * damit das Ergebnis später erneut
-         * geöffnet werden kann.
-         */
-
         victoryCountry =
             country;
 
-
-        /*
-         * Nach dem Sieg:
-         *
-         * Neues Spiel       → sichtbar
-         * Zur Startseite    → sichtbar
-         * Ergebnis anzeigen → zunächst unsichtbar
-         */
 
         updateGameButtons();
 
@@ -1154,6 +1184,762 @@ async function makeGuess() {
 
 
 // ==========================================
+// ZAHLEN FORMATIEREN
+// ==========================================
+
+function formatArea(
+    area
+) {
+
+    if (
+        area === null ||
+        area === undefined ||
+        area === ""
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    const numericArea =
+        Number(
+            area
+        );
+
+
+    if (
+        !Number.isFinite(
+            numericArea
+        )
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    return (
+        new Intl.NumberFormat(
+            "de-DE"
+        ).format(
+            Math.round(
+                numericArea
+            )
+        ) +
+        " km²"
+    );
+
+}
+
+
+// ==========================================
+// BEVÖLKERUNG FORMATIEREN
+// ==========================================
+
+function formatPopulation(
+    population,
+    year
+) {
+
+    if (
+        population === null ||
+        population === undefined ||
+        population === ""
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    const numericPopulation =
+        Number(
+            population
+        );
+
+
+    if (
+        !Number.isFinite(
+            numericPopulation
+        )
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    const formatted =
+        new Intl.NumberFormat(
+            "de-DE"
+        ).format(
+            Math.round(
+                numericPopulation
+            )
+        );
+
+
+    if (
+        year !== null &&
+        year !== undefined &&
+        year !== ""
+    ) {
+
+        return (
+            formatted +
+            " (" +
+            year +
+            ")"
+        );
+
+    }
+
+
+    return formatted;
+
+}
+
+
+// ==========================================
+// DATUM FORMATIEREN
+// ==========================================
+
+function formatIndependenceDate(
+    dateValue
+) {
+
+    if (
+        !dateValue
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    const date =
+        new Date(
+            `${dateValue}T00:00:00`
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    return date.toLocaleDateString(
+        "de-DE"
+    );
+
+}
+
+
+// ==========================================
+// ARRAY-WERT FORMATIEREN
+// ==========================================
+
+function formatCountryArray(
+    value
+) {
+
+    if (
+        !Array.isArray(value) ||
+        value.length === 0
+    ) {
+
+        return "Keine Angabe";
+
+    }
+
+
+    return value.join(
+        ", "
+    );
+
+}
+
+
+// ==========================================
+// VICTORY DATEN HINZUFÜGEN
+// ==========================================
+
+function addVictoryData(
+    label,
+    value,
+    category
+) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        value =
+            "Keine Angabe";
+
+    }
+
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+
+    item.className =
+        `victory-data-item ${category}`;
+
+
+    const labelElement =
+        document.createElement(
+            "span"
+        );
+
+
+    labelElement.className =
+        "victory-data-label";
+
+
+    labelElement.textContent =
+        label;
+
+
+    const valueElement =
+        document.createElement(
+            "span"
+        );
+
+
+    valueElement.className =
+        "victory-data-value";
+
+
+    valueElement.textContent =
+        value;
+
+
+    item.appendChild(
+        labelElement
+    );
+
+
+    item.appendChild(
+        valueElement
+    );
+
+
+    victoryData.appendChild(
+        item
+    );
+
+}
+
+// ==========================================
+// VICTORY KARTE
+// ==========================================
+
+function hasValidCoordinates(
+    country
+) {
+
+    if (
+        !country
+    ) {
+
+        return false;
+
+    }
+
+
+    const latitude =
+        Number(
+            country.latitude
+        );
+
+
+    const longitude =
+        Number(
+            country.longitude
+        );
+
+
+    return (
+        Number.isFinite(
+            latitude
+        ) &&
+        Number.isFinite(
+            longitude
+        ) &&
+        latitude >= -90 &&
+        latitude <= 90 &&
+        longitude >= -180 &&
+        longitude <= 180
+    );
+
+}
+
+
+// ==========================================
+// LEAFLET KARTE ERSTELLEN
+// ==========================================
+
+function initializeVictoryMap(
+    country
+) {
+
+    if (
+        !victoryMap ||
+        !window.L
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !hasValidCoordinates(
+            country
+        )
+    ) {
+
+        if (victoryMapLoading) {
+
+            victoryMapLoading.textContent =
+                "Keine Kartendaten verfügbar.";
+
+            victoryMapLoading.style.display =
+                "flex";
+
+        }
+
+
+        return;
+
+    }
+
+
+    const latitude =
+        Number(
+            country.latitude
+        );
+
+
+    const longitude =
+        Number(
+            country.longitude
+        );
+
+
+    victoryMapLatitude =
+        latitude;
+
+
+    victoryMapLongitude =
+        longitude;
+
+
+    if (
+        victoryMapInstance
+    ) {
+
+        victoryMapInstance.remove();
+
+        victoryMapInstance =
+            null;
+
+    }
+
+
+    /*
+     * Das alte Canvas wird nicht mehr
+     * für die Karte benötigt.
+     */
+
+    if (
+        victoryMapCanvas
+    ) {
+
+        victoryMapCanvas.style.display =
+            "none";
+
+    }
+
+
+    if (
+        victoryMapLoading
+    ) {
+
+        victoryMapLoading.style.display =
+            "flex";
+
+        victoryMapLoading.textContent =
+            "Karte wird geladen...";
+
+    }
+
+
+    victoryMapInstance =
+        L.map(
+            victoryMap,
+            {
+                center: [
+                    latitude,
+                    longitude
+                ],
+
+                zoom:
+                    4,
+
+                zoomControl:
+                    false,
+
+                dragging:
+                    false,
+
+                scrollWheelZoom:
+                    false,
+
+                doubleClickZoom:
+                    false,
+
+                boxZoom:
+                    false,
+
+                keyboard:
+                    false,
+
+                touchZoom:
+                    false,
+
+                attributionControl:
+                    false
+            }
+        );
+
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png",
+        {
+            maxZoom:
+                19,
+
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'
+        }
+    ).addTo(
+        victoryMapInstance
+    );
+
+
+    L.marker(
+        [
+            latitude,
+            longitude
+        ]
+    )
+    .addTo(
+        victoryMapInstance
+    )
+    .bindTooltip(
+        country.name,
+        {
+            direction:
+                "top"
+        }
+    );
+
+
+    /*
+     * Karte nach dem Laden der Tiles
+     * korrekt aktualisieren.
+     */
+
+    victoryMapInstance.whenReady(
+        () => {
+
+            setTimeout(
+                () => {
+
+                    if (
+                        !victoryMapInstance
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    victoryMapInstance.invalidateSize();
+
+
+                    victoryMapInstance.setView(
+                        [
+                            latitude,
+                            longitude
+                        ],
+                        4,
+                        {
+                            animate:
+                                false
+                        }
+                    );
+
+
+                    if (
+                        victoryMapLoading
+                    ) {
+
+                        victoryMapLoading.style.display =
+                            "none";
+
+                    }
+
+                },
+                300
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// KARTE VERGRÖSSERN
+// ==========================================
+
+function openVictoryMap() {
+
+    if (
+        !victoryMapModal ||
+        !victoryMapLarge ||
+        !window.L
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !Number.isFinite(
+            victoryMapLatitude
+        ) ||
+        !Number.isFinite(
+            victoryMapLongitude
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    victoryMapModal.classList.add(
+        "visible"
+    );
+
+
+    victoryMapModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.classList.add(
+        "map-modal-open"
+    );
+
+
+    if (
+        victoryMapLargeInstance
+    ) {
+
+        victoryMapLargeInstance.remove();
+
+        victoryMapLargeInstance =
+            null;
+
+    }
+
+
+    victoryMapLarge.innerHTML =
+        "";
+
+
+    victoryMapLargeInstance =
+        L.map(
+            victoryMapLarge,
+            {
+                center: [
+                    victoryMapLatitude,
+                    victoryMapLongitude
+                ],
+
+                zoom:
+                    5,
+
+                zoomControl:
+                    true,
+
+                dragging:
+                    true,
+
+                scrollWheelZoom:
+                    true,
+
+                doubleClickZoom:
+                    true,
+
+                boxZoom:
+                    true,
+
+                keyboard:
+                    true,
+
+                touchZoom:
+                    true,
+
+                attributionControl:
+                    true
+            }
+        );
+
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png",
+        {
+            maxZoom:
+                19,
+
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'
+        }
+    ).addTo(
+        victoryMapLargeInstance
+    );
+
+
+    if (
+        victoryCountry
+    ) {
+
+        L.marker(
+            [
+                victoryMapLatitude,
+                victoryMapLongitude
+            ]
+        )
+        .addTo(
+            victoryMapLargeInstance
+        )
+        .bindTooltip(
+            victoryCountry.name,
+            {
+                permanent:
+                    true,
+
+                direction:
+                    "top"
+            }
+        );
+
+    }
+
+
+    victoryMapLargeInstance.whenReady(
+        () => {
+
+            setTimeout(
+                () => {
+
+                    if (
+                        !victoryMapLargeInstance
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    victoryMapLargeInstance.invalidateSize();
+
+
+                    victoryMapLargeInstance.setView(
+                        [
+                            victoryMapLatitude,
+                            victoryMapLongitude
+                        ],
+                        5,
+                        {
+                            animate:
+                                false
+                        }
+                    );
+
+                },
+                100
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// KARTE SCHLIESSEN
+// ==========================================
+
+function closeVictoryMap() {
+
+    if (
+        victoryMapModal
+    ) {
+
+        victoryMapModal.classList.remove(
+            "visible"
+        );
+
+
+        victoryMapModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
+    document.body.classList.remove(
+        "map-modal-open"
+    );
+
+
+    if (
+        victoryMapLargeInstance
+    ) {
+
+        victoryMapLargeInstance.remove();
+
+        victoryMapLargeInstance =
+            null;
+
+    }
+
+}
+
+
+// ==========================================
 // SIEGES-POPUP
 // ==========================================
 
@@ -1161,8 +1947,12 @@ async function showVictoryPopup(
     country
 ) {
 
-    if (!country) {
+    if (
+        !country
+    ) {
+
         return;
+
     }
 
 
@@ -1229,100 +2019,143 @@ async function showVictoryPopup(
         "";
 
 
+    victoryAttempts.innerHTML =
+        "";
+
+
     // ======================================
-    // HAUPTSTADT
+    // KARTE
+    // ======================================
+
+    initializeVictoryMap(
+        country
+    );
+
+
+    // ======================================
+    // 1. HAUPTSTADT
     // ======================================
 
     addVictoryData(
         "Hauptstadt",
-        country.capital
+        country.capital ||
+            "Keine Angabe",
+        "geography"
     );
 
 
     // ======================================
-    // KONTINENT
+    // 2. KONTINENT
     // ======================================
 
     addVictoryData(
         "Kontinent",
-        country.continent
+        country.continent ||
+            "Keine Angabe",
+        "geography"
     );
 
 
     // ======================================
-    // UN-M49-REGION
+    // 3. REGION
     // ======================================
 
     addVictoryData(
         "Region",
-        country.region
+        country.region ||
+            "Keine Angabe",
+        "geography"
     );
 
 
     // ======================================
-    // UNABHÄNGIGKEIT
+    // 4. UNABHÄNGIGKEIT
     // ======================================
 
-    if (
-        country.independence_date
-    ) {
-
-        const date =
-            new Date(
-                `${country.independence_date}T00:00:00`
-            );
-
-
-        addVictoryData(
-            "Unabhängigkeit",
-            date.toLocaleDateString(
-                "de-DE"
-            )
-        );
-
-    }
+    addVictoryData(
+        "Unabhängigkeit",
+        formatIndependenceDate(
+            country.independence_date
+        ),
+        "history"
+    );
 
 
     // ======================================
-    // SPRACHEN
+    // 5. FLÄCHE
     // ======================================
 
-    if (
-        Array.isArray(
+    addVictoryData(
+        "Fläche",
+        formatArea(
+            country.area_km2
+        ),
+        "statistics"
+    );
+
+
+    // ======================================
+    // 6. BEVÖLKERUNG
+    // ======================================
+
+    addVictoryData(
+        "Bevölkerung",
+        formatPopulation(
+            country.population,
+            country.population_year
+        ),
+        "statistics"
+    );
+
+
+    // ======================================
+    // 7. WÄHRUNG
+    // ======================================
+
+    addVictoryData(
+        "Währung",
+        country.currency ||
+            "Keine Angabe",
+        "state"
+    );
+
+
+    // ======================================
+    // 8. REGIERUNGSFORM
+    // ======================================
+
+    addVictoryData(
+        "Regierungsform",
+        country.government_type ||
+            "Keine Angabe",
+        "state"
+    );
+
+
+    // ======================================
+    // 9. SPRACHEN
+    // ======================================
+
+    addVictoryData(
+        "Sprachen",
+        formatCountryArray(
             country.languages
-        ) &&
-        country.languages.length > 0
-    ) {
-
-        addVictoryData(
-            "Sprachen",
-            country.languages.join(
-                ", "
-            )
-        );
-
-    }
+        ),
+        "culture"
+    );
 
 
     // ======================================
-    // MEERE / OZEANE
+    // 10. MEERE / OZEANE
     // ======================================
 
-    if (
-        Array.isArray(
+    addVictoryData(
+        "Meere / Ozeane",
+        formatCountryArray(
             country.seas
-        ) &&
-        country.seas.length > 0
-    ) {
-
-        addVictoryData(
-            "Meere / Ozeane",
-            country.seas.join(
-                ", "
-            )
-        );
-
-    }
+        ),
+        "culture"
+    );
 
 
     // ======================================
@@ -1419,6 +2252,24 @@ async function showVictoryPopup(
 
 
     // ======================================
+    // VERSUCHE
+    // ======================================
+
+    const attemptNumber =
+        guessedCountries.length;
+
+
+    const attemptLabel =
+        attemptNumber === 1
+            ? "Versuch"
+            : "Versuche";
+
+
+    victoryAttempts.textContent =
+        `${attemptNumber} ${attemptLabel}`;
+
+
+    // ======================================
     // POPUP ÖFFNEN
     // ======================================
 
@@ -1438,16 +2289,34 @@ async function showVictoryPopup(
     );
 
 
-    /*
-     * Beim Öffnen des Ergebnisses darf der
-     * erneute Ergebnis-Button nicht sichtbar
-     * sein.
-     */
-
-    if (showVictoryButton) {
+    if (
+        showVictoryButton
+    ) {
 
         showVictoryButton.style.display =
             "none";
+
+    }
+
+
+    /*
+     * Leaflet muss wissen, dass sich
+     * die Größe des sichtbaren Containers
+     * geändert hat.
+     */
+
+    if (
+        victoryMapInstance
+    ) {
+
+        setTimeout(
+            () => {
+
+                victoryMapInstance.invalidateSize();
+
+            },
+            100
+        );
 
     }
 
@@ -1465,85 +2334,13 @@ async function showVictoryPopup(
 
 
 // ==========================================
-// DATENZEILE ERSTELLEN
-// ==========================================
-
-function addVictoryData(
-    label,
-    value
-) {
-
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
-    ) {
-
-        return;
-
-    }
-
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-
-    item.className =
-        "victory-data-item";
-
-
-    const labelElement =
-        document.createElement(
-            "span"
-        );
-
-
-    labelElement.className =
-        "victory-data-label";
-
-
-    labelElement.textContent =
-        label;
-
-
-    const valueElement =
-        document.createElement(
-            "span"
-        );
-
-
-    valueElement.className =
-        "victory-data-value";
-
-
-    valueElement.textContent =
-        value;
-
-
-    item.appendChild(
-        labelElement
-    );
-
-
-    item.appendChild(
-        valueElement
-    );
-
-
-    victoryData.appendChild(
-        item
-    );
-
-}
-
-
-// ==========================================
 // POPUP SCHLIESSEN
 // ==========================================
 
 function closeVictoryPopup() {
+
+    closeVictoryMap();
+
 
     victoryModal.classList.remove(
         "visible"
@@ -1560,11 +2357,6 @@ function closeVictoryPopup() {
         "modal-open"
     );
 
-
-    /*
-     * Nur nach einem abgeschlossenen Spiel
-     * darf das Ergebnis erneut geöffnet werden.
-     */
 
     if (
         gameOver &&
@@ -1630,7 +2422,9 @@ restartButton.addEventListener(
 );
 
 
-if (backToStartButton) {
+if (
+    backToStartButton
+) {
 
     backToStartButton.addEventListener(
         "click",
@@ -1640,7 +2434,9 @@ if (backToStartButton) {
 }
 
 
-if (showVictoryButton) {
+if (
+    showVictoryButton
+) {
 
     showVictoryButton.addEventListener(
         "click",
@@ -1675,6 +2471,67 @@ victoryOverlay.addEventListener(
 
 
 // ==========================================
+// KARTE VERGRÖSSERN
+// ==========================================
+
+if (
+    victoryMap
+) {
+
+    victoryMap.addEventListener(
+        "click",
+        event => {
+
+            /*
+             * Klicks auf Leaflet-Elemente wie
+             * Attributionen sollen nicht zum
+             * Vergrößern führen.
+             */
+
+            if (
+                event.target.closest(
+                    ".leaflet-control"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            openVictoryMap();
+
+        }
+    );
+
+}
+
+
+if (
+    victoryMapClose
+) {
+
+    victoryMapClose.addEventListener(
+        "click",
+        closeVictoryMap
+    );
+
+}
+
+
+if (
+    victoryMapModalOverlay
+) {
+
+    victoryMapModalOverlay.addEventListener(
+        "click",
+        closeVictoryMap
+    );
+
+}
+
+
+// ==========================================
 // ESCAPE
 // ==========================================
 
@@ -1683,7 +2540,30 @@ document.addEventListener(
     event => {
 
         if (
-            event.key === "Escape" &&
+            event.key !== "Escape"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            victoryMapModal &&
+            victoryMapModal.classList.contains(
+                "visible"
+            )
+        ) {
+
+            closeVictoryMap();
+
+            return;
+
+        }
+
+
+        if (
+            victoryModal &&
             victoryModal.classList.contains(
                 "visible"
             )
@@ -1744,14 +2624,6 @@ document.addEventListener(
 
 async function startGame() {
 
-    /*
-     * Zu Beginn eines Spiels sind:
-     *
-     * Neues Spiel       → versteckt
-     * Zur Startseite    → sichtbar
-     * Ergebnis anzeigen → versteckt
-     */
-
     gameOver =
         false;
 
@@ -1772,7 +2644,9 @@ async function startGame() {
     await loadTargetCountry();
 
 
-    if (areHintsEnabled()) {
+    if (
+        areHintsEnabled()
+    ) {
 
         await initializeHints();
 

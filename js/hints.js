@@ -2254,7 +2254,7 @@ function renderHints() {
                                                 class="hint-tooltip"
                                                 role="tooltip"
                                             >
-                                                Diese Sprache wurde bei einem einsprachigen positiven Treffer oder bei mindestens zwei positiven Treffern gefunden und kommt nachweislich auch beim gesuchten Land vor.
+                                                Diese Sprache kommt nachweislich beim gesuchten Land vor.
                                             </span>
                                         </span>
                                     `

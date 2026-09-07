@@ -79,3 +79,32 @@ body {
     }
 
 }
+
+/* ==========================================
+   TEXTAUSWAHL
+   ========================================== */
+
+body {
+
+    user-select:
+        none;
+
+    -webkit-user-select:
+        none;
+
+}
+
+
+/* ==========================================
+   EINGABEFELD
+   ========================================== */
+
+#countryInput {
+
+    user-select:
+        text;
+
+    -webkit-user-select:
+        text;
+
+}
