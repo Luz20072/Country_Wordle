@@ -24,7 +24,7 @@ function addGuess(
     );
 
 
-        // ======================================
+    // ======================================
     // GUESS-HEADER
     // ======================================
 
@@ -89,6 +89,7 @@ function addGuess(
     element.appendChild(
         guessHeader
     );
+
 
     // ======================================
     // RICHTIG GERATEN
@@ -300,8 +301,378 @@ function addCategoryBox(
     );
 
 
-    tooltip.textContent =
-        category.tooltip;
+    // ======================================
+    // KONTINENT
+    // ======================================
+
+    if (
+        category.title ===
+        "Kontinent" &&
+        typeof category.tooltip ===
+        "object"
+    ) {
+
+        const tooltipTitle =
+            document.createElement(
+                "strong"
+            );
+
+
+        tooltipTitle.textContent =
+            category.tooltip.match
+                ? "Kontinent stimmt überein"
+                : "Kontinent stimmt nicht überein";
+
+
+        const tooltipText =
+            document.createElement(
+                "span"
+            );
+
+
+        tooltipText.textContent =
+            category.tooltip.match
+
+                ? "Beide Länder liegen auf demselben Kontinent."
+
+                : "Die Länder liegen auf unterschiedlichen Kontinenten.";
+
+
+        tooltip.appendChild(
+            tooltipTitle
+        );
+
+
+        tooltip.appendChild(
+            tooltipText
+        );
+
+    }
+
+
+    // ======================================
+    // FLAGGENFARBEN
+    // ======================================
+
+    else if (
+        category.title ===
+        "Flaggenfarben" &&
+        typeof category.tooltip ===
+        "object"
+    ) {
+
+        const colors =
+            category.tooltip.colors;
+
+
+        if (
+            colors &&
+            colors.length > 0
+        ) {
+
+            const tooltipTitle =
+                document.createElement(
+                    "strong"
+                );
+
+
+            tooltipTitle.textContent =
+                "Gemeinsame Farben";
+
+
+            tooltip.appendChild(
+                tooltipTitle
+            );
+
+
+            colors.forEach(
+                colorName => {
+
+                    const colorItem =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    colorItem.classList.add(
+                        "color-tooltip-item"
+                    );
+
+
+                    const colorDot =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    colorDot.classList.add(
+                        "color-tooltip-dot"
+                    );
+
+
+                    colorDot.dataset.color =
+                        colorName.toLowerCase();
+
+
+                    const colorText =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    colorText.textContent =
+                        colorName;
+
+
+                    colorItem.appendChild(
+                        colorDot
+                    );
+
+
+                    colorItem.appendChild(
+                        colorText
+                    );
+
+
+                    tooltip.appendChild(
+                        colorItem
+                    );
+
+                }
+            );
+
+        }
+
+        else {
+
+            tooltip.textContent =
+                "Keine gemeinsame Farbe.";
+
+        }
+
+    }
+
+
+    // ======================================
+    // KRIEGS-TOOLTIP
+    // ======================================
+
+    else if (
+        category.title ===
+        "Krieg" &&
+        typeof category.tooltip ===
+        "object"
+    ) {
+
+        // ==================================
+        // VERBÜNDETE
+        // ==================================
+
+        if (
+            category.tooltip.allies &&
+            category.tooltip.allies.length > 0
+        ) {
+
+            const alliesTitle =
+                document.createElement(
+                    "strong"
+                );
+
+
+            alliesTitle.textContent =
+                "Verbündete";
+
+
+            tooltip.appendChild(
+                alliesTitle
+            );
+
+
+            category.tooltip.allies.forEach(
+                warName => {
+
+                    const war =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    war.textContent =
+                        warName;
+
+
+                    tooltip.appendChild(
+                        war
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==================================
+        // GEGNER
+        // ==================================
+
+        if (
+            category.tooltip.enemies &&
+            category.tooltip.enemies.length > 0
+        ) {
+
+            const enemiesTitle =
+                document.createElement(
+                    "strong"
+                );
+
+
+            enemiesTitle.textContent =
+                "Gegner";
+
+
+            tooltip.appendChild(
+                enemiesTitle
+            );
+
+
+            category.tooltip.enemies.forEach(
+                warName => {
+
+                    const war =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    war.textContent =
+                        warName;
+
+
+                    tooltip.appendChild(
+                        war
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+
+    // ======================================
+    // BEZIEHUNGEN
+    // ======================================
+
+    else if (
+        category.title ===
+        "Beziehungen" &&
+        typeof category.tooltip ===
+        "object"
+    ) {
+
+        const relationships =
+            category.tooltip.relationships;
+
+
+        if (
+            relationships &&
+            relationships.length > 0
+        ) {
+
+            const tooltipTitle =
+                document.createElement(
+                    "strong"
+                );
+
+
+            tooltipTitle.textContent =
+                "Beziehungen";
+
+
+            tooltip.appendChild(
+                tooltipTitle
+            );
+
+
+            relationships.forEach(
+                relationship => {
+
+                    const relationshipItem =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    relationshipItem.classList.add(
+                        "relationship-tooltip-item"
+                    );
+
+
+                    const relationshipSymbol =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    relationshipSymbol.classList.add(
+                        "relationship-tooltip-symbol"
+                    );
+
+
+                    relationshipSymbol.textContent =
+                        relationship.symbol;
+
+
+                    const relationshipText =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    relationshipText.textContent =
+                        relationship.label;
+
+
+                    relationshipItem.appendChild(
+                        relationshipSymbol
+                    );
+
+
+                    relationshipItem.appendChild(
+                        relationshipText
+                    );
+
+
+                    tooltip.appendChild(
+                        relationshipItem
+                    );
+
+                }
+            );
+
+        }
+
+        else {
+
+            tooltip.textContent =
+                "Keine Beziehung zwischen den Ländern.";
+
+        }
+
+    }
+
+
+    // ======================================
+    // STANDARD-TOOLTIP
+    // ======================================
+
+    else {
+
+        tooltip.textContent =
+            category.tooltip;
+
+    }
 
 
     box.appendChild(

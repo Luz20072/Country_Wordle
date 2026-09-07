@@ -19,7 +19,7 @@
 
 
 /* ==========================================
-   RESPONSIVE – SPIEL
+   RESPONSIVE – MOBILE
    ========================================== */
 
 @media (max-width: 600px) {
@@ -43,27 +43,25 @@
     }
 
 
-    header h1 {
+    .game-container header h1 {
         font-size:
             30px;
     }
 
 
+    .game-container header p {
+        font-size:
+            14px;
+    }
+
+
+    /* ==============================
+       EINGABE
+       ============================== */
+
     .guess-container {
         flex-direction:
             column;
-    }
-
-
-    button {
-        width:
-            100%;
-    }
-
-
-    .category-grid {
-        grid-template-columns:
-            1fr;
     }
 
 
@@ -73,9 +71,38 @@
     }
 
 
+    #guessButton {
+        width:
+            100%;
+    }
+
+
+    /* ==============================
+       GUESSES
+       ============================== */
+
+    .category-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .guess-header strong {
+        font-size:
+            17px;
+    }
+
+
+    /* ==============================
+       SPIELSTEUERUNG
+       ============================== */
+
     .restart-container {
-        justify-content:
-            stretch;
+        gap:
+            8px;
+
+        flex-wrap:
+            wrap;
     }
 
 
@@ -126,6 +153,16 @@
 
 
     /* ==============================
+       STATUS
+       ============================== */
+
+    #message {
+        margin:
+            12px 0;
+    }
+
+
+    /* ==============================
        STARTSEITE
        ============================== */
 
@@ -144,7 +181,14 @@
     }
 
 
-    .continent-selection {
+    .start-container header p {
+        font-size:
+            14px;
+    }
+
+
+    .continent-selection,
+    .statistics-container {
         padding:
             20px 15px;
     }
@@ -165,6 +209,10 @@
     }
 
 
+    /* ==============================
+       AUSWAHL-BUTTONS
+       ============================== */
+
     .selection-buttons {
         flex-direction:
             column;
@@ -174,6 +222,71 @@
     .selection-buttons button {
         width:
             100%;
+    }
+
+
+    /* ==============================
+       STATISTIK
+       ============================== */
+
+    .statistics-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
+        gap:
+            10px;
+    }
+
+
+    .statistics-continents {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            10px;
+    }
+
+
+    /* ==============================
+       INFO-BEREICH
+       ============================== */
+
+    .info-button {
+        width:
+            34px;
+
+        height:
+            34px;
+    }
+
+
+    .info-popup {
+        width:
+            100%;
+
+        max-height:
+            90vh;
+
+        padding:
+            22px;
+    }
+
+
+    .info-tabs {
+        gap:
+            6px;
+    }
+
+
+    .info-tab {
+        padding:
+            10px 8px;
+
+        font-size:
+            13px;
     }
 
 
@@ -243,14 +356,165 @@
             100%;
     }
 
+}
+
+
+/* ==========================================
+   RESPONSIVE – SEHR KLEINE DISPLAYS
+   ========================================== */
+
+@media (max-width: 380px) {
 
     /* ==============================
-       STATUS
+       ALLGEMEIN
        ============================== */
 
-    #message {
-        margin:
-            12px 0;
+    .game-container {
+        width:
+            96%;
+    }
+
+
+    .start-container {
+        width:
+            96%;
+    }
+
+
+    .game {
+        padding:
+            12px;
+    }
+
+
+    /* ==============================
+       GUESSES
+       ============================== */
+
+    .guess {
+        padding:
+            12px;
+    }
+
+
+    .guess-header strong {
+        font-size:
+            16px;
+    }
+
+
+    .guess-flag {
+        width:
+            25px;
+
+        height:
+            18px;
+
+        margin-right:
+            8px;
+    }
+
+
+    .category-box {
+        min-height:
+            75px;
+
+        padding:
+            9px;
+    }
+
+
+    .category-box strong {
+        font-size:
+            13px;
+    }
+
+
+    .category-box span {
+        font-size:
+            12px;
+    }
+
+
+    /* ==============================
+       STARTSEITE
+       ============================== */
+
+    .start-container header h1 {
+        font-size:
+            28px;
+    }
+
+
+    .continent-selection,
+    .statistics-container {
+        padding:
+            18px 12px;
+    }
+
+
+    .statistics-grid {
+        gap:
+            8px;
+    }
+
+
+    /* ==============================
+       INFO-BEREICH
+       ============================== */
+
+    .info-popup {
+        padding:
+            18px;
+    }
+
+
+    .info-tabs {
+        gap:
+            4px;
+    }
+
+
+    .info-tab {
+        padding:
+            9px 6px;
+
+        font-size:
+            12px;
+    }
+
+
+    /* ==============================
+       VICTORY MODAL
+       ============================== */
+
+    .victory-modal {
+        padding:
+            8px;
+    }
+
+
+    .victory-card {
+        padding:
+            26px 14px 18px;
+
+        border-radius:
+            18px;
+    }
+
+
+    .victory-flag-container {
+        min-height:
+            110px;
+    }
+
+
+    .victory-flag {
+        width:
+            90%;
+
+        max-height:
+            130px;
     }
 
 }

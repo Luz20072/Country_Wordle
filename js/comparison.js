@@ -92,7 +92,10 @@ function compareWars(
     }
 
 
-    const details = [];
+    const allies = [];
+
+
+    const enemies = [];
 
 
     for (
@@ -126,18 +129,38 @@ function compareWars(
         }
 
 
-        /*
-         * Die eigentliche Auswertung der
-         * Beziehung zwischen den Ländern
-         * erfolgt später in hints.js.
-         *
-         * comparison.js stellt hier nur fest,
-         * dass ein gemeinsamer Krieg existiert.
-         */
+        // ======================================
+        // KRIEGSSEITE BESTIMMEN
+        // ======================================
 
-        details.push(
-            war.name
-        );
+        const relation =
+            getWarRelation(
+                guessed,
+                target
+            );
+
+
+        if (
+            relation ===
+            "Verbündete"
+        ) {
+
+            allies.push(
+                war.name
+            );
+
+        }
+
+        else if (
+            relation ===
+            "Gegner"
+        ) {
+
+            enemies.push(
+                war.name
+            );
+
+        }
 
     }
 
@@ -145,18 +168,25 @@ function compareWars(
     return {
 
         match:
-            details.length > 0,
+            allies.length > 0 ||
+            enemies.length > 0,
 
         title:
             "Krieg",
 
         value:
-            `${details.length} gemeinsamer${details.length === 1 ? "" : "e"} Krieg${details.length === 1 ? "" : "e"}`,
+            `${allies.length + enemies.length} gemeinsamer${allies.length + enemies.length === 1 ? "" : "e"} Krieg${allies.length + enemies.length === 1 ? "" : "e"}`,
 
         tooltip:
-            details.length > 0
-                ? details.join("\n")
-                : "Gemeinsamer Krieg vorhanden.",
+            {
+
+                allies:
+                    allies,
+
+                enemies:
+                    enemies
+
+            },
 
         sharedWars:
             commonWars
@@ -198,7 +228,7 @@ function compareRelationships(
     }
 
 
-    const relationshipNames = [];
+    const relationshipItems = [];
 
 
     for (
@@ -222,72 +252,90 @@ function compareRelationships(
 
             case "border":
 
-                relationshipNames.push(
-                    "Beide Länder sind Nachbarn."
-                );
+                relationshipItems.push({
+
+                    symbol:
+                        "↔",
+
+                    label:
+                        "Nachbarländer"
+
+                });
 
                 break;
 
 
             case "same_region":
 
-                relationshipNames.push(
-                    "Beide Länder liegen in derselben UN-Region."
-                );
+                relationshipItems.push({
+
+                    symbol:
+                        "◎",
+
+                    label:
+                        "Gleiche UN-Region"
+
+                });
 
                 break;
 
 
             case "same_sea":
 
-                relationshipNames.push(
-                    "Beide Länder grenzen an dasselbe Meer oder denselben Ozean."
-                );
+                relationshipItems.push({
+
+                    symbol:
+                        "≋",
+
+                    label:
+                        "Gemeinsames Meer / Ozean"
+
+                });
 
                 break;
 
 
             case "former_union":
 
-                relationshipNames.push(
-                    "Beide Länder waren Teil eines gemeinsamen Staates."
-                );
+                relationshipItems.push({
+
+                    symbol:
+                        "⛓",
+
+                    label:
+                        "Gemeinsamer früherer Staat"
+
+                });
 
                 break;
 
 
             case "former_colonie":
 
-                relationshipNames.push(
-                    "Zwischen beiden Ländern bestand eine koloniale Beziehung."
-                );
+                relationshipItems.push({
+
+                    symbol:
+                        "⚑",
+
+                    label:
+                        "Koloniale Beziehung"
+
+                });
 
                 break;
 
 
             case "cultural":
 
-                relationshipNames.push(
-                    "Beide Länder haben eine gemeinsame Amtssprache."
-                );
+                relationshipItems.push({
 
-                break;
+                    symbol:
+                        "文",
 
+                    label:
+                        "Gemeinsame Sprache / Kultur"
 
-            case "special":
-
-                relationshipNames.push(
-                    "Beide Länder haben eine besondere Beziehung."
-                );
-
-                break;
-
-
-            default:
-
-                relationshipNames.push(
-                    relationship.type
-                );
+                });
 
                 break;
 
@@ -296,12 +344,33 @@ function compareRelationships(
     }
 
 
-    const uniqueRelationships =
-        [
-            ...new Set(
-                relationshipNames
-            )
-        ];
+    const uniqueRelationships = [];
+
+
+    for (
+        const relationship
+        of relationshipItems
+    ) {
+
+        const exists =
+            uniqueRelationships.some(
+                existing =>
+                    existing.label ===
+                    relationship.label
+            );
+
+
+        if (
+            !exists
+        ) {
+
+            uniqueRelationships.push(
+                relationship
+            );
+
+        }
+
+    }
 
 
     if (
@@ -339,7 +408,12 @@ function compareRelationships(
             `${uniqueRelationships.length} Übereinstimmung${uniqueRelationships.length === 1 ? "" : "en"}`,
 
         tooltip:
-            uniqueRelationships.join("\n"),
+            {
+
+                relationships:
+                    uniqueRelationships
+
+            },
 
         rawRelationships:
             relationships
@@ -382,11 +456,12 @@ function createComparison(
             country.continent,
 
         tooltip:
-            continentMatch
+            {
 
-                ? `Beide Länder liegen in ${targetCountry.continent}.`
+                match:
+                    continentMatch
 
-                : "Das geratene Land liegt auf einem anderen Kontinent."
+            }
 
     };
 
@@ -418,11 +493,12 @@ function createComparison(
                 : "Keine Übereinstimmung",
 
         tooltip:
-            colorComparison.match
+            {
 
-                ? `Gemeinsame Farben: ${colorComparison.sharedColors.join(", ")}`
+                colors:
+                    colorComparison.sharedColors
 
-                : "Keine gemeinsame Farbe",
+            },
 
         sharedColors:
             colorComparison.sharedColors

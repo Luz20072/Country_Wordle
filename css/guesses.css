@@ -42,6 +42,7 @@
     font-size: 18px;
 }
 
+
 /* ==========================================
    GUESS-FLAGGE
    ========================================== */
@@ -124,7 +125,12 @@
 
     box-shadow:
         0 5px 12px
-        rgba(0, 0, 0, 0.08);
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 }
 
 
@@ -214,7 +220,12 @@
 
     box-shadow:
         0 5px 15px
-        rgba(0, 0, 0, 0.25);
+        rgba(
+            0,
+            0,
+            0,
+            0.25
+        );
 }
 
 
@@ -227,6 +238,221 @@
     opacity: 1;
 
     visibility: visible;
+}
+
+
+/* ==========================================
+   TOOLTIP-INHALT
+   ========================================== */
+
+.custom-tooltip strong {
+    display:
+        block;
+
+    margin-bottom:
+        5px;
+}
+
+
+.custom-tooltip > span {
+    display:
+        block;
+}
+
+
+/* ==========================================
+   FLAGGENFARBEN
+   ========================================== */
+
+.color-tooltip-item {
+    display:
+        flex !important;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    margin-top:
+        3px;
+}
+
+
+.color-tooltip-dot {
+    width:
+        11px;
+
+    height:
+        11px;
+
+    flex-shrink:
+        0;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.7
+        );
+
+    border-radius:
+        50%;
+
+    background:
+        #888;
+}
+
+
+/* ==========================================
+   FARBEN
+   ========================================== */
+
+.color-tooltip-dot[data-color="rot"] {
+    background:
+        #d62828;
+}
+
+
+.color-tooltip-dot[data-color="blau"] {
+    background:
+        #2874c7;
+}
+
+
+.color-tooltip-dot[data-color="grün"] {
+    background:
+        #3c9a45;
+}
+
+
+.color-tooltip-dot[data-color="gelb"] {
+    background:
+        #f2c94c;
+}
+
+
+.color-tooltip-dot[data-color="weiß"] {
+    background:
+        #ffffff;
+
+    border-color:
+        #aaa;
+}
+
+
+.color-tooltip-dot[data-color="schwarz"] {
+    background:
+        #111;
+}
+
+
+.color-tooltip-dot[data-color="orange"] {
+    background:
+        #f28c28;
+}
+
+
+.color-tooltip-dot[data-color="braun"] {
+    background:
+        #8b5a2b;
+}
+
+
+.color-tooltip-dot[data-color="pink"] {
+    background:
+        #e86aa5;
+}
+
+
+.color-tooltip-dot[data-color="violett"] {
+    background:
+        #8e5ac7;
+}
+
+
+.color-tooltip-dot[data-color="lila"] {
+    background:
+        #8e5ac7;
+}
+
+
+.color-tooltip-dot[data-color="türkis"] {
+    background:
+        #2bb8b0;
+}
+
+
+.color-tooltip-dot[data-color="gold"] {
+    background:
+        #d4af37;
+}
+
+
+/* ==========================================
+   BEZIEHUNGEN
+   ========================================== */
+
+.relationship-tooltip-item {
+    display:
+        flex !important;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    margin-top:
+        4px;
+
+    line-height:
+        1.4;
+}
+
+
+.relationship-tooltip-symbol {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        17px;
+
+    flex-shrink:
+        0;
+
+    font-size:
+        14px;
+
+    font-weight:
+        bold;
+
+    color:
+        #ffffff;
+}
+
+
+/* ==========================================
+   KRIEGS-TOOLTIP
+   ========================================== */
+
+.custom-tooltip strong:not(:first-child) {
+    margin-top:
+        8px;
+}
+
+
+.custom-tooltip strong + span {
+    margin-top:
+        0;
 }
 
 

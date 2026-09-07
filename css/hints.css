@@ -329,6 +329,46 @@
 
 
 /* ==========================================
+   TOOLTIP – PFEIL
+   ========================================== */
+
+.hint-tooltip::after {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    bottom:
+        -6px;
+
+    width:
+        10px;
+
+    height:
+        10px;
+
+    background:
+        #222;
+
+    border-right:
+        1px solid
+        #ccc;
+
+    border-bottom:
+        1px solid
+        #ccc;
+
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+}
+
+
+/* ==========================================
    TOOLTIP – SICHTBAR
    ========================================== */
 
@@ -367,10 +407,13 @@
         block;
 
     margin-bottom:
-        5px;
+        6px;
 
     font-size:
         14px;
+
+    font-weight:
+        bold;
 
     color:
         #ffffff;
@@ -388,25 +431,43 @@
         block;
 
     margin-bottom:
-        3px;
+        4px;
 
     font-size:
         12px;
+
+    font-weight:
+        bold;
+
+    color:
+        #ffffff;
 }
 
 
-.war-tooltip-group ul {
-    margin:
-        3px 0 0 17px;
+.war-tooltip-countries {
+    display:
+        grid;
 
-    padding:
-        0;
+    grid-template-columns:
+        1fr;
+
+    gap:
+        2px;
 }
 
 
-.war-tooltip-group li {
-    margin:
-        2px 0;
+.war-tooltip-countries span {
+    display:
+        block;
+
+    font-size:
+        12px;
+
+    font-weight:
+        normal;
+
+    line-height:
+        1.4;
 
     color:
         #ffffff;
@@ -589,51 +650,69 @@
 
     .hint-tooltip {
         position:
-            fixed;
+            absolute;
 
         left:
-            50%;
-
-        top:
-            50%;
-
-        bottom:
-            auto;
-
-        width:
-            min(
-                86vw,
-                340px
-            );
-
-        min-width:
             0;
 
-        max-width:
-            86vw;
+        top:
+            auto;
 
-        padding:
-            14px;
-
-        transform:
-            translate(
-                -50%,
-                calc(
-                    -50% + 5px
-                )
+        bottom:
+            calc(
+                100% + 6px
             );
 
+        width:
+            max-content;
+
+        min-width:
+            150px;
+
+        max-width:
+            min(
+                260px,
+                72vw
+            );
+
+        padding:
+            9px 11px;
+
         font-size:
-            13px;
+            12px;
+
+        line-height:
+            1.35;
+
+        transform:
+            translateY(4px);
 
         box-shadow:
-            0 6px 20px
+            0 4px 12px
             rgba(
                 0,
                 0,
                 0,
-                0.25
+                0.2
             );
+    }
+
+
+    .hint-tooltip::after {
+        left:
+            14px;
+
+        bottom:
+            -6px;
+
+        width:
+            9px;
+
+        height:
+            9px;
+
+        transform:
+            rotate(45deg);
     }
 
 
@@ -646,10 +725,37 @@
     .hint-tooltip-item
     .hint-tooltip-visible {
         transform:
-            translate(
-                -50%,
-                -50%
-            );
+            translateY(0);
+    }
+
+
+    .hint-tooltip > strong {
+        margin-bottom:
+            4px;
+
+        font-size:
+            12px;
+    }
+
+
+    .war-tooltip-group {
+        margin-top:
+            6px;
+    }
+
+
+    .war-tooltip-group strong {
+        margin-bottom:
+            2px;
+
+        font-size:
+            11px;
+    }
+
+
+    .war-tooltip-group li {
+        margin:
+            1px 0;
     }
 
 }
@@ -662,11 +768,38 @@
 @media (max-width: 380px) {
 
     .hint-tooltip {
-        width:
-            88vw;
+        min-width:
+            140px;
 
         max-width:
-            88vw;
+            76vw;
+
+        padding:
+            8px 10px;
+
+        font-size:
+            11px;
+    }
+
+
+    .hint-tooltip::after {
+        left:
+            13px;
+
+        bottom:
+            -5px;
+
+        width:
+            8px;
+
+        height:
+            8px;
+    }
+
+
+    .hint-tooltip > strong {
+        font-size:
+            11px;
     }
 
 }
