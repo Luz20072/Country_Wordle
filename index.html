@@ -73,7 +73,7 @@
 
 
             <!-- ==========================================
-                 INDIzien
+                 INDIZIEN
                  ========================================== -->
 
             <div class="hint-selection">
@@ -136,7 +136,147 @@
 
         </section>
 
+
+        <!-- ==========================================
+             STATISTIK
+             ========================================== -->
+
+        <section class="statistics-container">
+
+            <h2>
+                Meine Statistik
+            </h2>
+
+
+            <div class="statistics-grid">
+
+                <div class="statistic">
+
+                    <span
+                        class="statistic-value"
+                        id="stat-games"
+                    >
+                        0
+                    </span>
+
+                    <span class="statistic-label">
+                        Gespielte Spiele
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span
+                        class="statistic-value"
+                        id="stat-average"
+                    >
+                        -
+                    </span>
+
+                    <span class="statistic-label">
+                        Ø Versuche
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span
+                        class="statistic-value"
+                        id="stat-best"
+                    >
+                        -
+                    </span>
+
+                    <span class="statistic-label">
+                        Wenigste Versuche
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span
+                        class="statistic-value"
+                        id="stat-worst"
+                    >
+                        -
+                    </span>
+
+                    <span class="statistic-label">
+                        Meiste Versuche
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="statistics-continents">
+
+                <div class="statistic">
+
+                    <span class="statistic-label">
+                        Meistgespielter Kontinent
+                    </span>
+
+                    <span
+                        class="statistic-value"
+                        id="stat-most-continent"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span class="statistic-label">
+                        Erfolgreichster Kontinent
+                    </span>
+
+                    <span
+                        class="statistic-value"
+                        id="stat-best-continent"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span class="statistic-label">
+                        Schwierigster Kontinent
+                    </span>
+
+                    <span
+                        class="statistic-value"
+                        id="stat-worst-continent"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
     </main>
+
+
+    <!-- ==========================================
+         STATISTIK
+         ========================================== -->
+
+    <script src="js/statistics.js"></script>
 
 
     <script>
@@ -318,7 +458,7 @@
 
 
                 // ==========================================
-                // INDIzien-EINSTELLUNG SPEICHERN
+                // INDIZIEN-EINSTELLUNG SPEICHERN
                 // ==========================================
 
                 localStorage.setItem(
@@ -336,6 +476,13 @@
 
             }
         );
+
+
+        // ==========================================
+        // STATISTIK ANZEIGEN
+        // ==========================================
+
+        displayStatistics();
 
     </script>
 

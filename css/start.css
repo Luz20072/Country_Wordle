@@ -507,3 +507,187 @@
     box-shadow:
         none;
 }
+
+/* ==========================================
+   STATISTIK
+   ========================================== */
+
+.statistics-container {
+    margin-top:
+        25px;
+
+    padding:
+        30px;
+
+    border-radius:
+        14px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.97
+        );
+
+    box-shadow:
+        0 15px 40px
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+    animation:
+        slideUp 0.5s ease;
+}
+
+
+/* ==========================================
+   STATISTIK-ÜBERSCHRIFT
+   ========================================== */
+
+.statistics-container h2 {
+    margin:
+        0 0 22px;
+
+    text-align:
+        center;
+
+    font-size:
+        23px;
+}
+
+
+/* ==========================================
+   ALLGEMEINE STATISTIK
+   ========================================== */
+
+.statistics-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap:
+        12px;
+}
+
+
+/* ==========================================
+   KONTINENT-STATISTIK
+   ========================================== */
+
+.statistics-continents {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap:
+        12px;
+
+    margin-top:
+        12px;
+}
+
+
+/* ==========================================
+   STATISTIK-KARTEN
+   ========================================== */
+
+.statistic {
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        75px;
+
+    padding:
+        15px;
+
+    border:
+        1px solid
+        #ddd;
+
+    border-radius:
+        10px;
+
+    background:
+        #fafafa;
+
+    text-align:
+        center;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.statistic:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 5px 15px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+}
+
+
+/* ==========================================
+   STATISTIK-WERT
+   ========================================== */
+
+.statistic-value {
+    font-size:
+        24px;
+
+    font-weight:
+        bold;
+
+    color:
+        #222;
+}
+
+
+/* ==========================================
+   STATISTIK-BESCHREIBUNG
+   ========================================== */
+
+.statistic-label {
+    margin-top:
+        6px;
+
+    color:
+        #666;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.3;
+}

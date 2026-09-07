@@ -962,7 +962,7 @@ async function makeGuess() {
         -1;
 
 
-    // ======================================
+        // ======================================
     // RICHTIG GERATEN
     // ======================================
 
@@ -975,6 +975,16 @@ async function makeGuess() {
             country,
             null,
             true
+        );
+
+
+        // ==================================
+        // STATISTIK SPEICHERN
+        // ==================================
+
+        recordGame(
+            targetCountry.continent,
+            guessedCountries.length
         );
 
 
@@ -1016,9 +1026,9 @@ async function makeGuess() {
         /*
          * Nach dem Sieg:
          *
-         * Neues Spiel → sichtbar
-         * Zur Startseite → sichtbar
-         * Ergebnis anzeigen → zunächst versteckt
+         * Neues Spiel       → sichtbar
+         * Zur Startseite    → sichtbar
+         * Ergebnis anzeigen → zunächst unsichtbar
          */
 
         updateGameButtons();
