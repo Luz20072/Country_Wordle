@@ -32,9 +32,30 @@
 
         <section class="continent-selection">
 
-            <h2>
-                Kontinente
-            </h2>
+            <!-- ==========================================
+                 KONTINENTE
+                 ========================================== -->
+
+            <div class="continent-header">
+
+                <h2>
+                    Kontinente
+                </h2>
+
+
+                <button
+                    class="info-button"
+                    id="info-button"
+                    type="button"
+                    aria-label="Spielregeln und Informationen"
+                >
+                    ?
+                    <span class="info-tooltip">
+                        Spielregeln & Informationen
+                    </span>
+                </button>
+
+            </div>
 
 
             <div class="continent-options">
@@ -269,6 +290,211 @@
 
         </section>
 
+
+        <!-- ==========================================
+             INFO-POPUP
+             ========================================== -->
+
+        <div
+            class="info-overlay"
+            id="info-overlay"
+        >
+
+            <div
+                class="info-popup"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="info-title"
+            >
+
+                <button
+                    class="info-close"
+                    id="info-close"
+                    type="button"
+                    aria-label="Informationen schließen"
+                >
+                    ×
+                </button>
+
+
+                <h2 id="info-title">
+                    Spielregeln & Informationen
+                </h2>
+
+
+                <!-- ==========================================
+                     TABS
+                     ========================================== -->
+
+                <div class="info-tabs">
+
+                    <button
+                        class="info-tab active"
+                        type="button"
+                        data-tab="rules"
+                    >
+                        Spielregeln
+                    </button>
+
+
+                    <button
+                        class="info-tab"
+                        type="button"
+                        data-tab="information"
+                    >
+                        Informationen
+                    </button>
+
+                </div>
+
+
+                <!-- ==========================================
+                     TAB: SPIELREGELN
+                     ========================================== -->
+
+                <div
+                    class="info-tab-content active"
+                    id="tab-rules"
+                >
+
+                    <h3>
+                        Ziel des Spiels
+                    </h3>
+
+                    <p>
+                        Finde das gesuchte Land mit möglichst
+                        wenigen Versuchen.
+                    </p>
+
+
+                    <h3>
+                        So funktioniert es
+                    </h3>
+
+                    <p>
+                        Wähle zunächst einen oder mehrere Kontinente
+                        aus und starte anschließend das Spiel.
+                        Gib einen Ländernamen ein und bestätige
+                        deinen Tipp.
+                    </p>
+
+
+                    <h3>
+                        Vergleiche
+                    </h3>
+
+                    <p>
+                        Nach jedem Versuch werden verschiedene
+                        Eigenschaften deines geratenen Landes mit
+                        denen des gesuchten Landes verglichen.
+                        So kannst du das gesuchte Land Schritt für
+                        Schritt eingrenzen.
+                    </p>
+
+
+                    <h3>
+                        Indizien
+                    </h3>
+
+                    <p>
+                        Die Indizien fassen bereits angezeigte
+                        Informationen übersichtlich zusammen.
+                        Sie liefern keine zusätzlichen Informationen,
+                        sondern helfen dir dabei, die vorhandenen
+                        Hinweise schneller zu erfassen.
+                    </p>
+
+
+                    <h3>
+                        Spielende
+                    </h3>
+
+                    <p>
+                        Das Spiel endet, sobald du das gesuchte
+                        Land richtig erraten hast.
+                    </p>
+
+
+                    <h3>
+                        Deine Statistik
+                    </h3>
+
+                    <p>
+                        Deine Spielergebnisse werden lokal in deinem
+                        Browser gespeichert. Dabei werden unter anderem
+                        deine gespielten Spiele und deine benötigte
+                        Versuchsanzahl erfasst.
+                    </p>
+
+                </div>
+
+
+                <!-- ==========================================
+                     TAB: INFORMATIONEN
+                     ========================================== -->
+
+                <div
+                    class="info-tab-content"
+                    id="tab-information"
+                >
+
+                    <h3>
+                        UN-Bereiche
+                    </h3>
+
+                    <p>
+                        Die Länder werden nach der UN-M49-Systematik
+                        geografischen Regionen und Unterregionen
+                        zugeordnet. Diese Einteilung wird unter anderem
+                        für die Kontinentauswahl und bestimmte
+                        Ländervergleiche verwendet.
+                    </p>
+
+
+                    <h3>
+                        Flaggen
+                    </h3>
+
+                    <p>
+                        Die Flagge eines Landes kann als zusätzlicher
+                        Vergleich angezeigt werden. Dabei kannst du
+                        anhand verschiedener Merkmale erkennen, ob die
+                        Flagge deines Tipps mit der des gesuchten Landes
+                        übereinstimmt oder Gemeinsamkeiten aufweist.
+                    </p>
+
+
+                    <h3>
+                        Kriege
+                    </h3>
+
+                    <p>
+                        Historische Kriege können als Beziehung zwischen
+                        Ländern berücksichtigt werden. Dadurch können
+                        historische Verbindungen zwischen deinem Tipp
+                        und dem gesuchten Land als Hinweis dienen.
+                    </p>
+
+
+                    <h3>
+                        Länderbeziehungen
+                    </h3>
+
+                    <p>
+                        Zwischen Ländern können verschiedene
+                        historische, geografische und kulturelle
+                        Beziehungen bestehen. Dazu gehören beispielsweise
+                        gemeinsame Grenzen, eine gemeinsame Region,
+                        ein gemeinsames Meer oder historische
+                        Verbindungen.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </main>
 
 
@@ -318,6 +544,40 @@
         const enableHints =
             document.getElementById(
                 "enableHints"
+            );
+
+
+        const infoButton =
+            document.getElementById(
+                "info-button"
+            );
+
+
+        const infoOverlay =
+            document.getElementById(
+                "info-overlay"
+            );
+
+
+        const infoClose =
+            document.getElementById(
+                "info-close"
+            );
+
+
+        // ==========================================
+        // INFO-TABS
+        // ==========================================
+
+        const infoTabs =
+            document.querySelectorAll(
+                ".info-tab"
+            );
+
+
+        const infoTabContents =
+            document.querySelectorAll(
+                ".info-tab-content"
             );
 
 
@@ -458,7 +718,7 @@
 
 
                 // ==========================================
-                // INDIZIEN-EINSTELLUNG SPEICHERN
+                // INDIzien-EINSTELLUNG SPEICHERN
                 // ==========================================
 
                 localStorage.setItem(
@@ -483,6 +743,134 @@
         // ==========================================
 
         displayStatistics();
+
+
+        // ==========================================
+        // INFO-POPUP ÖFFNEN
+        // ==========================================
+
+        infoButton.addEventListener(
+            "click",
+            () => {
+
+                infoOverlay.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // INFO-POPUP SCHLIESSEN
+        // ==========================================
+
+        infoClose.addEventListener(
+            "click",
+            () => {
+
+                infoOverlay.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // POPUP DURCH HINTERGRUND SCHLIESSEN
+        // ==========================================
+
+        infoOverlay.addEventListener(
+            "click",
+            (event) => {
+
+                if (
+                    event.target ===
+                    infoOverlay
+                ) {
+
+                    infoOverlay.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        // ==========================================
+        // INFO-TABS
+        // ==========================================
+
+        infoTabs.forEach(
+            tab => {
+
+                tab.addEventListener(
+                    "click",
+                    () => {
+
+                        const targetTab =
+                            tab.dataset.tab;
+
+
+                        // ==========================================
+                        // AKTIVEN TAB ÄNDERN
+                        // ==========================================
+
+                        infoTabs.forEach(
+                            currentTab => {
+
+                                currentTab.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        tab.classList.add(
+                            "active"
+                        );
+
+
+                        // ==========================================
+                        // TAB-INHALT ÄNDERN
+                        // ==========================================
+
+                        infoTabContents.forEach(
+                            content => {
+
+                                content.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        const targetContent =
+                            document.getElementById(
+                                `tab-${targetTab}`
+                            );
+
+
+                        if (
+                            targetContent
+                        ) {
+
+                            targetContent.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
     </script>
 

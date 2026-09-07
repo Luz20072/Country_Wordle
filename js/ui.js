@@ -24,6 +24,44 @@ function addGuess(
     );
 
 
+        // ======================================
+    // GUESS-HEADER
+    // ======================================
+
+    const guessHeader =
+        document.createElement(
+            "div"
+        );
+
+
+    guessHeader.classList.add(
+        "guess-header"
+    );
+
+
+    // ======================================
+    // FLAGGE
+    // ======================================
+
+    const countryFlag =
+        document.createElement(
+            "img"
+        );
+
+
+    countryFlag.classList.add(
+        "guess-flag"
+    );
+
+
+    countryFlag.src =
+        `https://flagcdn.com/w40/${country.iso_code.toLowerCase()}.png`;
+
+
+    countryFlag.alt =
+        `Flagge von ${country.name}`;
+
+
     // ======================================
     // LANDNAME
     // ======================================
@@ -38,10 +76,19 @@ function addGuess(
         country.name;
 
 
-    element.appendChild(
+    guessHeader.appendChild(
+        countryFlag
+    );
+
+
+    guessHeader.appendChild(
         countryName
     );
 
+
+    element.appendChild(
+        guessHeader
+    );
 
     // ======================================
     // RICHTIG GERATEN
