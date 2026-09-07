@@ -528,7 +528,7 @@ function updateSuggestionHighlight() {
 
         const selected =
             suggestions[
-                selectedSuggestionIndex
+            selectedSuggestionIndex
             ];
 
 
@@ -666,6 +666,36 @@ countryInput.addEventListener(
 
 
             return;
+
+        }
+
+
+        // ==================================
+        // TAB
+        // ==================================
+
+        if (
+            event.key === "Tab"
+        ) {
+
+            if (
+                currentSuggestions.length > 0
+            ) {
+
+                event.preventDefault();
+
+                const index =
+                    selectedSuggestionIndex >= 0
+                        ? selectedSuggestionIndex
+                        : 0;
+
+                selectSuggestion(
+                    index
+                );
+
+                return;
+
+            }
 
         }
 
@@ -943,9 +973,9 @@ async function makeGuess() {
 
 
     const input =
-    countryInput.value
-        .trim()
-        .toLowerCase();
+        countryInput.value
+            .trim()
+            .toLowerCase();
 
     if (
         input === ""
@@ -1647,16 +1677,16 @@ function initializeVictoryMap(
             longitude
         ]
     )
-    .addTo(
-        victoryMapInstance
-    )
-    .bindTooltip(
-        country.name,
-        {
-            direction:
-                "top"
-        }
-    );
+        .addTo(
+            victoryMapInstance
+        )
+        .bindTooltip(
+            country.name,
+            {
+                direction:
+                    "top"
+            }
+        );
 
 
     /*
@@ -1840,19 +1870,19 @@ function openVictoryMap() {
                 victoryMapLongitude
             ]
         )
-        .addTo(
-            victoryMapLargeInstance
-        )
-        .bindTooltip(
-            victoryCountry.name,
-            {
-                permanent:
-                    true,
+            .addTo(
+                victoryMapLargeInstance
+            )
+            .bindTooltip(
+                victoryCountry.name,
+                {
+                    permanent:
+                        true,
 
-                direction:
-                    "top"
-            }
-        );
+                    direction:
+                        "top"
+                }
+            );
 
     }
 
@@ -2039,7 +2069,7 @@ async function showVictoryPopup(
     addVictoryData(
         "Hauptstadt",
         country.capital ||
-            "Keine Angabe",
+        "Keine Angabe",
         "geography"
     );
 
@@ -2051,7 +2081,7 @@ async function showVictoryPopup(
     addVictoryData(
         "Kontinent",
         country.continent ||
-            "Keine Angabe",
+        "Keine Angabe",
         "geography"
     );
 
@@ -2063,7 +2093,7 @@ async function showVictoryPopup(
     addVictoryData(
         "Region",
         country.region ||
-            "Keine Angabe",
+        "Keine Angabe",
         "geography"
     );
 
@@ -2115,7 +2145,7 @@ async function showVictoryPopup(
     addVictoryData(
         "Währung",
         country.currency ||
-            "Keine Angabe",
+        "Keine Angabe",
         "state"
     );
 
@@ -2127,7 +2157,7 @@ async function showVictoryPopup(
     addVictoryData(
         "Regierungsform",
         country.government_type ||
-            "Keine Angabe",
+        "Keine Angabe",
         "state"
     );
 
