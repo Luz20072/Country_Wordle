@@ -214,11 +214,21 @@ async function getCountryColors(
 
     const result =
         await supabaseRequest(
-            `flag_colors?select=*&country_id=eq.${countryId}`
+            `countries?select=flag_colors&id=eq.${countryId}`
         );
 
 
-    return result || [];
+    if (
+        !result ||
+        result.length === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    return result[0].flag_colors || [];
 
 }
 
@@ -231,13 +241,22 @@ function getColorArray(
     colors
 ) {
 
+    if (
+        !Array.isArray(colors)
+    ) {
+
+        return [];
+
+    }
+
+
     return [
         ...new Set(
             colors
                 .map(
-                    entry =>
+                    color =>
                         String(
-                            entry.color
+                            color
                         )
                             .trim()
                             .toLowerCase()
@@ -382,7 +401,6 @@ async function getCountryRelationships(
     );
 
 
-
     // ======================================
     // FRÜHERE UNION
     // ======================================
@@ -411,8 +429,6 @@ async function getCountryRelationships(
         });
 
     }
-
-
 
 
     // ======================================
@@ -470,32 +486,6 @@ async function getCountryRelationships(
             type: "cultural",
             description:
                 commonLanguages.join(", ")
-        });
-
-    }
-
-
-    // ======================================
-    // BESONDERE BEZIEHUNGEN
-    // ======================================
-
-    const specialRelationships =
-        await supabaseRequest(
-            `special_relationships?select=*&or=` +
-            `(and(country_a.eq.${countryA.id},country_b.eq.${countryB.id}),` +
-            `and(country_a.eq.${countryB.id},country_b.eq.${countryA.id}))`
-        );
-
-
-    for (
-        const relationship
-        of specialRelationships || []
-    ) {
-
-        relationships.push({
-            type: "special",
-            description:
-                relationship.description
         });
 
     }

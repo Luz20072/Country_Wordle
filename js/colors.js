@@ -11,11 +11,21 @@ async function getCountryColors(countryId) {
 
     const result =
         await supabaseRequest(
-            `flag_colors?select=*&country_id=eq.${countryId}`
+            `countries?select=flag_colors&id=eq.${countryId}`
         );
 
 
-    return result || [];
+    if (
+        !Array.isArray(result) ||
+        result.length === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    return result[0].flag_colors || [];
 
 }
 
@@ -39,9 +49,9 @@ function getColorArray(colors) {
         ...new Set(
             colors
                 .map(
-                    entry =>
+                    color =>
                         String(
-                            entry.color
+                            color
                         )
                         .trim()
                         .toLowerCase()
