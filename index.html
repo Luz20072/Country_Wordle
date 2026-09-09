@@ -2,20 +2,27 @@
 <html lang="de">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Country Wordle – Start</title>
+    <title>
+        Country Wordle – Start
+    </title>
 
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/start.css">
     <link rel="stylesheet" href="css/hints.css">
     <link rel="stylesheet" href="css/responsive.css">
+
 </head>
+
 
 <body>
 
     <main class="start-container">
+
 
         <header>
 
@@ -32,6 +39,7 @@
 
         <section class="continent-selection">
 
+
             <!-- ==========================================
                  KONTINENTE
                  ========================================== -->
@@ -43,16 +51,14 @@
                 </h2>
 
 
-                <button
-                    class="info-button"
-                    id="info-button"
-                    type="button"
-                    aria-label="Spielregeln und Informationen"
-                >
+                <button class="info-button" id="info-button" type="button" aria-label="Spielregeln und Informationen">
+
                     ?
+
                     <span class="info-tooltip">
                         Spielregeln & Informationen
                     </span>
+
                 </button>
 
             </div>
@@ -62,31 +68,42 @@
 
                 <label>
                     <input type="checkbox" value="Afrika">
+
                     Afrika
                 </label>
 
+
                 <label>
                     <input type="checkbox" value="Asien">
+
                     Asien
                 </label>
 
+
                 <label>
                     <input type="checkbox" value="Europa">
+
                     Europa
                 </label>
 
+
                 <label>
                     <input type="checkbox" value="Nordamerika">
+
                     Nordamerika
                 </label>
 
+
                 <label>
                     <input type="checkbox" value="Südamerika">
+
                     Südamerika
                 </label>
 
+
                 <label>
                     <input type="checkbox" value="Ozeanien">
+
                     Ozeanien
                 </label>
 
@@ -116,11 +133,7 @@
 
                     <label class="toggle">
 
-                        <input
-                            type="checkbox"
-                            id="enableHints"
-                            checked
-                        >
+                        <input type="checkbox" id="enableHints" checked>
 
                         <span class="toggle-slider"></span>
 
@@ -140,6 +153,7 @@
                 <button id="selectAllButton">
                     Alle
                 </button>
+
 
                 <button id="selectNoneButton">
                     Keine
@@ -173,10 +187,7 @@
 
                 <div class="statistic">
 
-                    <span
-                        class="statistic-value"
-                        id="stat-games"
-                    >
+                    <span class="statistic-value" id="stat-games">
                         0
                     </span>
 
@@ -189,10 +200,7 @@
 
                 <div class="statistic">
 
-                    <span
-                        class="statistic-value"
-                        id="stat-average"
-                    >
+                    <span class="statistic-value" id="stat-average">
                         -
                     </span>
 
@@ -205,10 +213,7 @@
 
                 <div class="statistic">
 
-                    <span
-                        class="statistic-value"
-                        id="stat-best"
-                    >
+                    <span class="statistic-value" id="stat-best">
                         -
                     </span>
 
@@ -221,10 +226,7 @@
 
                 <div class="statistic">
 
-                    <span
-                        class="statistic-value"
-                        id="stat-worst"
-                    >
+                    <span class="statistic-value" id="stat-worst">
                         -
                     </span>
 
@@ -239,80 +241,118 @@
 
             <div class="statistics-continents">
 
-                <div class="statistic">
+
+                <button class="statistic continent-statistic-card" type="button" data-continent="Afrika">
 
                     <span class="statistic-label">
                         Meistgespielter Kontinent
                     </span>
 
-                    <span
-                        class="statistic-value"
-                        id="stat-most-continent"
-                    >
+                    <span class="statistic-value" id="stat-most-continent">
                         -
                     </span>
 
-                </div>
+                </button>
 
 
-                <div class="statistic">
+                <button class="statistic continent-statistic-card" type="button" data-continent="Asien">
 
                     <span class="statistic-label">
                         Erfolgreichster Kontinent
                     </span>
 
-                    <span
-                        class="statistic-value"
-                        id="stat-best-continent"
-                    >
+                    <span class="statistic-value" id="stat-best-continent">
                         -
                     </span>
 
-                </div>
+                </button>
 
 
-                <div class="statistic">
+                <button class="statistic continent-statistic-card" type="button" data-continent="Europa">
 
                     <span class="statistic-label">
                         Schwierigster Kontinent
                     </span>
 
-                    <span
-                        class="statistic-value"
-                        id="stat-worst-continent"
-                    >
+                    <span class="statistic-value" id="stat-worst-continent">
                         -
                     </span>
 
-                </div>
+                </button>
 
             </div>
 
+
+            <button class="statistics-details-button" id="statistics-details-button" type="button">
+                Mehr Details
+            </button>
+
         </section>
+
+
+        <!-- ==========================================
+             STATISTIK-DETAILS-POPUP
+             ========================================== -->
+
+        <div class="statistics-overlay" id="statistics-overlay">
+
+            <div class="statistics-popup" role="dialog" aria-modal="true" aria-labelledby="statistics-title">
+
+                <button class="statistics-close" id="statistics-close" type="button" aria-label="Statistik schließen">
+                    ×
+                </button>
+
+
+                <h2 id="statistics-title">
+                    Statistik im Detail
+                </h2>
+
+
+                <!-- ==========================================
+                     VERSUCHSVERTEILUNG
+                     ========================================== -->
+
+                <section class="statistics-detail-section">
+
+                    <h3 id="guess-distribution-title">
+                        Versuchsverteilung – Gesamt
+                    </h3>
+
+
+                    <div class="guess-distribution" id="guess-distribution"></div>
+
+                </section>
+
+
+                <!-- ==========================================
+                     KONTINENT-DETAILS
+                     ========================================== -->
+
+                <section class="statistics-detail-section">
+
+                    <h3>
+                        Kontinente
+                    </h3>
+
+
+                    <div class="continent-statistics-detail" id="continent-statistics-detail"></div>
+
+                </section>
+
+            </div>
+
+        </div>
 
 
         <!-- ==========================================
              INFO-POPUP
              ========================================== -->
 
-        <div
-            class="info-overlay"
-            id="info-overlay"
-        >
+        <div class="info-overlay" id="info-overlay">
 
-            <div
-                class="info-popup"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="info-title"
-            >
+            <div class="info-popup" role="dialog" aria-modal="true" aria-labelledby="info-title">
 
-                <button
-                    class="info-close"
-                    id="info-close"
-                    type="button"
-                    aria-label="Informationen schließen"
-                >
+                <button class="info-close" id="info-close" type="button" aria-label="Informationen schließen">
                     ×
                 </button>
 
@@ -328,20 +368,12 @@
 
                 <div class="info-tabs">
 
-                    <button
-                        class="info-tab active"
-                        type="button"
-                        data-tab="rules"
-                    >
+                    <button class="info-tab active" type="button" data-tab="rules">
                         Spielregeln
                     </button>
 
 
-                    <button
-                        class="info-tab"
-                        type="button"
-                        data-tab="information"
-                    >
+                    <button class="info-tab" type="button" data-tab="information">
                         Informationen
                     </button>
 
@@ -352,10 +384,7 @@
                      TAB: SPIELREGELN
                      ========================================== -->
 
-                <div
-                    class="info-tab-content active"
-                    id="tab-rules"
-                >
+                <div class="info-tab-content active" id="tab-rules">
 
                     <h3>
                         Ziel des Spiels
@@ -433,11 +462,7 @@
                      TAB: INFORMATIONEN
                      ========================================== -->
 
-                <div
-                    class="info-tab-content"
-                    id="tab-information"
-                >
-
+                <div class="info-tab-content" id="tab-information">
 
                     <h3>
                         Länderbeziehungen
@@ -453,7 +478,7 @@
                         Verbindungen berücksichtigt.
                     </p>
 
-                    
+
                     <h3>
                         UN-Bereiche
                     </h3>
@@ -599,6 +624,24 @@
             );
 
 
+        const statisticsDetailsButton =
+            document.getElementById(
+                "statistics-details-button"
+            );
+
+
+        const statisticsOverlay =
+            document.getElementById(
+                "statistics-overlay"
+            );
+
+
+        const statisticsClose =
+            document.getElementById(
+                "statistics-close"
+            );
+
+
         // ==========================================
         // INFO-TABS
         // ==========================================
@@ -649,7 +692,9 @@
             );
 
 
-        if (savedHints !== null) {
+        if (
+            savedHints !== null
+        ) {
 
             enableHints.checked =
                 savedHints === "true";
@@ -668,12 +713,15 @@
                 checkboxes.forEach(
                     checkbox => {
 
-                        checkbox.checked = true;
+                        checkbox.checked =
+                            true;
 
                     }
                 );
 
-                selectionMessage.textContent = "";
+
+                selectionMessage.textContent =
+                    "";
 
             }
         );
@@ -690,12 +738,15 @@
                 checkboxes.forEach(
                     checkbox => {
 
-                        checkbox.checked = false;
+                        checkbox.checked =
+                            false;
 
                     }
                 );
 
-                selectionMessage.textContent = "";
+
+                selectionMessage.textContent =
+                    "";
 
             }
         );
@@ -713,14 +764,14 @@
                     Array.from(
                         checkboxes
                     )
-                    .filter(
-                        checkbox =>
-                            checkbox.checked
-                    )
-                    .map(
-                        checkbox =>
-                            checkbox.value
-                    );
+                        .filter(
+                            checkbox =>
+                                checkbox.checked
+                        )
+                        .map(
+                            checkbox =>
+                                checkbox.value
+                        );
 
 
                 // ==========================================
@@ -773,10 +824,61 @@
 
 
         // ==========================================
-        // STATISTIK ANZEIGEN
+        // STATISTIK-DETAILS ÖFFNEN
         // ==========================================
 
-        displayStatistics();
+        statisticsDetailsButton.addEventListener(
+            "click",
+            () => {
+
+                displayDetailedStatistics();
+
+                statisticsOverlay.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // STATISTIK-DETAILS SCHLIESSEN
+        // ==========================================
+
+        statisticsClose.addEventListener(
+            "click",
+            () => {
+
+                statisticsOverlay.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // STATISTIK-POPUP DURCH HINTERGRUND
+        // SCHLIESSEN
+        // ==========================================
+
+        statisticsOverlay.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    statisticsOverlay
+                ) {
+
+                    statisticsOverlay.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
 
 
         // ==========================================
@@ -812,12 +914,12 @@
 
 
         // ==========================================
-        // POPUP DURCH HINTERGRUND SCHLIESSEN
+        // INFO-POPUP DURCH HINTERGRUND SCHLIESSEN
         // ==========================================
 
         infoOverlay.addEventListener(
             "click",
-            (event) => {
+            event => {
 
                 if (
                     event.target ===
@@ -849,10 +951,6 @@
                             tab.dataset.tab;
 
 
-                        // ==========================================
-                        // AKTIVEN TAB ÄNDERN
-                        // ==========================================
-
                         infoTabs.forEach(
                             currentTab => {
 
@@ -868,10 +966,6 @@
                             "active"
                         );
 
-
-                        // ==========================================
-                        // TAB-INHALT ÄNDERN
-                        // ==========================================
 
                         infoTabContents.forEach(
                             content => {
@@ -899,6 +993,52 @@
                             );
 
                         }
+
+                    }
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // KONTINENT-STATISTIK KLICKBAR MACHEN
+        // ==========================================
+
+        const continentStatisticCards =
+            document.querySelectorAll(
+                ".continent-statistic-card"
+            );
+
+
+        continentStatisticCards.forEach(
+            card => {
+
+                card.addEventListener(
+                    "click",
+                    () => {
+
+                        const continent =
+                            card.dataset.continent;
+
+
+                        if (
+                            !continent
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        displayDetailedStatistics(
+                            continent
+                        );
+
+
+                        statisticsOverlay.classList.add(
+                            "active"
+                        );
 
                     }
                 );
