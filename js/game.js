@@ -324,12 +324,6 @@ async function loadCountries() {
                 `countries?select=id,name&order=name`
             );
 
-
-        console.log(
-            "Länder für Autocomplete:",
-            allCountries
-        );
-
     }
 
     catch (error) {
@@ -760,26 +754,6 @@ async function loadTargetCountry() {
             await getCountryWars(
                 targetCountry.id
             );
-
-
-        console.log(
-            "Zielland:",
-            targetCountry
-        );
-
-
-        console.log(
-            "Flaggenfarben:",
-            getColorArray(
-                targetColors
-            )
-        );
-
-
-        console.log(
-            "Kriege:",
-            targetWars
-        );
 
 
         message.textContent =

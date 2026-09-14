@@ -32,13 +32,6 @@ function compareColors(
                 )
         );
 
-
-    console.log(
-        "Gemeinsame Farben:",
-        sharedColors
-    );
-
-
     return {
 
         match:
@@ -178,15 +171,15 @@ function compareWars(
             `${allies.length + enemies.length} gemeinsamer${allies.length + enemies.length === 1 ? "" : "e"} Krieg${allies.length + enemies.length === 1 ? "" : "e"}`,
 
         tooltip:
-            {
+        {
 
-                allies:
-                    allies,
+            allies:
+                allies,
 
-                enemies:
-                    enemies
+            enemies:
+                enemies
 
-            },
+        },
 
         sharedWars:
             commonWars
@@ -247,7 +240,7 @@ function compareRelationships(
 
 
         switch (
-            relationship.type
+        relationship.type
         ) {
 
             case "border":
@@ -408,12 +401,12 @@ function compareRelationships(
             `${uniqueRelationships.length} Übereinstimmung${uniqueRelationships.length === 1 ? "" : "en"}`,
 
         tooltip:
-            {
+        {
 
-                relationships:
-                    uniqueRelationships
+            relationships:
+                uniqueRelationships
 
-            },
+        },
 
         rawRelationships:
             relationships
@@ -456,12 +449,12 @@ function createComparison(
             country.continent,
 
         tooltip:
-            {
+        {
 
-                match:
-                    continentMatch
+            match:
+                continentMatch
 
-            }
+        }
 
     };
 
@@ -493,12 +486,12 @@ function createComparison(
                 : "Keine Übereinstimmung",
 
         tooltip:
-            {
+        {
 
-                colors:
-                    colorComparison.sharedColors
+            colors:
+                colorComparison.sharedColors
 
-            },
+        },
 
         sharedColors:
             colorComparison.sharedColors
