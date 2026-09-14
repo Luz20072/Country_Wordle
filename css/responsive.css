@@ -1,10 +1,10 @@
 /* ==========================================
-   RESPONSIVE – INDIZIEN
-   ========================================== */
+RESPONSIVE – INDIZIEN
+========================================== */
 
 @media (max-width: 900px) {
 
-    .game-layout {
+    ``` .game-layout {
         grid-template-columns:
             1fr;
     }
@@ -15,18 +15,60 @@
             static;
     }
 
+    ```
 }
 
+/* ==========================================
+RESPONSIVE – TABLET
+========================================== */
+
+@media (max-width: 800px) {
+
+    ```
+    /* ==============================
+   STARTSEITE
+   ============================== */
+
+    .start-container {
+        width:
+            94%;
+    }
+
+
+    .statistics-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .statistics-continents {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    /* ==============================
+   SPIEL
+   ============================== */
+
+    .game-container {
+        width:
+            94%;
+    }
+
+    ```
+}
 
 /* ==========================================
-   RESPONSIVE – MOBILE
-   ========================================== */
+RESPONSIVE – MOBILE
+========================================== */
 
 @media (max-width: 600px) {
 
+    ```
     /* ==============================
-       SPIEL
-       ============================== */
+   SPIEL
+   ============================== */
 
     .game-container {
         width:
@@ -56,8 +98,8 @@
 
 
     /* ==============================
-       EINGABE
-       ============================== */
+   EINGABE
+   ============================== */
 
     .guess-container {
         flex-direction:
@@ -78,8 +120,8 @@
 
 
     /* ==============================
-       GUESSES
-       ============================== */
+   GUESSES
+   ============================== */
 
     .category-grid {
         grid-template-columns:
@@ -94,8 +136,8 @@
 
 
     /* ==============================
-       SPIELSTEUERUNG
-       ============================== */
+   SPIELSTEUERUNG
+   ============================== */
 
     .restart-container {
         gap:
@@ -119,8 +161,8 @@
 
 
     /* ==============================
-       SIEGMELDUNG
-       ============================== */
+   SIEGMELDUNG
+   ============================== */
 
     .correct-row {
         flex-direction:
@@ -153,8 +195,8 @@
 
 
     /* ==============================
-       STATUS
-       ============================== */
+   STATUS
+   ============================== */
 
     #message {
         margin:
@@ -163,8 +205,8 @@
 
 
     /* ==============================
-       STARTSEITE
-       ============================== */
+   STARTSEITE
+   ============================== */
 
     .start-container {
         width:
@@ -175,9 +217,18 @@
     }
 
 
+    .start-container header {
+        margin-bottom:
+            25px;
+    }
+
+
     .start-container header h1 {
         font-size:
             32px;
+
+        letter-spacing:
+            1px;
     }
 
 
@@ -191,6 +242,22 @@
     .statistics-container {
         padding:
             20px 15px;
+
+        border-radius:
+            12px;
+    }
+
+
+    .continent-header {
+        margin-bottom:
+            18px;
+    }
+
+
+    .continent-header h2,
+    .statistics-container h2 {
+        font-size:
+            21px;
     }
 
 
@@ -206,12 +273,15 @@
     .continent-options label {
         min-height:
             62px;
+
+        padding:
+            13px 15px;
     }
 
 
     /* ==============================
-       AUSWAHL-BUTTONS
-       ============================== */
+   AUSWAHL-BUTTONS
+   ============================== */
 
     .selection-buttons {
         flex-direction:
@@ -226,15 +296,12 @@
 
 
     /* ==============================
-       STATISTIK
-       ============================== */
+   STATISTIK
+   ============================== */
 
     .statistics-grid {
         grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
+            repeat(2, 1fr);
 
         gap:
             10px;
@@ -250,9 +317,67 @@
     }
 
 
+    .statistic {
+        min-height:
+            70px;
+
+        padding:
+            12px;
+    }
+
+
+    .statistic-value {
+        font-size:
+            22px;
+    }
+
+
+    .statistic-label {
+        font-size:
+            12px;
+    }
+
+
     /* ==============================
-       INFO-BEREICH
-       ============================== */
+   STATISTIK-POPUP
+   ============================== */
+
+    .statistics-popup {
+        width:
+            100%;
+
+        max-height:
+            90vh;
+
+        padding:
+            22px;
+    }
+
+
+    .statistics-popup h2 {
+        font-size:
+            21px;
+    }
+
+
+    .continent-statistics-detail {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .guess-distribution-row {
+        grid-template-columns:
+            65px 1fr 30px;
+
+        gap:
+            7px;
+    }
+
+
+    /* ==============================
+   INFO-BEREICH
+   ============================== */
 
     .info-button {
         width:
@@ -260,6 +385,12 @@
 
         height:
             34px;
+    }
+
+
+    .info-tooltip {
+        display:
+            none;
     }
 
 
@@ -272,6 +403,9 @@
 
         padding:
             22px;
+
+        border-radius:
+            12px;
     }
 
 
@@ -291,8 +425,8 @@
 
 
     /* ==============================
-       VICTORY MODAL
-       ============================== */
+   VICTORY MODAL
+   ============================== */
 
     .victory-modal {
         padding:
@@ -356,18 +490,19 @@
             100%;
     }
 
+    ```
 }
 
-
 /* ==========================================
-   RESPONSIVE – SEHR KLEINE DISPLAYS
-   ========================================== */
+RESPONSIVE – SEHR KLEINE DISPLAYS
+========================================== */
 
 @media (max-width: 380px) {
 
+    ```
     /* ==============================
-       ALLGEMEIN
-       ============================== */
+   ALLGEMEIN
+   ============================== */
 
     .game-container {
         width:
@@ -388,8 +523,18 @@
 
 
     /* ==============================
-       GUESSES
-       ============================== */
+   SPIEL
+   ============================== */
+
+    .game-container header h1 {
+        font-size:
+            27px;
+    }
+
+
+    /* ==============================
+   GUESSES
+   ============================== */
 
     .guess {
         padding:
@@ -437,8 +582,8 @@
 
 
     /* ==============================
-       STARTSEITE
-       ============================== */
+   STARTSEITE
+   ============================== */
 
     .start-container header h1 {
         font-size:
@@ -446,10 +591,35 @@
     }
 
 
+    .start-container header p {
+        font-size:
+            13px;
+    }
+
+
     .continent-selection,
     .statistics-container {
         padding:
             18px 12px;
+
+        border-radius:
+            10px;
+    }
+
+
+    .continent-header h2,
+    .statistics-container h2 {
+        font-size:
+            19px;
+    }
+
+
+    .continent-options label {
+        min-height:
+            58px;
+
+        padding:
+            12px;
     }
 
 
@@ -459,9 +629,56 @@
     }
 
 
+    .statistic {
+        min-height:
+            65px;
+
+        padding:
+            10px 6px;
+    }
+
+
+    .statistic-value {
+        font-size:
+            20px;
+    }
+
+
+    .statistic-label {
+        font-size:
+            11px;
+    }
+
+
     /* ==============================
-       INFO-BEREICH
-       ============================== */
+   STATISTIK-POPUP
+   ============================== */
+
+    .statistics-popup {
+        padding:
+            18px;
+    }
+
+
+    .guess-distribution-row {
+        grid-template-columns:
+            55px 1fr 25px;
+
+        gap:
+            5px;
+    }
+
+
+    .guess-distribution-label,
+    .guess-distribution-count {
+        font-size:
+            12px;
+    }
+
+
+    /* ==============================
+   INFO-BEREICH
+   ============================== */
 
     .info-popup {
         padding:
@@ -484,9 +701,21 @@
     }
 
 
+    .info-tab-content h3 {
+        font-size:
+            16px;
+    }
+
+
+    .info-tab-content p {
+        font-size:
+            13px;
+    }
+
+
     /* ==============================
-       VICTORY MODAL
-       ============================== */
+   VICTORY MODAL
+   ============================== */
 
     .victory-modal {
         padding:
@@ -516,5 +745,4 @@
         max-height:
             130px;
     }
-
 }

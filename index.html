@@ -68,42 +68,36 @@
 
                 <label>
                     <input type="checkbox" value="Afrika">
-
                     Afrika
                 </label>
 
 
                 <label>
                     <input type="checkbox" value="Asien">
-
                     Asien
                 </label>
 
 
                 <label>
                     <input type="checkbox" value="Europa">
-
                     Europa
                 </label>
 
 
                 <label>
                     <input type="checkbox" value="Nordamerika">
-
                     Nordamerika
                 </label>
 
 
                 <label>
                     <input type="checkbox" value="Südamerika">
-
                     Südamerika
                 </label>
 
 
                 <label>
                     <input type="checkbox" value="Ozeanien">
-
                     Ozeanien
                 </label>
 
@@ -193,6 +187,32 @@
 
                     <span class="statistic-label">
                         Gespielte Spiele
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span class="statistic-value" id="stat-wins">
+                        0
+                    </span>
+
+                    <span class="statistic-label">
+                        Siege
+                    </span>
+
+                </div>
+
+
+                <div class="statistic">
+
+                    <span class="statistic-value" id="stat-losses">
+                        0
+                    </span>
+
+                    <span class="statistic-label">
+                        Niederlagen
                     </span>
 
                 </div>
@@ -440,7 +460,8 @@
 
                     <p>
                         Das Spiel endet, sobald du das gesuchte
-                        Land richtig erraten hast.
+                        Land richtig erraten hast oder die maximale
+                        Anzahl von 20 Versuchen erreicht wurde.
                     </p>
 
 
@@ -451,8 +472,8 @@
                     <p>
                         Deine Spielergebnisse werden lokal in deinem
                         Browser gespeichert. Dabei werden unter anderem
-                        deine gespielten Spiele und deine benötigte
-                        Versuchsanzahl erfasst.
+                        deine gespielten Spiele, Siege, Niederlagen und
+                        deine benötigte Versuchsanzahl erfasst.
                     </p>
 
                 </div>
@@ -774,10 +795,6 @@
                         );
 
 
-                // ==========================================
-                // MINDESTENS EIN KONTINENT
-                // ==========================================
-
                 if (
                     selectedContinents.length === 0
                 ) {
@@ -790,10 +807,6 @@
                 }
 
 
-                // ==========================================
-                // AUSWAHL SPEICHERN
-                // ==========================================
-
                 localStorage.setItem(
                     "selectedContinents",
                     JSON.stringify(
@@ -802,19 +815,11 @@
                 );
 
 
-                // ==========================================
-                // INDIzien-EINSTELLUNG SPEICHERN
-                // ==========================================
-
                 localStorage.setItem(
                     "hintsEnabled",
                     enableHints.checked
                 );
 
-
-                // ==========================================
-                // SPIEL ÖFFNEN
-                // ==========================================
 
                 window.location.href =
                     "game.html";
@@ -858,8 +863,7 @@
 
 
         // ==========================================
-        // STATISTIK-POPUP DURCH HINTERGRUND
-        // SCHLIESSEN
+        // STATISTIK-POPUP DURCH HINTERGRUND SCHLIESSEN
         // ==========================================
 
         statisticsOverlay.addEventListener(

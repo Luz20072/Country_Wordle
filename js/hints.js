@@ -1,7 +1,6 @@
 const hintState = {
     continent: null,
 
-
     regionMatches: [],
 
     colors: [],
@@ -42,11 +41,9 @@ let activeHintTooltipItem = null;
 
 function isMobileTooltipDevice() {
 
-
     return window.matchMedia(
         "(hover: none) and (pointer: coarse)"
     ).matches;
-
 
 }
 
@@ -56,7 +53,6 @@ function isMobileTooltipDevice() {
  */
 
 function closeActiveHintTooltip() {
-
 
     if (
         !activeHintTooltipItem
@@ -93,7 +89,6 @@ function closeActiveHintTooltip() {
     activeHintTooltipItem =
         null;
 
-
 }
 
 
@@ -102,7 +97,6 @@ function closeActiveHintTooltip() {
  */
 
 function toggleMobileHintTooltip(item) {
-
 
     if (
         !item ||
@@ -170,7 +164,6 @@ function toggleMobileHintTooltip(item) {
     activeHintTooltipItem =
         item;
 
-
 }
 
 
@@ -183,7 +176,6 @@ function toggleMobileHintTooltip(item) {
 if (
     !window.__hintMobileTooltipInitialized
 ) {
-
 
     document.addEventListener(
         "click",
@@ -275,7 +267,6 @@ if (
     window.__hintMobileTooltipInitialized =
         true;
 
-
 }
 
 
@@ -284,7 +275,6 @@ if (
    ========================================== */
 
 function resetHints() {
-
 
     hintState.continent = null;
 
@@ -314,12 +304,10 @@ function resetHints() {
 
     closeActiveHintTooltip();
 
-
 }
 
 
 function initializeHintCandidates(countries) {
-
 
     /*
      * Es wird kein kompletter Kandidatenpool
@@ -329,7 +317,6 @@ function initializeHintCandidates(countries) {
      * aus tatsächlich geratenen Ländern.
      */
 
-
 }
 
 
@@ -338,7 +325,6 @@ function initializeHintCandidates(countries) {
    ========================================== */
 
 function uniqueValues(values) {
-
 
     return [
         ...new Set(
@@ -356,12 +342,10 @@ function uniqueValues(values) {
         )
     ];
 
-
 }
 
 
 function addUnique(array, value) {
-
 
     if (
         value === null ||
@@ -388,12 +372,10 @@ function addUnique(array, value) {
 
     }
 
-
 }
 
 
 function addUniqueArray(array, values) {
-
 
     for (
         const value
@@ -407,7 +389,6 @@ function addUniqueArray(array, values) {
 
     }
 
-
 }
 
 
@@ -417,7 +398,6 @@ function addUniqueArray(array, values) {
  */
 
 function countValueMatches(matches, value) {
-
 
     let count = 0;
 
@@ -441,7 +421,6 @@ function countValueMatches(matches, value) {
 
     return count;
 
-
 }
 
 
@@ -453,16 +432,21 @@ function updateWaterCandidates(
     comparison
 ) {
 
-
     const possible = [];
 
-    const certain = [];
+    /*
+     * Bereits gesicherte Gewässer bleiben
+     * dauerhaft gesichert.
+     */
+
+    const certain = [
+        ...hintState.waterCertain
+    ];
 
 
     /*
-     * ALLE bisher bei positiven Treffern
-     * gefundenen Gewässer zunächst als
-     * MÖGLICH behandeln.
+     * Alle bisher bei positiven Treffern
+     * gefundenen Gewässer als möglich behandeln.
      */
 
     for (
@@ -483,6 +467,22 @@ function updateWaterCandidates(
 
             if (
                 hintState.waterExcluded.includes(
+                    water
+                )
+            ) {
+
+                continue;
+
+            }
+
+
+            /*
+             * Bereits gesicherte Gewässer
+             * nicht wieder als möglich führen.
+             */
+
+            if (
+                certain.includes(
                     water
                 )
             ) {
@@ -526,10 +526,10 @@ function updateWaterCandidates(
 
     const targetWaters =
         comparison &&
-        comparison.water &&
-        Array.isArray(
-            comparison.water.sharedValues
-        )
+            comparison.water &&
+            Array.isArray(
+                comparison.water.sharedValues
+            )
             ? uniqueValues(
                 comparison.water.sharedValues
             )
@@ -576,7 +576,6 @@ function updateWaterCandidates(
             certain
         );
 
-
 }
 
 
@@ -588,16 +587,22 @@ function updateLanguageCandidates(
     comparison
 ) {
 
-
     const possible = [];
 
-    const certain = [];
+    /*
+     * Bereits gesicherte Sprachen bleiben
+     * dauerhaft gesichert.
+     */
+
+    const certain = [
+        ...hintState.languageCertain
+    ];
 
 
     /*
-     * ALLE bisher bei positiven Treffern
+     * Alle bisher bei positiven Treffern
      * gefundenen Sprachen zunächst als
-     * MÖGLICH behandeln.
+     * möglich behandeln.
      */
 
     for (
@@ -627,6 +632,22 @@ function updateLanguageCandidates(
             }
 
 
+            /*
+             * Bereits gesicherte Sprachen
+             * nicht wieder als möglich führen.
+             */
+
+            if (
+                certain.includes(
+                    language
+                )
+            ) {
+
+                continue;
+
+            }
+
+
             addUnique(
                 possible,
                 language
@@ -645,10 +666,10 @@ function updateLanguageCandidates(
 
     const targetLanguages =
         comparison &&
-        comparison.language &&
-        Array.isArray(
-            comparison.language.sharedValues
-        )
+            comparison.language &&
+            Array.isArray(
+                comparison.language.sharedValues
+            )
             ? uniqueValues(
                 comparison.language.sharedValues
             )
@@ -770,7 +791,6 @@ function updateLanguageCandidates(
             certain
         );
 
-
 }
 
 
@@ -780,7 +800,6 @@ function updateLanguageCandidates(
 
 function excludeWaterValues(values) {
 
-
     const uniqueWater =
         uniqueValues(
             values
@@ -788,13 +807,25 @@ function excludeWaterValues(values) {
 
 
     /*
-     * Dauerhaft ausschließen.
+     * Bereits gesicherte Gewässer dürfen
+     * nicht wieder ausgeschlossen werden.
      */
 
     for (
         const water
         of uniqueWater
     ) {
+
+        if (
+            hintState.waterCertain.includes(
+                water
+            )
+        ) {
+
+            continue;
+
+        }
+
 
         addUnique(
             hintState.waterExcluded,
@@ -805,7 +836,7 @@ function excludeWaterValues(values) {
 
 
     /*
-     * Aus den aktuellen Listen entfernen.
+     * Aus der aktuellen Möglich-Liste entfernen.
      */
 
     hintState.waterPossible =
@@ -816,16 +847,6 @@ function excludeWaterValues(values) {
                 )
         );
 
-
-    hintState.waterCertain =
-        hintState.waterCertain.filter(
-            water =>
-                !hintState.waterExcluded.includes(
-                    water
-                )
-        );
-
-
 }
 
 
@@ -835,7 +856,6 @@ function excludeWaterValues(values) {
 
 function excludeLanguageValues(values) {
 
-
     const uniqueLanguages =
         uniqueValues(
             values
@@ -843,13 +863,25 @@ function excludeLanguageValues(values) {
 
 
     /*
-     * Dauerhaft ausschließen.
+     * Bereits gesicherte Sprachen dürfen
+     * nicht wieder ausgeschlossen werden.
      */
 
     for (
         const language
         of uniqueLanguages
     ) {
+
+        if (
+            hintState.languageCertain.includes(
+                language
+            )
+        ) {
+
+            continue;
+
+        }
+
 
         addUnique(
             hintState.languageExcluded,
@@ -860,7 +892,7 @@ function excludeLanguageValues(values) {
 
 
     /*
-     * Aus den aktuellen Listen entfernen.
+     * Aus der aktuellen Möglich-Liste entfernen.
      */
 
     hintState.languagePossible =
@@ -870,16 +902,6 @@ function excludeLanguageValues(values) {
                     language
                 )
         );
-
-
-    hintState.languageCertain =
-        hintState.languageCertain.filter(
-            language =>
-                !hintState.languageExcluded.includes(
-                    language
-                )
-        );
-
 
 }
 
@@ -898,7 +920,6 @@ async function getHintCountryWarEntry(
     countryId,
     warId
 ) {
-
 
     if (
         countryId === null ||
@@ -930,6 +951,7 @@ async function getHintCountryWarEntry(
         );
 
     }
+
     catch (error) {
 
         console.error(
@@ -940,7 +962,6 @@ async function getHintCountryWarEntry(
         return null;
 
     }
-
 
 }
 
@@ -962,7 +983,6 @@ function getWarRelation(
     guessedWar,
     targetWar
 ) {
-
 
     if (
         !guessedWar ||
@@ -996,7 +1016,6 @@ function getWarRelation(
 
     return "Gegner";
 
-
 }
 
 
@@ -1009,7 +1028,6 @@ function addWarHint(
     country,
     relation
 ) {
-
 
     if (
         !war ||
@@ -1119,7 +1137,6 @@ function addWarHint(
 
     }
 
-
 }
 
 
@@ -1131,7 +1148,6 @@ async function updateWarHint(
     country,
     sharedWars
 ) {
-
 
     if (
         !country ||
@@ -1254,7 +1270,6 @@ async function updateWarHint(
             Number(b.warId)
     );
 
-
 }
 
 
@@ -1266,7 +1281,6 @@ async function updateHints(
     country,
     comparison
 ) {
-
 
     if (
         !country ||
@@ -1429,7 +1443,7 @@ async function updateHints(
 
 
             switch (
-                relationship.type
+            relationship.type
             ) {
 
                 case "former_union":
@@ -1633,7 +1647,6 @@ async function updateHints(
 
     renderHints();
 
-
 }
 
 
@@ -1642,7 +1655,6 @@ async function updateHints(
    ========================================== */
 
 function renderHints() {
-
 
     const container =
         document.getElementById(
@@ -1684,9 +1696,8 @@ function renderHints() {
 
             <div class="hint-list">
 
-                ${
-                    hintState.continent
-                        ? `
+                ${hintState.continent
+            ? `
                             <span
                                 class="hint-item certain hint-tooltip-item"
                                 tabindex="0"
@@ -1694,8 +1705,8 @@ function renderHints() {
                                 aria-expanded="false"
                             >
                                 ${escapeHintHtml(
-                                    hintState.continent
-                                )}
+                hintState.continent
+            )}
 
                                 <span
                                     class="hint-tooltip"
@@ -1705,8 +1716,8 @@ function renderHints() {
                                 </span>
                             </span>
                         `
-                        : ""
-                }
+            : ""
+        }
 
             </div>
 
@@ -1727,10 +1738,9 @@ function renderHints() {
 
             <div class="hint-list">
 
-                ${
-                    hintState.regionMatches
-                        .map(
-                            name => `
+                ${hintState.regionMatches
+            .map(
+                name => `
                                 <span
                                     class="hint-item certain hint-tooltip-item"
                                     tabindex="0"
@@ -1738,8 +1748,8 @@ function renderHints() {
                                     aria-expanded="false"
                                 >
                                     ${escapeHintHtml(
-                                        name
-                                    )}
+                    name
+                )}
 
                                     <span
                                         class="hint-tooltip"
@@ -1749,9 +1759,9 @@ function renderHints() {
                                     </span>
                                 </span>
                             `
-                        )
-                        .join("")
-                }
+            )
+            .join("")
+        }
 
             </div>
 
@@ -1772,10 +1782,9 @@ function renderHints() {
 
             <div class="hint-list">
 
-                ${
-                    hintState.colors
-                        .map(
-                            color => `
+                ${hintState.colors
+            .map(
+                color => `
                                 <span
                                     class="hint-item certain hint-tooltip-item"
                                     tabindex="0"
@@ -1783,8 +1792,8 @@ function renderHints() {
                                     aria-expanded="false"
                                 >
                                     ${escapeHintHtml(
-                                        color
-                                    )}
+                    color
+                )}
 
                                     <span
                                         class="hint-tooltip"
@@ -1794,9 +1803,9 @@ function renderHints() {
                                     </span>
                                 </span>
                             `
-                        )
-                        .join("")
-                }
+            )
+            .join("")
+        }
 
             </div>
 
@@ -1821,33 +1830,32 @@ function renderHints() {
 
                 <div class="hint-list">
 
-                    ${
-                        hintState.wars
-                            .map(
-                                war => {
+                    ${hintState.wars
+                .map(
+                    war => {
 
-                                    let tooltipContent =
-                                        `
+                        let tooltipContent =
+                            `
                                             <strong>
                                                 ${escapeHintHtml(
-                                                    war.name
-                                                )}
+                                war.name
+                            )}
                                             </strong>
                                         `;
 
 
-                                    /*
-                                     * Verbündete
-                                     */
+                        /*
+                         * Verbündete
+                         */
 
-                                    if (
-                                        Array.isArray(
-                                            war.allies
-                                        ) &&
-                                        war.allies.length > 0
-                                    ) {
+                        if (
+                            Array.isArray(
+                                war.allies
+                            ) &&
+                            war.allies.length > 0
+                        ) {
 
-                                        tooltipContent += `
+                            tooltipContent += `
                                             <div
                                                 class="war-tooltip-group"
                                             >
@@ -1860,40 +1868,39 @@ function renderHints() {
                                                     class="war-tooltip-countries"
                                                 >
 
-                                                    ${
-                                                        war.allies
-                                                            .map(
-                                                                country => `
+                                                    ${war.allies
+                                    .map(
+                                        country => `
                                                                     <span>
                                                                         ${escapeHintHtml(
-                                                                            country
-                                                                        )}
+                                            country
+                                        )}
                                                                     </span>
                                                                 `
-                                                            )
-                                                            .join("")
-                                                    }
+                                    )
+                                    .join("")
+                                }
 
                                                 </div>
 
                                             </div>
                                         `;
 
-                                    }
+                        }
 
 
-                                    /*
-                                     * Gegner
-                                     */
+                        /*
+                         * Gegner
+                         */
 
-                                    if (
-                                        Array.isArray(
-                                            war.enemies
-                                        ) &&
-                                        war.enemies.length > 0
-                                    ) {
+                        if (
+                            Array.isArray(
+                                war.enemies
+                            ) &&
+                            war.enemies.length > 0
+                        ) {
 
-                                        tooltipContent += `
+                            tooltipContent += `
                                             <div
                                                 class="war-tooltip-group"
                                             >
@@ -1906,29 +1913,28 @@ function renderHints() {
                                                     class="war-tooltip-countries"
                                                 >
 
-                                                    ${
-                                                        war.enemies
-                                                            .map(
-                                                                country => `
+                                                    ${war.enemies
+                                    .map(
+                                        country => `
                                                                     <span>
                                                                         ${escapeHintHtml(
-                                                                            country
-                                                                        )}
+                                            country
+                                        )}
                                                                     </span>
                                                                 `
-                                                            )
-                                                            .join("")
-                                                    }
+                                    )
+                                    .join("")
+                                }
 
                                                 </div>
 
                                             </div>
                                         `;
 
-                                    }
+                        }
 
 
-                                    return `
+                        return `
                                         <span
                                             class="hint-item certain hint-tooltip-item"
                                             tabindex="0"
@@ -1936,8 +1942,8 @@ function renderHints() {
                                             aria-expanded="false"
                                         >
                                             ${escapeHintHtml(
-                                                war.name
-                                            )}
+                            war.name
+                        )}
 
                                             <span
                                                 class="hint-tooltip"
@@ -1948,10 +1954,10 @@ function renderHints() {
                                         </span>
                                     `;
 
-                                }
-                            )
-                            .join("")
                     }
+                )
+                .join("")
+            }
 
                 </div>
 
@@ -1974,10 +1980,9 @@ function renderHints() {
 
             <div class="hint-list">
 
-                ${
-                    hintState.neighbors
-                        .map(
-                            name => `
+                ${hintState.neighbors
+            .map(
+                name => `
                                 <span
                                     class="hint-item certain hint-tooltip-item"
                                     tabindex="0"
@@ -1985,8 +1990,8 @@ function renderHints() {
                                     aria-expanded="false"
                                 >
                                     ${escapeHintHtml(
-                                        name
-                                    )}
+                    name
+                )}
 
                                     <span
                                         class="hint-tooltip"
@@ -1996,9 +2001,9 @@ function renderHints() {
                                     </span>
                                 </span>
                             `
-                        )
-                        .join("")
-                }
+            )
+            .join("")
+        }
 
             </div>
 
@@ -2019,23 +2024,22 @@ function renderHints() {
 
             <div class="hint-list">
 
-                ${
-                    hintState.relationships
-                        .map(
-                            relationship => {
+                ${hintState.relationships
+            .map(
+                relationship => {
 
-                                const text =
-                                    `${relationship.type}: ${relationship.country}`;
-
-
-                                const tooltip =
-                                    relationship.description ||
-                                    getRelationshipTooltip(
-                                        relationship.type
-                                    );
+                    const text =
+                        `${relationship.type}: ${relationship.country}`;
 
 
-                                return `
+                    const tooltip =
+                        relationship.description ||
+                        getRelationshipTooltip(
+                            relationship.type
+                        );
+
+
+                    return `
                                     <span
                                         class="hint-item certain hint-tooltip-item"
                                         tabindex="0"
@@ -2043,24 +2047,24 @@ function renderHints() {
                                         aria-expanded="false"
                                     >
                                         ${escapeHintHtml(
-                                            text
-                                        )}
+                        text
+                    )}
 
                                         <span
                                             class="hint-tooltip"
                                             role="tooltip"
                                         >
                                             ${escapeHintHtml(
-                                                tooltip
-                                            )}
+                        tooltip
+                    )}
                                         </span>
                                     </span>
                                 `;
 
-                            }
-                        )
-                        .join("")
                 }
+            )
+            .join("")
+        }
 
             </div>
 
@@ -2106,10 +2110,9 @@ function renderHints() {
 
                     <div class="hint-list">
 
-                        ${
-                            hintState.waterCertain
-                                .map(
-                                    water => `
+                        ${hintState.waterCertain
+                    .map(
+                        water => `
                                         <span
                                             class="hint-item certain hint-tooltip-item"
                                             tabindex="0"
@@ -2117,8 +2120,8 @@ function renderHints() {
                                             aria-expanded="false"
                                         >
                                             ${escapeHintHtml(
-                                                water
-                                            )}
+                            water
+                        )}
 
                                             <span
                                                 class="hint-tooltip"
@@ -2128,9 +2131,9 @@ function renderHints() {
                                             </span>
                                         </span>
                                     `
-                                )
-                                .join("")
-                        }
+                    )
+                    .join("")
+                }
 
                     </div>
 
@@ -2157,10 +2160,9 @@ function renderHints() {
 
                     <div class="hint-list">
 
-                        ${
-                            hintState.waterPossible
-                                .map(
-                                    water => `
+                        ${hintState.waterPossible
+                    .map(
+                        water => `
                                         <span
                                             class="hint-item possible hint-tooltip-item"
                                             tabindex="0"
@@ -2168,8 +2170,8 @@ function renderHints() {
                                             aria-expanded="false"
                                         >
                                             ${escapeHintHtml(
-                                                water
-                                            )}
+                            water
+                        )}
 
                                             <span
                                                 class="hint-tooltip"
@@ -2179,9 +2181,9 @@ function renderHints() {
                                             </span>
                                         </span>
                                     `
-                                )
-                                .join("")
-                        }
+                    )
+                    .join("")
+                }
 
                     </div>
 
@@ -2236,10 +2238,9 @@ function renderHints() {
 
                     <div class="hint-list">
 
-                        ${
-                            hintState.languageCertain
-                                .map(
-                                    language => `
+                        ${hintState.languageCertain
+                    .map(
+                        language => `
                                         <span
                                             class="hint-item certain hint-tooltip-item"
                                             tabindex="0"
@@ -2247,8 +2248,8 @@ function renderHints() {
                                             aria-expanded="false"
                                         >
                                             ${escapeHintHtml(
-                                                language
-                                            )}
+                            language
+                        )}
 
                                             <span
                                                 class="hint-tooltip"
@@ -2258,9 +2259,9 @@ function renderHints() {
                                             </span>
                                         </span>
                                     `
-                                )
-                                .join("")
-                        }
+                    )
+                    .join("")
+                }
 
                     </div>
 
@@ -2287,10 +2288,9 @@ function renderHints() {
 
                     <div class="hint-list">
 
-                        ${
-                            hintState.languagePossible
-                                .map(
-                                    language => `
+                        ${hintState.languagePossible
+                    .map(
+                        language => `
                                         <span
                                             class="hint-item possible hint-tooltip-item"
                                             tabindex="0"
@@ -2298,8 +2298,8 @@ function renderHints() {
                                             aria-expanded="false"
                                         >
                                             ${escapeHintHtml(
-                                                language
-                                            )}
+                            language
+                        )}
 
                                             <span
                                                 class="hint-tooltip"
@@ -2309,9 +2309,9 @@ function renderHints() {
                                             </span>
                                         </span>
                                     `
-                                )
-                                .join("")
-                        }
+                    )
+                    .join("")
+                }
 
                     </div>
 
@@ -2331,7 +2331,6 @@ function renderHints() {
     container.innerHTML =
         html;
 
-
 }
 
 
@@ -2340,7 +2339,6 @@ function renderHints() {
    ========================================== */
 
 function getRelationshipTooltip(type) {
-
 
     switch (type) {
 
@@ -2365,7 +2363,6 @@ function getRelationshipTooltip(type) {
 
     }
 
-
 }
 
 
@@ -2374,7 +2371,6 @@ function getRelationshipTooltip(type) {
    ========================================== */
 
 function escapeHintHtml(value) {
-
 
     return String(
         value ?? ""
@@ -2400,7 +2396,6 @@ function escapeHintHtml(value) {
             "&#039;"
         );
 
-
 }
 
 
@@ -2410,10 +2405,8 @@ function escapeHintHtml(value) {
 
 async function initializeHints() {
 
-
     resetHints();
 
     renderHints();
-
 
 }

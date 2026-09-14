@@ -137,6 +137,24 @@ const victoryOverlay =
     );
 
 
+const victoryIcon =
+    document.querySelector(
+        ".victory-icon"
+    );
+
+
+const victoryLabel =
+    document.querySelector(
+        ".victory-label"
+    );
+
+
+const victoryTitle =
+    document.querySelector(
+        ".victory-card h2"
+    );
+
+
 // ==========================================
 // VERGRÖSSERTE KARTE
 // ==========================================
@@ -181,16 +199,25 @@ let gameOver = false;
 
 
 // ==========================================
-// SIEGES-POPUP DATEN
+// ERGEBNIS-POPUP DATEN
 // ==========================================
 
 /*
- * Das zuletzt gewonnene Land wird gespeichert,
- * damit das Victory-Modal nach dem Schließen
- * erneut geöffnet werden kann.
+ * Das Land, das im Ergebnis-Popup angezeigt wird.
+ * Bei einem Sieg ist es das geratene Land.
+ * Bei einer Niederlage ist es das gesuchte Land.
  */
 
 let victoryCountry = null;
+
+
+/*
+ * Speichert, ob das letzte Ergebnis ein Sieg war.
+ * Dadurch bleibt der korrekte Zustand auch beim
+ * erneuten Öffnen des Ergebnis-Popups erhalten.
+ */
+
+let victoryWon = true;
 
 
 // ==========================================
@@ -323,12 +350,6 @@ async function loadCountries() {
             await supabaseRequest(
                 `countries?select=id,name&order=name`
             );
-
-
-        console.log(
-            "Länder für Autocomplete:",
-            allCountries
-        );
 
     }
 
@@ -762,26 +783,6 @@ async function loadTargetCountry() {
             );
 
 
-        console.log(
-            "Zielland:",
-            targetCountry
-        );
-
-
-        console.log(
-            "Flaggenfarben:",
-            getColorArray(
-                targetColors
-            )
-        );
-
-
-        console.log(
-            "Kriege:",
-            targetWars
-        );
-
-
         message.textContent =
             "Ein Land wurde ausgewählt. Viel Erfolg!";
 
@@ -885,6 +886,10 @@ async function restartGame() {
         null;
 
 
+    victoryWon =
+        true;
+
+
     victoryMapLatitude =
         null;
 
@@ -977,6 +982,7 @@ async function makeGuess() {
             .trim()
             .toLowerCase();
 
+
     if (
         input === ""
     ) {
@@ -1067,7 +1073,8 @@ async function makeGuess() {
 
         recordGame(
             targetCountry.continent,
-            guessedCountries.length
+            guessedCountries.length,
+            true
         );
 
 
@@ -1091,11 +1098,16 @@ async function makeGuess() {
             country;
 
 
+        victoryWon =
+            true;
+
+
         updateGameButtons();
 
 
         showVictoryPopup(
-            country
+            country,
+            true
         );
 
 
@@ -1194,6 +1206,59 @@ async function makeGuess() {
 
         message.textContent =
             "Das war nicht das gesuchte Land.";
+
+
+        // ==================================
+        // MAXIMALE VERSUCHSANZAHL
+        // ==================================
+
+        if (
+            guessedCountries.length >= 20
+        ) {
+
+            recordGame(
+                targetCountry.continent,
+                guessedCountries.length,
+                false
+            );
+
+
+            gameOver =
+                true;
+
+
+            countryInput.disabled =
+                true;
+
+
+            guessButton.disabled =
+                true;
+
+
+            message.textContent =
+                "";
+
+
+            victoryCountry =
+                targetCountry;
+
+
+            victoryWon =
+                false;
+
+
+            updateGameButtons();
+
+
+            showVictoryPopup(
+                targetCountry,
+                false
+            );
+
+
+            return;
+
+        }
 
     }
 
@@ -1472,6 +1537,7 @@ function addVictoryData(
     );
 
 }
+
 
 // ==========================================
 // VICTORY KARTE
@@ -1970,11 +2036,12 @@ function closeVictoryMap() {
 
 
 // ==========================================
-// SIEGES-POPUP
+// ERGEBNIS-POPUP
 // ==========================================
 
 async function showVictoryPopup(
-    country
+    country,
+    won = victoryWon
 ) {
 
     if (
@@ -1982,6 +2049,56 @@ async function showVictoryPopup(
     ) {
 
         return;
+
+    }
+
+
+    victoryWon =
+        won;
+
+
+    // ======================================
+    // POPUP-ZUSTAND
+    // ======================================
+
+    victoryModal.classList.toggle(
+        "loss",
+        !won
+    );
+
+
+    if (
+        victoryIcon
+    ) {
+
+        victoryIcon.textContent =
+            won
+                ? "✓"
+                : "×";
+
+    }
+
+
+    if (
+        victoryLabel
+    ) {
+
+        victoryLabel.textContent =
+            won
+                ? "Geschafft"
+                : "Nicht geschafft";
+
+    }
+
+
+    if (
+        victoryTitle
+    ) {
+
+        victoryTitle.textContent =
+            won
+                ? "Richtig geraten!"
+                : "Das gesuchte Land war";
 
     }
 
@@ -2430,7 +2547,8 @@ function reopenVictoryPopup() {
 
 
     showVictoryPopup(
-        victoryCountry
+        victoryCountry,
+        victoryWon
     );
 
 }
@@ -2660,6 +2778,10 @@ async function startGame() {
 
     victoryCountry =
         null;
+
+
+    victoryWon =
+        true;
 
 
     updateGameButtons();
