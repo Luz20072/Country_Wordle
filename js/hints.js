@@ -1,7 +1,6 @@
 const hintState = {
     continent: null,
 
-
     regionMatches: [],
 
     colors: [],
@@ -42,11 +41,9 @@ let activeHintTooltipItem = null;
 
 function isMobileTooltipDevice() {
 
-
     return window.matchMedia(
         "(hover: none) and (pointer: coarse)"
     ).matches;
-
 
 }
 
@@ -56,7 +53,6 @@ function isMobileTooltipDevice() {
  */
 
 function closeActiveHintTooltip() {
-
 
     if (
         !activeHintTooltipItem
@@ -93,7 +89,6 @@ function closeActiveHintTooltip() {
     activeHintTooltipItem =
         null;
 
-
 }
 
 
@@ -102,7 +97,6 @@ function closeActiveHintTooltip() {
  */
 
 function toggleMobileHintTooltip(item) {
-
 
     if (
         !item ||
@@ -170,7 +164,6 @@ function toggleMobileHintTooltip(item) {
     activeHintTooltipItem =
         item;
 
-
 }
 
 
@@ -183,7 +176,6 @@ function toggleMobileHintTooltip(item) {
 if (
     !window.__hintMobileTooltipInitialized
 ) {
-
 
     document.addEventListener(
         "click",
@@ -275,7 +267,6 @@ if (
     window.__hintMobileTooltipInitialized =
         true;
 
-
 }
 
 
@@ -284,7 +275,6 @@ if (
    ========================================== */
 
 function resetHints() {
-
 
     hintState.continent = null;
 
@@ -314,12 +304,10 @@ function resetHints() {
 
     closeActiveHintTooltip();
 
-
 }
 
 
 function initializeHintCandidates(countries) {
-
 
     /*
      * Es wird kein kompletter Kandidatenpool
@@ -329,7 +317,6 @@ function initializeHintCandidates(countries) {
      * aus tatsächlich geratenen Ländern.
      */
 
-
 }
 
 
@@ -338,7 +325,6 @@ function initializeHintCandidates(countries) {
    ========================================== */
 
 function uniqueValues(values) {
-
 
     return [
         ...new Set(
@@ -356,12 +342,10 @@ function uniqueValues(values) {
         )
     ];
 
-
 }
 
 
 function addUnique(array, value) {
-
 
     if (
         value === null ||
@@ -388,12 +372,10 @@ function addUnique(array, value) {
 
     }
 
-
 }
 
 
 function addUniqueArray(array, values) {
-
 
     for (
         const value
@@ -407,7 +389,6 @@ function addUniqueArray(array, values) {
 
     }
 
-
 }
 
 
@@ -417,7 +398,6 @@ function addUniqueArray(array, values) {
  */
 
 function countValueMatches(matches, value) {
-
 
     let count = 0;
 
@@ -441,7 +421,6 @@ function countValueMatches(matches, value) {
 
     return count;
 
-
 }
 
 
@@ -459,6 +438,7 @@ function updateWaterCandidates(
      * Bereits gesicherte Gewässer bleiben
      * dauerhaft gesichert.
      */
+
     const certain = [
         ...hintState.waterCertain
     ];
@@ -613,6 +593,7 @@ function updateLanguageCandidates(
      * Bereits gesicherte Sprachen bleiben
      * dauerhaft gesichert.
      */
+
     const certain = [
         ...hintState.languageCertain
     ];
@@ -814,64 +795,6 @@ function updateLanguageCandidates(
 
 
 /* ==========================================
-   NORMALE 2-TREFFER-REGEL
-   ========================================== */
-
-const possibleForCertain =
-    possible.filter(
-        language =>
-            !certain.includes(language) &&
-            countValueMatches(
-                hintState.languageMatches,
-                language
-            ) >= 2
-    );
-
-
-for (
-    const language
-    of possibleForCertain
-) {
-
-    if (
-        targetLanguages.includes(
-            language
-        )
-    ) {
-
-        addUnique(
-            certain,
-            language
-        );
-
-    }
-
-}
-
-
-/*
- * Gesicherte Werte aus MÖGLICH entfernen.
- */
-
-hintState.languagePossible =
-    possible.filter(
-        language =>
-            !certain.includes(
-                language
-            )
-    );
-
-
-hintState.languageCertain =
-    uniqueValues(
-        certain
-    );
-
-
-}
-
-
-/* ==========================================
    NEGATIVE GEWÄSSER
    ========================================== */
 
@@ -998,7 +921,6 @@ async function getHintCountryWarEntry(
     warId
 ) {
 
-
     if (
         countryId === null ||
         countryId === undefined ||
@@ -1029,6 +951,7 @@ async function getHintCountryWarEntry(
         );
 
     }
+
     catch (error) {
 
         console.error(
@@ -1039,7 +962,6 @@ async function getHintCountryWarEntry(
         return null;
 
     }
-
 
 }
 
@@ -1061,7 +983,6 @@ function getWarRelation(
     guessedWar,
     targetWar
 ) {
-
 
     if (
         !guessedWar ||
@@ -1095,7 +1016,6 @@ function getWarRelation(
 
     return "Gegner";
 
-
 }
 
 
@@ -1108,7 +1028,6 @@ function addWarHint(
     country,
     relation
 ) {
-
 
     if (
         !war ||
@@ -1218,7 +1137,6 @@ function addWarHint(
 
     }
 
-
 }
 
 
@@ -1230,7 +1148,6 @@ async function updateWarHint(
     country,
     sharedWars
 ) {
-
 
     if (
         !country ||
@@ -1353,7 +1270,6 @@ async function updateWarHint(
             Number(b.warId)
     );
 
-
 }
 
 
@@ -1365,7 +1281,6 @@ async function updateHints(
     country,
     comparison
 ) {
-
 
     if (
         !country ||
@@ -1732,7 +1647,6 @@ async function updateHints(
 
     renderHints();
 
-
 }
 
 
@@ -1741,7 +1655,6 @@ async function updateHints(
    ========================================== */
 
 function renderHints() {
-
 
     const container =
         document.getElementById(
@@ -2418,7 +2331,6 @@ function renderHints() {
     container.innerHTML =
         html;
 
-
 }
 
 
@@ -2427,7 +2339,6 @@ function renderHints() {
    ========================================== */
 
 function getRelationshipTooltip(type) {
-
 
     switch (type) {
 
@@ -2452,7 +2363,6 @@ function getRelationshipTooltip(type) {
 
     }
 
-
 }
 
 
@@ -2461,7 +2371,6 @@ function getRelationshipTooltip(type) {
    ========================================== */
 
 function escapeHintHtml(value) {
-
 
     return String(
         value ?? ""
@@ -2487,7 +2396,6 @@ function escapeHintHtml(value) {
             "&#039;"
         );
 
-
 }
 
 
@@ -2497,10 +2405,8 @@ function escapeHintHtml(value) {
 
 async function initializeHints() {
 
-
     resetHints();
 
     renderHints();
-
 
 }
