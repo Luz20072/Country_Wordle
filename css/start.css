@@ -512,7 +512,7 @@
         grid;
 
     grid-template-columns:
-        repeat(4,
+        repeat(6,
             1fr);
 
     gap:
