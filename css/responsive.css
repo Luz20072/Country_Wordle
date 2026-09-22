@@ -1,748 +1,623 @@
 /* ==========================================
-RESPONSIVE – INDIZIEN
-========================================== */
+   RESPONSIVE – INDIZIEN
+   ========================================== */
 
 @media (max-width: 900px) {
 
-    ``` .game-layout {
-        grid-template-columns:
-            1fr;
+    .game-layout {
+        grid-template-columns: 1fr;
     }
-
 
     #hints-container {
-        position:
-            static;
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 100%;
     }
 
-    ```
 }
 
+
 /* ==========================================
-RESPONSIVE – TABLET
-========================================== */
+   RESPONSIVE – TABLET
+   ========================================== */
 
 @media (max-width: 800px) {
 
-    ```
     /* ==============================
-   STARTSEITE
-   ============================== */
+       STARTSEITE
+       ============================== */
 
     .start-container {
-        width:
-            94%;
+        width: 94%;
     }
 
 
     .statistics-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
 
     .statistics-continents {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 
     /* ==============================
-   SPIEL
-   ============================== */
+       SPIEL
+       ============================== */
 
     .game-container {
-        width:
-            94%;
+        width: 94%;
     }
 
-    ```
 }
 
+
 /* ==========================================
-RESPONSIVE – MOBILE
-========================================== */
+   RESPONSIVE – MOBILE
+   ========================================== */
 
 @media (max-width: 600px) {
 
-    ```
     /* ==============================
-   SPIEL
-   ============================== */
+       SPIEL
+       ============================== */
 
     .game-container {
-        width:
-            95%;
-
-        margin:
-            25px auto;
+        width: 95%;
+        margin: 25px auto;
     }
 
 
     .game {
-        padding:
-            15px;
+        padding: 15px;
     }
 
 
     .game-container header h1 {
-        font-size:
-            30px;
+        font-size: 30px;
     }
 
 
     .game-container header p {
-        font-size:
-            14px;
+        font-size: 14px;
     }
 
 
     /* ==============================
-   EINGABE
-   ============================== */
+       EINGABE
+       ============================== */
 
     .guess-container {
-        flex-direction:
-            column;
+        flex-direction: column;
     }
 
 
     .autocomplete-container {
-        width:
-            100%;
+        width: 100%;
     }
 
 
     #guessButton {
-        width:
-            100%;
+        width: 100%;
     }
 
 
     /* ==============================
-   GUESSES
-   ============================== */
+       GUESSES
+       ============================== */
 
     .category-grid {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 
     .guess-header strong {
-        font-size:
-            17px;
+        font-size: 17px;
     }
 
 
     /* ==============================
-   SPIELSTEUERUNG
-   ============================== */
+       SPIELSTEUERUNG
+       ============================== */
 
     .restart-container {
-        gap:
-            8px;
-
-        flex-wrap:
-            wrap;
+        gap: 8px;
+        flex-wrap: wrap;
     }
 
 
     #backToStartButton {
-        width:
-            auto;
+        width: auto;
     }
 
 
     #restartButton {
-        width:
-            100%;
+        width: 100%;
     }
 
 
     /* ==============================
-   SIEGMELDUNG
-   ============================== */
+       INDIZIEN
+       ============================== */
+
+    #hints-container {
+        position: relative;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+
+    #hints-content {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+
+    /* ==============================
+       SIEGMELDUNG
+       ============================== */
 
     .correct-row {
-        flex-direction:
-            column;
-
-        align-items:
-            stretch;
-
-        gap:
-            10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
     }
 
 
     .correct-message {
-        width:
-            100%;
+        width: 100%;
     }
 
 
     .correct-row #showVictoryButton {
-        width:
-            100%;
-
-        margin:
-            0;
-
-        white-space:
-            normal;
+        width: 100%;
+        margin: 0;
+        white-space: normal;
     }
 
 
     /* ==============================
-   STATUS
-   ============================== */
+       STATUS
+       ============================== */
 
     #message {
-        margin:
-            12px 0;
+        margin: 12px 0;
     }
 
 
     /* ==============================
-   STARTSEITE
-   ============================== */
+       STARTSEITE
+       ============================== */
 
     .start-container {
-        width:
-            94%;
-
-        margin:
-            30px auto;
+        width: 94%;
+        margin: 30px auto;
     }
 
 
     .start-container header {
-        margin-bottom:
-            25px;
+        margin-bottom: 25px;
     }
 
 
     .start-container header h1 {
-        font-size:
-            32px;
-
-        letter-spacing:
-            1px;
+        font-size: 32px;
+        letter-spacing: 1px;
     }
 
 
     .start-container header p {
-        font-size:
-            14px;
+        font-size: 14px;
     }
 
 
     .continent-selection,
     .statistics-container {
-        padding:
-            20px 15px;
-
-        border-radius:
-            12px;
+        padding: 20px 15px;
+        border-radius: 12px;
     }
 
 
     .continent-header {
-        margin-bottom:
-            18px;
+        margin-bottom: 18px;
     }
 
 
     .continent-header h2,
     .statistics-container h2 {
-        font-size:
-            21px;
+        font-size: 21px;
     }
 
 
     .continent-options {
-        grid-template-columns:
-            1fr;
-
-        gap:
-            10px;
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
 
 
     .continent-options label {
-        min-height:
-            62px;
-
-        padding:
-            13px 15px;
+        min-height: 62px;
+        padding: 13px 15px;
     }
 
 
     /* ==============================
-   AUSWAHL-BUTTONS
-   ============================== */
+       AUSWAHL-BUTTONS
+       ============================== */
 
     .selection-buttons {
-        flex-direction:
-            column;
+        flex-direction: column;
     }
 
 
     .selection-buttons button {
-        width:
-            100%;
+        width: 100%;
     }
 
 
     /* ==============================
-   STATISTIK
-   ============================== */
+       STATISTIK
+       ============================== */
 
     .statistics-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap:
-            10px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
 
     .statistics-continents {
-        grid-template-columns:
-            1fr;
-
-        gap:
-            10px;
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
 
 
     .statistic {
-        min-height:
-            70px;
-
-        padding:
-            12px;
+        min-height: 70px;
+        padding: 12px;
     }
 
 
     .statistic-value {
-        font-size:
-            22px;
+        font-size: 22px;
     }
 
 
     .statistic-label {
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     /* ==============================
-   STATISTIK-POPUP
-   ============================== */
+       STATISTIK-POPUP
+       ============================== */
 
     .statistics-popup {
-        width:
-            100%;
-
-        max-height:
-            90vh;
-
-        padding:
-            22px;
+        width: 100%;
+        max-height: 90vh;
+        padding: 22px;
     }
 
 
     .statistics-popup h2 {
-        font-size:
-            21px;
+        font-size: 21px;
     }
 
 
     .continent-statistics-detail {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 
     .guess-distribution-row {
-        grid-template-columns:
-            65px 1fr 30px;
-
-        gap:
-            7px;
+        grid-template-columns: 65px 1fr 30px;
+        gap: 7px;
     }
 
 
     /* ==============================
-   INFO-BEREICH
-   ============================== */
+       INFO-BEREICH
+       ============================== */
 
     .info-button {
-        width:
-            34px;
-
-        height:
-            34px;
+        width: 34px;
+        height: 34px;
     }
 
 
     .info-tooltip {
-        display:
-            none;
+        display: none;
     }
 
 
     .info-popup {
-        width:
-            100%;
-
-        max-height:
-            90vh;
-
-        padding:
-            22px;
-
-        border-radius:
-            12px;
+        width: 100%;
+        max-height: 90vh;
+        padding: 22px;
+        border-radius: 12px;
     }
 
 
     .info-tabs {
-        gap:
-            6px;
+        gap: 6px;
     }
 
 
     .info-tab {
-        padding:
-            10px 8px;
-
-        font-size:
-            13px;
+        padding: 10px 8px;
+        font-size: 13px;
     }
 
 
     /* ==============================
-   VICTORY MODAL
-   ============================== */
+       VICTORY MODAL
+       ============================== */
 
     .victory-modal {
-        padding:
-            12px;
+        padding: 12px;
     }
 
 
     .victory-card {
-        padding:
-            30px 18px 20px;
-
-        border-radius:
-            22px;
-
-        max-height:
-            94vh;
+        padding: 30px 18px 20px;
+        border-radius: 22px;
+        max-height: 94vh;
     }
 
 
     .victory-card h2 {
-        margin-bottom:
-            20px;
+        margin-bottom: 20px;
     }
 
 
     .victory-flag-container {
-        min-height:
-            130px;
+        min-height: 130px;
     }
 
 
     .victory-flag {
-        width:
-            88%;
-
-        max-height:
-            150px;
+        width: 88%;
+        max-height: 150px;
     }
 
 
     .victory-card h3 {
-        margin-bottom:
-            20px;
+        margin-bottom: 20px;
     }
 
 
     .victory-data {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 
     .victory-buttons {
-        flex-direction:
-            column;
+        flex-direction: column;
     }
 
 
     .victory-buttons button {
-        width:
-            100%;
+        width: 100%;
     }
 
-    ```
 }
 
+
 /* ==========================================
-RESPONSIVE – SEHR KLEINE DISPLAYS
-========================================== */
+   RESPONSIVE – SEHR KLEINE DISPLAYS
+   ========================================== */
 
 @media (max-width: 380px) {
 
-    ```
     /* ==============================
-   ALLGEMEIN
-   ============================== */
+       ALLGEMEIN
+       ============================== */
 
     .game-container {
-        width:
-            96%;
+        width: 96%;
     }
 
 
     .start-container {
-        width:
-            96%;
+        width: 96%;
     }
 
 
     .game {
-        padding:
-            12px;
+        padding: 12px;
     }
 
 
     /* ==============================
-   SPIEL
-   ============================== */
+       SPIEL
+       ============================== */
 
     .game-container header h1 {
-        font-size:
-            27px;
+        font-size: 27px;
     }
 
 
     /* ==============================
-   GUESSES
-   ============================== */
+       GUESSES
+       ============================== */
 
     .guess {
-        padding:
-            12px;
+        padding: 12px;
     }
 
 
     .guess-header strong {
-        font-size:
-            16px;
+        font-size: 16px;
     }
 
 
     .guess-flag {
-        width:
-            25px;
-
-        height:
-            18px;
-
-        margin-right:
-            8px;
+        width: 25px;
+        height: 18px;
+        margin-right: 8px;
     }
 
 
     .category-box {
-        min-height:
-            75px;
-
-        padding:
-            9px;
+        min-height: 75px;
+        padding: 9px;
     }
 
 
     .category-box strong {
-        font-size:
-            13px;
+        font-size: 13px;
     }
 
 
     .category-box span {
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     /* ==============================
-   STARTSEITE
-   ============================== */
+       INDIZIEN
+       ============================== */
+
+    #hints-container {
+        margin-top: 18px;
+    }
+
+
+    #hints-content {
+        overflow-x: auto;
+    }
+
+
+    /* ==============================
+       STARTSEITE
+       ============================== */
 
     .start-container header h1 {
-        font-size:
-            28px;
+        font-size: 28px;
     }
 
 
     .start-container header p {
-        font-size:
-            13px;
+        font-size: 13px;
     }
 
 
     .continent-selection,
     .statistics-container {
-        padding:
-            18px 12px;
-
-        border-radius:
-            10px;
+        padding: 18px 12px;
+        border-radius: 10px;
     }
 
 
     .continent-header h2,
     .statistics-container h2 {
-        font-size:
-            19px;
+        font-size: 19px;
     }
 
 
     .continent-options label {
-        min-height:
-            58px;
-
-        padding:
-            12px;
+        min-height: 58px;
+        padding: 12px;
     }
 
 
     .statistics-grid {
-        gap:
-            8px;
+        gap: 8px;
     }
 
 
     .statistic {
-        min-height:
-            65px;
-
-        padding:
-            10px 6px;
+        min-height: 65px;
+        padding: 10px 6px;
     }
 
 
     .statistic-value {
-        font-size:
-            20px;
+        font-size: 20px;
     }
 
 
     .statistic-label {
-        font-size:
-            11px;
+        font-size: 11px;
     }
 
 
     /* ==============================
-   STATISTIK-POPUP
-   ============================== */
+       STATISTIK-POPUP
+       ============================== */
 
     .statistics-popup {
-        padding:
-            18px;
+        padding: 18px;
     }
 
 
     .guess-distribution-row {
-        grid-template-columns:
-            55px 1fr 25px;
-
-        gap:
-            5px;
+        grid-template-columns: 55px 1fr 25px;
+        gap: 5px;
     }
 
 
     .guess-distribution-label,
     .guess-distribution-count {
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     /* ==============================
-   INFO-BEREICH
-   ============================== */
+       INFO-BEREICH
+       ============================== */
 
     .info-popup {
-        padding:
-            18px;
+        padding: 18px;
     }
 
 
     .info-tabs {
-        gap:
-            4px;
+        gap: 4px;
     }
 
 
     .info-tab {
-        padding:
-            9px 6px;
-
-        font-size:
-            12px;
+        padding: 9px 6px;
+        font-size: 12px;
     }
 
 
     .info-tab-content h3 {
-        font-size:
-            16px;
+        font-size: 16px;
     }
 
 
     .info-tab-content p {
-        font-size:
-            13px;
+        font-size: 13px;
     }
 
 
     /* ==============================
-   VICTORY MODAL
-   ============================== */
+       VICTORY MODAL
+       ============================== */
 
     .victory-modal {
-        padding:
-            8px;
+        padding: 8px;
     }
 
 
     .victory-card {
-        padding:
-            26px 14px 18px;
-
-        border-radius:
-            18px;
+        padding: 26px 14px 18px;
+        border-radius: 18px;
     }
 
 
     .victory-flag-container {
-        min-height:
-            110px;
+        min-height: 110px;
     }
 
 
     .victory-flag {
-        width:
-            90%;
-
-        max-height:
-            130px;
+        width: 90%;
+        max-height: 130px;
     }
+
 }
