@@ -22,48 +22,34 @@ function getSelectedContinents() {
 // ==========================================
 
 async function getRandomCountry() {
-
     const selectedContinents =
         getSelectedContinents();
 
-
-    if (
-        selectedContinents.length === 0
-    ) {
-
+    if (selectedContinents.length === 0) {
         throw new Error(
             "Keine Kontinente ausgewählt."
         );
-
     }
-
 
     const continentFilter =
         selectedContinents
             .map(
                 continent =>
-                    `"${continent}"`
+                    encodeURIComponent(continent)
             )
             .join(",");
 
+    const endpoint =
+        `countries?select=*&continent=in.(${continentFilter})`;
 
     const result =
-        await supabaseRequest(
-            `countries?select=*&continent=in.(${encodeURIComponent(continentFilter)})`
-        );
+        await supabaseRequest(endpoint);
 
-
-    if (
-        !result ||
-        result.length === 0
-    ) {
-
+    if (!result || result.length === 0) {
         throw new Error(
-            "Keine Länder für die ausgewählten Kontinente gefunden."
+            `Keine Länder gefunden für Kontinente: ${selectedContinents.join(", ")}`
         );
-
     }
-
 
     const randomIndex =
         Math.floor(
@@ -71,9 +57,7 @@ async function getRandomCountry() {
             result.length
         );
 
-
     return result[randomIndex];
-
 }
 
 
@@ -145,17 +129,12 @@ async function getHintCountries() {
 
 
     const continentFilter =
-        selectedContinents
-            .map(
-                continent =>
-                    `"${continent}"`
-            )
-            .join(",");
+        selectedContinents.join(",");
 
 
     const result =
         await supabaseRequest(
-            `countries?select=id,name,continent,region,seas,languages,borders&continent=in.(${encodeURIComponent(continentFilter)})&order=name`
+            `countries?select=id,name,continent,region,seas,languages,borders&continent=in.(${continentFilter})&order=name`
         );
 
 

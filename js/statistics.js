@@ -1722,4 +1722,8 @@ async function displayDetailedStatistics(
 // STATISTIK INITIALISIEREN
 // ==========================================
 
-displayStatistics();
+async function initializeStatistics() {
+
+    await displayStatistics();
+
+}

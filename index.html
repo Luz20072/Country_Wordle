@@ -24,6 +24,56 @@
     <main class="start-container">
 
 
+        <!-- ==========================================
+             BENUTZERBEREICH
+             ========================================== -->
+
+        <section class="account-container">
+
+            <!-- NICHT ANGEMELDET -->
+
+            <div id="logged-out-view">
+
+                <button class="account-button" id="register-button" type="button">
+                    Registrieren
+                </button>
+
+                <button class="account-button" id="login-button" type="button">
+                    Anmelden
+                </button>
+
+            </div>
+
+
+            <!-- ANGEMELDET -->
+
+            <div id="logged-in-view" hidden>
+
+                <div class="account-username">
+
+                    <span class="account-user-label">
+                        Angemeldet als
+                    </span>
+
+                    <span id="account-username">
+                        -
+                    </span>
+
+                </div>
+
+                <button class="account-button" id="logout-button" type="button">
+                    Abmelden
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+             HEADER
+             ========================================== -->
+
         <header>
 
             <h1>
@@ -36,6 +86,10 @@
 
         </header>
 
+
+        <!-- ==========================================
+             KONTINENT-AUSWAHL
+             ========================================== -->
 
         <section class="continent-selection">
 
@@ -67,38 +121,56 @@
             <div class="continent-options">
 
                 <label>
+
                     <input type="checkbox" value="Afrika">
+
                     Afrika
+
                 </label>
 
 
                 <label>
+
                     <input type="checkbox" value="Asien">
+
                     Asien
+
                 </label>
 
 
                 <label>
+
                     <input type="checkbox" value="Europa">
+
                     Europa
+
                 </label>
 
 
                 <label>
+
                     <input type="checkbox" value="Nordamerika">
+
                     Nordamerika
+
                 </label>
 
 
                 <label>
+
                     <input type="checkbox" value="Südamerika">
+
                     Südamerika
+
                 </label>
 
 
                 <label>
+
                     <input type="checkbox" value="Ozeanien">
+
                     Ozeanien
+
                 </label>
 
             </div>
@@ -261,7 +333,6 @@
 
             <div class="statistics-continents">
 
-
                 <button class="statistic continent-statistic-card" type="button" data-continent="Afrika">
 
                     <span class="statistic-label">
@@ -339,7 +410,8 @@
                     </h3>
 
 
-                    <div class="guess-distribution" id="guess-distribution"></div>
+                    <div class="guess-distribution" id="guess-distribution">
+                    </div>
 
                 </section>
 
@@ -355,7 +427,8 @@
                     </h3>
 
 
-                    <div class="continent-statistics-detail" id="continent-statistics-detail"></div>
+                    <div class="continent-statistics-detail" id="continent-statistics-detail">
+                    </div>
 
                 </section>
 
@@ -470,10 +543,12 @@
                     </h3>
 
                     <p>
-                        Deine Spielergebnisse werden lokal in deinem
-                        Browser gespeichert. Dabei werden unter anderem
-                        deine gespielten Spiele, Siege, Niederlagen und
-                        deine benötigte Versuchsanzahl erfasst.
+                        Deine Spielergebnisse werden gespeichert.
+                        Ohne Anmeldung werden sie lokal in deinem
+                        Browser gespeichert. Mit einem Benutzerkonto
+                        werden deine Statistiken mit deinem Konto
+                        verknüpft und können geräteübergreifend
+                        verwendet werden.
                     </p>
 
                 </div>
@@ -546,8 +621,9 @@
                         Bei den Gewässerhinweisen werden ausschließlich
                         Ozeane und Meere berücksichtigt, an die ein
                         Land grenzt oder an denen es liegt. Ein Gewässer
-                        wird dabei entweder als <strong>gesichert</strong>
-                        oder <strong>möglich</strong> angezeigt.
+                        wird dabei entweder als
+                        <strong>gesichert</strong> oder
+                        <strong>möglich</strong> angezeigt.
                         Gesicherte Gewässer kommen nachweislich auch
                         beim gesuchten Land vor, während mögliche
                         Gewässer dort ebenfalls vorkommen könnten.
@@ -562,7 +638,8 @@
                         Bei den Sprachhinweisen werden ausschließlich
                         Amtssprachen und De-facto-Amtssprachen der
                         Länder berücksichtigt. Eine Sprache wird dabei
-                        entweder als <strong>gesichert</strong> oder
+                        entweder als
+                        <strong>gesichert</strong> oder
                         <strong>möglich</strong> angezeigt.
                         Gesicherte Sprachen kommen nachweislich auch
                         beim gesuchten Land vor, während mögliche
@@ -575,12 +652,144 @@
 
         </div>
 
+
+        <!-- ==========================================
+             AUTH-POPUP
+             ========================================== -->
+
+        <div id="auth-overlay" class="auth-overlay">
+
+            <div class="auth-popup" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+
+                <button class="auth-close" id="auth-close" type="button" aria-label="Fenster schließen">
+                    ×
+                </button>
+
+
+                <!-- ==========================================
+                     LOGIN
+                     ========================================== -->
+
+                <div id="login-view">
+
+                    <h2 id="auth-title">
+                        Anmelden
+                    </h2>
+
+                    <p class="auth-description">
+                        Melde dich an, um deine Statistik
+                        geräteübergreifend zu speichern.
+                    </p>
+
+
+                    <form id="login-form">
+
+                        <label for="login-email">
+                            E-Mail
+                        </label>
+
+                        <input id="login-email" type="email" autocomplete="email" required>
+
+
+                        <label for="login-password">
+                            Passwort
+                        </label>
+
+                        <input id="login-password" type="password" autocomplete="current-password" required>
+
+
+                        <button class="auth-submit" type="submit">
+                            Anmelden
+                        </button>
+
+                    </form>
+
+
+                    <p class="auth-message" id="login-message">
+                    </p>
+
+
+                    <button class="auth-switch" id="show-register" type="button">
+                        Noch kein Konto? Registrieren
+                    </button>
+
+                </div>
+
+
+                <!-- ==========================================
+                     REGISTRIERUNG
+                     ========================================== -->
+
+                <div id="register-view" hidden>
+
+                    <h2>
+                        Registrieren
+                    </h2>
+
+                    <p class="auth-description">
+                        Erstelle ein Konto, um deine Statistik
+                        dauerhaft zu speichern.
+                    </p>
+
+
+                    <form id="register-form">
+
+                        <label for="register-username">
+                            Benutzername
+                        </label>
+
+                        <input id="register-username" type="text" autocomplete="username" required>
+
+
+                        <label for="register-email">
+                            E-Mail
+                        </label>
+
+                        <input id="register-email" type="email" autocomplete="email" required>
+
+
+                        <label for="register-password">
+                            Passwort
+                        </label>
+
+                        <input id="register-password" type="password" autocomplete="new-password" minlength="6"
+                            required>
+
+
+                        <button class="auth-submit" type="submit">
+                            Konto erstellen
+                        </button>
+
+                    </form>
+
+
+                    <p class="auth-message" id="register-message">
+                    </p>
+
+
+                    <button class="auth-switch" id="show-login" type="button">
+                        Bereits ein Konto? Anmelden
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </main>
 
 
+    <!-- ==========================================
+         SUPABASE
+         ========================================== -->
+
     <script src="js/config.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script src="js/supabase.js"></script>
+
 
     <!-- ==========================================
          STATISTIK
@@ -1054,24 +1263,507 @@
             }
         );
 
-        getCurrentUser().then(user => {
 
-            if (user) {
+        // ==========================================
+        // AUTH-ELEMENTE
+        // ==========================================
 
-                console.log(
-                    "Eingeloggt:",
-                    user
-                );
+        const loggedOutView =
+            document.getElementById(
+                "logged-out-view"
+            );
+
+
+        const loggedInView =
+            document.getElementById(
+                "logged-in-view"
+            );
+
+
+        const accountUsername =
+            document.getElementById(
+                "account-username"
+            );
+
+
+        const loginButton =
+            document.getElementById(
+                "login-button"
+            );
+
+
+        const registerButton =
+            document.getElementById(
+                "register-button"
+            );
+
+
+        const logoutButton =
+            document.getElementById(
+                "logout-button"
+            );
+
+
+        const authOverlay =
+            document.getElementById(
+                "auth-overlay"
+            );
+
+
+        const authClose =
+            document.getElementById(
+                "auth-close"
+            );
+
+
+        const loginView =
+            document.getElementById(
+                "login-view"
+            );
+
+
+        const registerView =
+            document.getElementById(
+                "register-view"
+            );
+
+
+        const loginForm =
+            document.getElementById(
+                "login-form"
+            );
+
+
+        const registerForm =
+            document.getElementById(
+                "register-form"
+            );
+
+
+        const loginMessage =
+            document.getElementById(
+                "login-message"
+            );
+
+
+        const registerMessage =
+            document.getElementById(
+                "register-message"
+            );
+
+
+        const showRegister =
+            document.getElementById(
+                "show-register"
+            );
+
+
+        const showLogin =
+            document.getElementById(
+                "show-login"
+            );
+
+
+        // ==========================================
+        // AUTH-FENSTER ÖFFNEN
+        // ==========================================
+
+        function openAuth(
+            mode = "login"
+        ) {
+
+            authOverlay.classList.add(
+                "active"
+            );
+
+
+            loginMessage.textContent =
+                "";
+
+
+            registerMessage.textContent =
+                "";
+
+
+            if (
+                mode === "register"
+            ) {
+
+                loginView.hidden =
+                    true;
+
+                registerView.hidden =
+                    false;
 
             } else {
 
-                console.log(
-                    "Kein Benutzer eingeloggt."
-                );
+                loginView.hidden =
+                    false;
+
+                registerView.hidden =
+                    true;
 
             }
 
-        });
+        }
+
+
+        // ==========================================
+        // AUTH-FENSTER SCHLIESSEN
+        // ==========================================
+
+        function closeAuth() {
+
+            authOverlay.classList.remove(
+                "active"
+            );
+
+        }
+
+
+        // ==========================================
+        // LOGIN
+        // ==========================================
+
+        loginForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                loginMessage.textContent =
+                    "Anmeldung läuft...";
+
+
+                const email =
+                    document.getElementById(
+                        "login-email"
+                    ).value.trim();
+
+
+                const password =
+                    document.getElementById(
+                        "login-password"
+                    ).value;
+
+
+                console.log(
+                    "Login-Versuch für:",
+                    email
+                );
+
+
+                try {
+
+                    const result =
+                        await loginUser(
+                            email,
+                            password
+                        );
+
+
+                    console.log(
+                        "Login erfolgreich:",
+                        result
+                    );
+
+
+                    const user =
+                        await getCurrentUser();
+
+
+                    console.log(
+                        "Aktueller Benutzer:",
+                        user
+                    );
+
+
+                    await updateAuthUI();
+
+
+                    loginForm.reset();
+
+                    closeAuth();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "LOGIN FEHLGESCHLAGEN:",
+                        error
+                    );
+
+
+                    console.error(
+                        "Fehlermeldung:",
+                        error.message
+                    );
+
+
+                    console.error(
+                        "Fehlercode:",
+                        error.code
+                    );
+
+
+                    loginMessage.textContent =
+                        error.message ||
+                        "Anmeldung fehlgeschlagen.";
+
+                }
+
+            }
+        );
+
+
+        // ==========================================
+        // REGISTRIERUNG
+        // ==========================================
+
+        registerForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                registerMessage.textContent =
+                    "Konto wird erstellt...";
+
+
+                const username =
+                    document.getElementById(
+                        "register-username"
+                    ).value.trim();
+
+
+                const email =
+                    document.getElementById(
+                        "register-email"
+                    ).value.trim();
+
+
+                const password =
+                    document.getElementById(
+                        "register-password"
+                    ).value;
+
+
+                try {
+
+                    await registerUser(
+                        username,
+                        email,
+                        password
+                    );
+
+
+                    await updateAuthUI();
+
+
+                    registerForm.reset();
+
+
+                    closeAuth();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Registrierung fehlgeschlagen:",
+                        error
+                    );
+
+
+                    registerMessage.textContent =
+                        error.message ||
+                        "Registrierung fehlgeschlagen.";
+
+                }
+
+            }
+        );
+
+
+        // ==========================================
+        // AUTH-STATUS AKTUALISIEREN
+        // ==========================================
+
+        async function updateAuthUI() {
+
+            const user =
+                await getCurrentUser();
+
+
+            if (user) {
+
+                loggedOutView.hidden =
+                    true;
+
+                loggedInView.hidden =
+                    false;
+
+
+                const username =
+                    user.user_metadata?.username;
+
+
+                accountUsername.textContent =
+                    username ||
+                    user.email;
+
+            } else {
+
+                loggedOutView.hidden =
+                    false;
+
+                loggedInView.hidden =
+                    true;
+
+                accountUsername.textContent =
+                    "";
+
+            }
+
+
+            // Statistik an den aktuellen
+            // Benutzerstatus anpassen
+
+            await initializeStatistics();
+
+        }
+
+
+        // ==========================================
+        // LOGOUT
+        // ==========================================
+
+        logoutButton.addEventListener(
+            "click",
+            async () => {
+
+                logoutButton.disabled =
+                    true;
+
+                logoutButton.textContent =
+                    "Abmelden...";
+
+
+                try {
+
+                    await logoutUser();
+
+
+                    await updateAuthUI();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Logout fehlgeschlagen:",
+                        error
+                    );
+
+
+                    alert(
+                        "Beim Abmelden ist ein Fehler aufgetreten."
+                    );
+
+                } finally {
+
+                    logoutButton.disabled =
+                        false;
+
+                    logoutButton.textContent =
+                        "Abmelden";
+
+                }
+
+            }
+        );
+
+
+        // ==========================================
+        // AUTH-BUTTONS
+        // ==========================================
+
+        loginButton.addEventListener(
+            "click",
+            () => {
+
+                openAuth(
+                    "login"
+                );
+
+            }
+        );
+
+
+        registerButton.addEventListener(
+            "click",
+            () => {
+
+                openAuth(
+                    "register"
+                );
+
+            }
+        );
+
+
+        showRegister.addEventListener(
+            "click",
+            () => {
+
+                openAuth(
+                    "register"
+                );
+
+            }
+        );
+
+
+        showLogin.addEventListener(
+            "click",
+            () => {
+
+                openAuth(
+                    "login"
+                );
+
+            }
+        );
+
+
+        authClose.addEventListener(
+            "click",
+            closeAuth
+        );
+
+
+        authOverlay.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    authOverlay
+                ) {
+
+                    closeAuth();
+
+                }
+
+            }
+        );
+
+
+        // ==========================================
+        // AUTH-STATUS BEIM LADEN
+        // ==========================================
+
+        updateAuthUI();
 
     </script>
 
