@@ -445,6 +445,24 @@ function updateWaterCandidates(
 
 
     /*
+     * Gewässer des Ziellandes,
+     * die comparison.js als gemeinsame
+     * Gewässer erkannt hat.
+     */
+
+    const targetWaters =
+        comparison &&
+            comparison.water &&
+            Array.isArray(
+                comparison.water.sharedValues
+            )
+            ? uniqueValues(
+                comparison.water.sharedValues
+            )
+            : [];
+
+
+    /*
      * Alle bisher bei positiven Treffern
      * gefundenen Gewässer als möglich behandeln.
      */
@@ -502,38 +520,88 @@ function updateWaterCandidates(
     }
 
 
+    /* ==========================================
+       EINDEUTIGER TREFFER
+       ========================================== */
+
     /*
-     * Erst wenn ein Gewässer mindestens
-     * zweimal gefunden wurde, darf es
-     * gegen das Zielland geprüft werden.
+     * Wenn ein positives Trefferland genau
+     * ein Gewässer besitzt, ist dieses Gewässer
+     * eindeutig und kann bereits nach einem
+     * Treffer gesichert werden.
+     */
+
+    for (
+        const match
+        of hintState.waterMatches
+    ) {
+
+        const waters =
+            uniqueValues(
+                match
+            );
+
+
+        if (
+            waters.length !== 1
+        ) {
+
+            continue;
+
+        }
+
+
+        const water =
+            waters[0];
+
+
+        if (
+            hintState.waterExcluded.includes(
+                water
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            targetWaters.includes(
+                water
+            )
+        ) {
+
+            addUnique(
+                certain,
+                water
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================
+       NORMALE 2-TREFFER-REGEL
+       ========================================== */
+
+    /*
+     * Gewässer, die bei mindestens zwei
+     * positiven Treffern vorkamen, dürfen
+     * ebenfalls gegen das Zielland geprüft
+     * werden.
      */
 
     const possibleForCertain =
         possible.filter(
             water =>
+                !certain.includes(water) &&
                 countValueMatches(
                     hintState.waterMatches,
                     water
                 ) >= 2
         );
-
-
-    /*
-     * Gewässer des Ziellandes,
-     * die comparison.js als gemeinsame
-     * Gewässer erkannt hat.
-     */
-
-    const targetWaters =
-        comparison &&
-            comparison.water &&
-            Array.isArray(
-                comparison.water.sharedValues
-            )
-            ? uniqueValues(
-                comparison.water.sharedValues
-            )
-            : [];
 
 
     for (

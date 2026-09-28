@@ -1418,3 +1418,627 @@
     color:
         #111;
 }
+
+
+/* =========================================
+   BENUTZERBEREICH
+   ========================================== */
+
+.account-container {
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    align-items:
+        center;
+
+    width:
+        100%;
+
+    margin-bottom:
+        20px;
+
+    color:
+        #ffffff;
+}
+
+
+/* =========================================
+   ACCOUNT-SICHTBARKEIT
+   ========================================== */
+
+#logged-out-view[hidden],
+#logged-in-view[hidden] {
+    display:
+        none !important;
+}
+
+
+/* =========================================
+   ACCOUNT-BEREICHE
+   ========================================== */
+
+#logged-out-view,
+#logged-in-view {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+}
+
+
+/* =========================================
+   ACCOUNT-BUTTONS
+   ========================================== */
+
+.account-button {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        38px;
+
+    padding:
+        8px 15px;
+
+    border:
+        1px solid #ccc;
+
+    border-radius:
+        8px;
+
+    background:
+        #fafafa;
+
+    color:
+        #444;
+
+    font:
+        inherit;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.account-button:hover {
+    background:
+        #eeeeee;
+
+    border-color:
+        #aaa;
+
+    color:
+        #222;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(0,
+            0,
+            0,
+            0.06);
+}
+
+.account-button:active {
+    background:
+        #e5e5e5;
+
+    transform:
+        translateY(0);
+
+    box-shadow:
+        none;
+}
+
+.account-button:disabled {
+    background:
+        #ddd;
+
+    border-color:
+        #ccc;
+
+    color:
+        #888;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   BENUTZERNAME
+   ========================================== */
+
+.account-username {
+    display:
+        flex;
+
+    align-items:
+        baseline;
+
+    gap:
+        6px;
+
+    padding:
+        0 4px;
+
+    line-height:
+        1.2;
+}
+
+.account-user-label {
+    color:
+        #aaa;
+
+    font-size:
+        12px;
+}
+
+#account-username {
+    color:
+        #ffffff;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =========================================
+   AUTH-POPUP
+   ========================================== */
+
+#auth-overlay {
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    box-sizing:
+        border-box;
+
+    background:
+        rgba(0,
+            0,
+            0,
+            0.55);
+
+    z-index:
+        2000;
+}
+
+#auth-overlay.active {
+    display:
+        flex;
+}
+
+.auth-popup {
+    position:
+        relative;
+
+    width:
+        min(420px,
+            100%);
+
+    max-height:
+        calc(100vh - 40px);
+
+    padding:
+        30px;
+
+    box-sizing:
+        border-box;
+
+    overflow-y:
+        auto;
+
+    border-radius:
+        14px;
+
+    background:
+        #fff;
+
+    color:
+        #222;
+
+    box-shadow:
+        0 20px 50px rgba(0,
+            0,
+            0,
+            0.35);
+
+    animation:
+        slideUp 0.25s ease;
+}
+
+
+/* =========================================
+   AUTH-SCHLIESSEN
+   ========================================== */
+
+.auth-close {
+    position:
+        absolute;
+
+    top:
+        15px;
+
+    right:
+        18px;
+
+    width:
+        auto;
+
+    height:
+        auto;
+
+    padding:
+        0;
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        #555;
+
+    font-size:
+        30px;
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+}
+
+.auth-close:hover {
+    color:
+        #111;
+
+    background:
+        transparent;
+}
+
+
+/* =========================================
+   AUTH-INHALT
+   ========================================== */
+
+.auth-popup h2 {
+    margin:
+        0 35px 8px 0;
+
+    font-size:
+        24px;
+}
+
+.auth-description {
+    margin:
+        0 0 22px;
+
+    color:
+        #666;
+
+    line-height:
+        1.5;
+}
+
+
+/* =========================================
+   AUTH-FORMULAR
+   ========================================== */
+
+.auth-popup form {
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        9px;
+}
+
+.auth-popup form label {
+    margin-top:
+        4px;
+
+    color:
+        #333;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+}
+
+.auth-popup input {
+    width:
+        100%;
+
+    box-sizing:
+        border-box;
+
+    padding:
+        10px 12px;
+
+    border:
+        1px solid #ccc;
+
+    border-radius:
+        8px;
+
+    background:
+        #fafafa;
+
+    color:
+        #222;
+
+    font:
+        inherit;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+
+.auth-popup input:hover {
+    border-color:
+        #aaa;
+}
+
+.auth-popup input:focus {
+    outline:
+        none;
+
+    border-color:
+        #666;
+
+    background:
+        #fff;
+
+    box-shadow:
+        0 0 0 2px rgba(0,
+            0,
+            0,
+            0.05);
+}
+
+
+/* =========================================
+   AUTH-SUBMIT
+   ========================================== */
+
+.auth-submit {
+    margin-top:
+        10px;
+
+    padding:
+        11px 16px;
+
+    border:
+        none;
+
+    border-radius:
+        8px;
+
+    background:
+        linear-gradient(135deg,
+            #333,
+            #111);
+
+    color:
+        white;
+
+    font:
+        inherit;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 5px 12px rgba(0,
+            0,
+            0,
+            0.15);
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.auth-submit:hover {
+    background:
+        linear-gradient(135deg,
+            #555,
+            #222);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 7px 16px rgba(0,
+            0,
+            0,
+            0.2);
+}
+
+.auth-submit:active {
+    transform:
+        translateY(0);
+
+    box-shadow:
+        0 3px 8px rgba(0,
+            0,
+            0,
+            0.15);
+}
+
+
+/* =========================================
+   AUTH-MELDUNG
+   ========================================== */
+
+.auth-message {
+    min-height:
+        20px;
+
+    margin:
+        12px 0 0;
+
+    text-align:
+        center;
+
+    color:
+        #555;
+
+    font-size:
+        13px;
+}
+
+
+/* =========================================
+   AUTH-UMSCHALTEN
+   ========================================== */
+
+.auth-switch {
+    width:
+        100%;
+
+    margin-top:
+        16px;
+
+    padding:
+        0;
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        #555;
+
+    font:
+        inherit;
+
+    font-size:
+        13px;
+
+    cursor:
+        pointer;
+
+    text-decoration:
+        underline;
+
+    transition:
+        color 0.15s ease;
+}
+
+.auth-switch:hover {
+    color:
+        #111;
+}
+
+
+/* =========================================
+   AUTH-POPUP RESPONSIVE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .account-container {
+        justify-content:
+            center;
+    }
+
+    .auth-popup {
+        padding:
+            25px 20px;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    #logged-out-view,
+    #logged-in-view {
+        width:
+            100%;
+    }
+
+    #logged-out-view .account-button,
+    #logged-in-view .account-button {
+        flex:
+            1;
+    }
+
+    .account-username {
+        flex:
+            1;
+
+        justify-content:
+            center;
+    }
+
+}

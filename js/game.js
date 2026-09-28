@@ -1071,7 +1071,7 @@ async function makeGuess() {
         );
 
 
-        recordGame(
+        await recordGame(
             targetCountry.continent,
             guessedCountries.length,
             true
@@ -1216,7 +1216,7 @@ async function makeGuess() {
             guessedCountries.length >= 20
         ) {
 
-            recordGame(
+            await recordGame(
                 targetCountry.continent,
                 guessedCountries.length,
                 false

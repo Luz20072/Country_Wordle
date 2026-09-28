@@ -7,6 +7,33 @@ const STATISTICS_KEY =
 
 
 // ==========================================
+// KONTINENT-ZUORDNUNG
+// ==========================================
+
+const CONTINENT_KEYS = {
+
+    "Afrika":
+        "afrika",
+
+    "Asien":
+        "asien",
+
+    "Europa":
+        "europa",
+
+    "Nordamerika":
+        "nordamerika",
+
+    "Südamerika":
+        "suedamerika",
+
+    "Ozeanien":
+        "ozeanien"
+
+};
+
+
+// ==========================================
 // STANDARDWERTE
 // ==========================================
 
@@ -36,10 +63,254 @@ function getDefaultStatistics() {
 
 
 // ==========================================
-// STATISTIK LADEN
+// STANDARD-KONTINENT
 // ==========================================
 
-function getStatistics() {
+function getDefaultContinentStatistics() {
+
+    return {
+
+        games: 0,
+
+        wins: 0,
+
+        losses: 0,
+
+        totalGuesses: 0,
+
+        guessDistribution: {}
+
+    };
+
+}
+
+
+// ==========================================
+// STATISTIK AUS PROFILES AUFBAUEN
+// ==========================================
+
+function buildStatisticsFromProfile(
+    profile
+) {
+
+    const statistics =
+        getDefaultStatistics();
+
+
+    statistics.gamesPlayed =
+        Number(
+            profile.games_played
+        ) || 0;
+
+
+    statistics.wins =
+        Number(
+            profile.wins
+        ) || 0;
+
+
+    statistics.losses =
+        Number(
+            profile.losses
+        ) || 0;
+
+
+    statistics.totalGuesses =
+        Number(
+            profile.total_guesses
+        ) || 0;
+
+
+    Object.entries(
+        CONTINENT_KEYS
+    ).forEach(
+        (
+            [
+                continent,
+                databaseKey
+            ]
+        ) => {
+
+            const data =
+                profile[
+                databaseKey
+                ];
+
+
+            if (
+                !data ||
+                typeof data !== "object"
+            ) {
+
+                return;
+
+            }
+
+
+            statistics.continents[
+                continent
+            ] = {
+
+                games:
+                    Number(
+                        data.games
+                    ) || 0,
+
+                wins:
+                    Number(
+                        data.wins
+                    ) || 0,
+
+                losses:
+                    Number(
+                        data.losses
+                    ) || 0,
+
+                totalGuesses:
+                    Number(
+                        data.totalGuesses
+                    ) || 0,
+
+                guessDistribution:
+                    data.guessDistribution &&
+                        typeof data.guessDistribution === "object"
+                        ? {
+                            ...data.guessDistribution
+                        }
+                        : {}
+
+            };
+
+        }
+    );
+
+
+    calculateDerivedStatistics(
+        statistics
+    );
+
+
+    return statistics;
+
+}
+
+
+// ==========================================
+// ABGELEITETE WERTE BERECHNEN
+// ==========================================
+
+function calculateDerivedStatistics(
+    statistics
+) {
+
+    statistics.bestGuesses =
+        null;
+
+
+    statistics.worstGuesses =
+        null;
+
+
+    statistics.guessDistribution =
+        {};
+
+
+    Object.values(
+        statistics.continents
+    ).forEach(
+        continent => {
+
+            Object.entries(
+                continent.guessDistribution || {}
+            ).forEach(
+                (
+                    [
+                        guesses,
+                        count
+                    ]
+                ) => {
+
+                    const numericGuesses =
+                        Number(
+                            guesses
+                        );
+
+
+                    const numericCount =
+                        Number(
+                            count
+                        ) || 0;
+
+
+                    if (
+                        !Number.isFinite(
+                            numericGuesses
+                        ) ||
+                        numericCount <= 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !statistics.guessDistribution[
+                        numericGuesses
+                        ]
+                    ) {
+
+                        statistics.guessDistribution[
+                            numericGuesses
+                        ] =
+                            0;
+
+                    }
+
+
+                    statistics.guessDistribution[
+                        numericGuesses
+                    ] +=
+                        numericCount;
+
+
+                    if (
+                        statistics.bestGuesses === null ||
+                        numericGuesses <
+                        statistics.bestGuesses
+                    ) {
+
+                        statistics.bestGuesses =
+                            numericGuesses;
+
+                    }
+
+
+                    if (
+                        statistics.worstGuesses === null ||
+                        numericGuesses >
+                        statistics.worstGuesses
+                    ) {
+
+                        statistics.worstGuesses =
+                            numericGuesses;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// LOKALE STATISTIK LADEN
+// ==========================================
+
+function getLocalStatistics() {
 
     const savedStatistics =
         localStorage.getItem(
@@ -76,10 +347,6 @@ function getStatistics() {
         /*
          * Kompatibilität mit alten
          * Statistikdaten.
-         *
-         * Früher wurden nur Spiele gezählt.
-         * Diese werden deshalb als Siege
-         * übernommen.
          */
 
         if (
@@ -128,19 +395,9 @@ function getStatistics() {
 
                     statistics.continents[
                         continent
-                    ] = {
+                    ] =
+                        getDefaultContinentStatistics();
 
-                        games: 0,
-
-                        wins: 0,
-
-                        losses: 0,
-
-                        totalGuesses: 0,
-
-                        guessDistribution: {}
-
-                    };
 
                     return;
 
@@ -184,7 +441,7 @@ function getStatistics() {
     catch (error) {
 
         console.error(
-            "Fehler beim Laden der Statistik:",
+            "Fehler beim Laden der lokalen Statistik:",
             error
         );
 
@@ -197,10 +454,79 @@ function getStatistics() {
 
 
 // ==========================================
-// STATISTIK SPEICHERN
+// STATISTIK LADEN
 // ==========================================
 
-function saveStatistics(
+async function getStatistics() {
+
+    const user =
+        await getCurrentUser();
+
+
+    // ======================================
+    // GAST
+    // ======================================
+
+    if (!user) {
+
+        return getLocalStatistics();
+
+    }
+
+
+    // ======================================
+    // EINGELOGGT
+    // ======================================
+
+    try {
+
+        const result =
+            await supabaseRequest(
+                `profiles?select=*&id=eq.${user.id}`
+            );
+
+
+        if (
+            !result ||
+            result.length === 0
+        ) {
+
+            console.error(
+                "Kein Profil für den Benutzer gefunden."
+            );
+
+
+            return getDefaultStatistics();
+
+        }
+
+
+        return buildStatisticsFromProfile(
+            result[0]
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Fehler beim Laden der Benutzerstatistik:",
+            error
+        );
+
+
+        return getDefaultStatistics();
+
+    }
+
+}
+
+
+// ==========================================
+// LOKALE STATISTIK SPEICHERN
+// ==========================================
+
+function saveLocalStatistics(
     statistics
 ) {
 
@@ -218,7 +544,7 @@ function saveStatistics(
 // SPIEL AUFZEICHNEN
 // ==========================================
 
-function recordGame(
+async function recordGame(
     continent,
     guesses,
     won = true
@@ -243,174 +569,367 @@ function recordGame(
         );
 
 
-    const statistics =
-        getStatistics();
+    const user =
+        await getCurrentUser();
 
 
     // ======================================
-    // GESAMTSPIELE
+    // GAST
     // ======================================
 
-    statistics.gamesPlayed++;
+    if (!user) {
+
+        const statistics =
+            getLocalStatistics();
 
 
-    // ======================================
-    // KONTINENT
-    // ======================================
+        statistics.gamesPlayed++;
 
-    if (
-        !statistics.continents[
-        continent
-        ]
-    ) {
 
-        statistics.continents[
+        if (
+            !statistics.continents[
             continent
-        ] = {
+            ]
+        ) {
 
-            games: 0,
+            statistics.continents[
+                continent
+            ] =
+                getDefaultContinentStatistics();
 
-            wins: 0,
+        }
 
-            losses: 0,
 
-            totalGuesses: 0,
+        const continentStatistics =
+            statistics.continents[
+            continent
+            ];
 
-            guessDistribution: {}
 
-        };
+        continentStatistics.games++;
+
+
+        if (won) {
+
+            statistics.wins++;
+
+
+            statistics.totalGuesses +=
+                guesses;
+
+
+            continentStatistics.wins++;
+
+
+            continentStatistics.totalGuesses +=
+                guesses;
+
+
+            if (
+                statistics.bestGuesses === null ||
+                guesses <
+                statistics.bestGuesses
+            ) {
+
+                statistics.bestGuesses =
+                    guesses;
+
+            }
+
+
+            if (
+                statistics.worstGuesses === null ||
+                guesses >
+                statistics.worstGuesses
+            ) {
+
+                statistics.worstGuesses =
+                    guesses;
+
+            }
+
+
+            if (
+                !statistics.guessDistribution[
+                guesses
+                ]
+            ) {
+
+                statistics.guessDistribution[
+                    guesses
+                ] =
+                    0;
+
+            }
+
+
+            statistics.guessDistribution[
+                guesses
+            ]++;
+
+
+            if (
+                !continentStatistics.guessDistribution[
+                guesses
+                ]
+            ) {
+
+                continentStatistics.guessDistribution[
+                    guesses
+                ] =
+                    0;
+
+            }
+
+
+            continentStatistics.guessDistribution[
+                guesses
+            ]++;
+
+        }
+
+        else {
+
+            statistics.losses++;
+
+
+            continentStatistics.losses++;
+
+        }
+
+
+        saveLocalStatistics(
+            statistics
+        );
+
+
+        return;
 
     }
 
 
-    const continentStatistics =
-        statistics.continents[
+    // ======================================
+    // EINGELOGGT
+    // ======================================
+
+    const databaseKey =
+        CONTINENT_KEYS[
         continent
         ];
 
 
-    continentStatistics.games++;
+    if (!databaseKey) {
+
+        console.error(
+            "Unbekannter Kontinent:",
+            continent
+        );
 
 
-    // ======================================
-    // SIEG
-    // ======================================
+        return;
 
-    if (
-        won
-    ) {
-
-        statistics.wins++;
+    }
 
 
-        statistics.totalGuesses +=
-            guesses;
+    try {
 
+        const result =
+            await supabaseRequest(
+                `profiles?select=*&id=eq.${user.id}`
+            );
 
-        continentStatistics.wins++;
-
-
-        continentStatistics.totalGuesses +=
-            guesses;
-
-
-        // ==================================
-        // BESTWERT
-        // ==================================
 
         if (
-            statistics.bestGuesses === null ||
-            guesses <
-            statistics.bestGuesses
+            !result ||
+            result.length === 0
         ) {
 
-            statistics.bestGuesses =
-                guesses;
+            throw new Error(
+                "Benutzerprofil nicht gefunden."
+            );
 
         }
 
 
-        // ==================================
-        // SCHLECHTESTER WERT
-        // ==================================
+        const profile =
+            result[0];
 
-        if (
-            statistics.worstGuesses === null ||
-            guesses >
-            statistics.worstGuesses
-        ) {
 
-            statistics.worstGuesses =
+        const continentStatistics = {
+
+            ...(profile[
+                databaseKey
+            ] || getDefaultContinentStatistics())
+
+        };
+
+
+        continentStatistics.games =
+            Number(
+                continentStatistics.games
+            ) || 0;
+
+
+        continentStatistics.wins =
+            Number(
+                continentStatistics.wins
+            ) || 0;
+
+
+        continentStatistics.losses =
+            Number(
+                continentStatistics.losses
+            ) || 0;
+
+
+        continentStatistics.totalGuesses =
+            Number(
+                continentStatistics.totalGuesses
+            ) || 0;
+
+
+        continentStatistics.guessDistribution =
+            continentStatistics.guessDistribution &&
+                typeof continentStatistics.guessDistribution === "object"
+                ? {
+                    ...continentStatistics.guessDistribution
+                }
+                : {};
+
+
+        continentStatistics.games++;
+
+
+        if (won) {
+
+            continentStatistics.wins++;
+
+
+            continentStatistics.totalGuesses +=
                 guesses;
 
-        }
 
-
-        // ==================================
-        // GESAMT-VERTEILUNG
-        // ==================================
-
-        if (
-            !statistics.guessDistribution[
-            guesses
-            ]
-        ) {
-
-            statistics.guessDistribution[
+            if (
+                !continentStatistics.guessDistribution[
                 guesses
-            ] =
-                0;
+                ]
+            ) {
 
-        }
+                continentStatistics.guessDistribution[
+                    guesses
+                ] =
+                    0;
 
+            }
 
-        statistics.guessDistribution[
-            guesses
-        ]++;
-
-
-        // ==================================
-        // KONTINENT-VERTEILUNG
-        // ==================================
-
-        if (
-            !continentStatistics.guessDistribution[
-            guesses
-            ]
-        ) {
 
             continentStatistics.guessDistribution[
                 guesses
-            ] =
-                0;
+            ]++;
+
+        }
+
+        else {
+
+            continentStatistics.losses++;
 
         }
 
 
-        continentStatistics.guessDistribution[
-            guesses
-        ]++;
+        const gamesPlayed =
+            Number(
+                profile.games_played
+            ) || 0;
+
+
+        const wins =
+            Number(
+                profile.wins
+            ) || 0;
+
+
+        const losses =
+            Number(
+                profile.losses
+            ) || 0;
+
+
+        const totalGuesses =
+            Number(
+                profile.total_guesses
+            ) || 0;
+
+
+        const updateData = {
+
+            games_played:
+                gamesPlayed + 1,
+
+            wins:
+                wins +
+                (
+                    won
+                        ? 1
+                        : 0
+                ),
+
+            losses:
+                losses +
+                (
+                    won
+                        ? 0
+                        : 1
+                ),
+
+            total_guesses:
+                totalGuesses +
+                (
+                    won
+                        ? guesses
+                        : 0
+                )
+
+        };
+
+
+        updateData[
+            databaseKey
+        ] =
+            continentStatistics;
+
+
+        await supabaseRequest(
+            `profiles?id=eq.${user.id}`,
+            {
+
+                method:
+                    "PATCH",
+
+                headers: {
+
+                    Prefer:
+                        "return=minimal"
+
+                },
+
+                body:
+                    JSON.stringify(
+                        updateData
+                    )
+
+            }
+        );
 
     }
 
+    catch (error) {
 
-    // ======================================
-    // VERLUST
-    // ======================================
-
-    else {
-
-        statistics.losses++;
-
-
-        continentStatistics.losses++;
+        console.error(
+            "Fehler beim Speichern der Benutzerstatistik:",
+            error
+        );
 
     }
-
-
-    saveStatistics(
-        statistics
-    );
 
 }
 
@@ -419,10 +938,10 @@ function recordGame(
 // DURCHSCHNITT
 // ==========================================
 
-function getAverageGuesses() {
+async function getAverageGuesses() {
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     if (
@@ -446,12 +965,12 @@ function getAverageGuesses() {
 // KONTINENT-DURCHSCHNITT
 // ==========================================
 
-function getContinentAverage(
+async function getContinentAverage(
     continent
 ) {
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     const data =
@@ -482,10 +1001,10 @@ function getContinentAverage(
 // MEISTGESPIELTER KONTINENT
 // ==========================================
 
-function getMostPlayedContinent() {
+async function getMostPlayedContinent() {
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     const continents =
@@ -522,10 +1041,10 @@ function getMostPlayedContinent() {
 // ERFOLGREICHSTER KONTINENT
 // ==========================================
 
-function getBestContinent() {
+async function getBestContinent() {
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     const continents =
@@ -581,10 +1100,10 @@ function getBestContinent() {
 // SCHWIERIGSTER KONTINENT
 // ==========================================
 
-function getWorstContinent() {
+async function getWorstContinent() {
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     const continents =
@@ -640,10 +1159,10 @@ function getWorstContinent() {
 // STATISTIK ANZEIGEN
 // ==========================================
 
-function displayStatistics() {
+async function displayStatistics() {
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     const gamesElement =
@@ -682,9 +1201,7 @@ function displayStatistics() {
         );
 
 
-    if (
-        gamesElement
-    ) {
+    if (gamesElement) {
 
         gamesElement.textContent =
             statistics.gamesPlayed;
@@ -692,9 +1209,7 @@ function displayStatistics() {
     }
 
 
-    if (
-        winsElement
-    ) {
+    if (winsElement) {
 
         winsElement.textContent =
             statistics.wins;
@@ -702,9 +1217,7 @@ function displayStatistics() {
     }
 
 
-    if (
-        lossesElement
-    ) {
+    if (lossesElement) {
 
         lossesElement.textContent =
             statistics.losses;
@@ -712,12 +1225,13 @@ function displayStatistics() {
     }
 
 
-    if (
-        averageElement
-    ) {
+    if (averageElement) {
 
         const average =
-            getAverageGuesses();
+            statistics.wins > 0
+                ? statistics.totalGuesses /
+                statistics.wins
+                : null;
 
 
         averageElement.textContent =
@@ -728,9 +1242,7 @@ function displayStatistics() {
     }
 
 
-    if (
-        bestElement
-    ) {
+    if (bestElement) {
 
         bestElement.textContent =
             statistics.bestGuesses === null
@@ -740,9 +1252,7 @@ function displayStatistics() {
     }
 
 
-    if (
-        worstElement
-    ) {
+    if (worstElement) {
 
         worstElement.textContent =
             statistics.worstGuesses === null
@@ -753,15 +1263,15 @@ function displayStatistics() {
 
 
     const mostContinent =
-        getMostPlayedContinent();
+        await getMostPlayedContinent();
 
 
     const bestContinent =
-        getBestContinent();
+        await getBestContinent();
 
 
     const worstContinent =
-        getWorstContinent();
+        await getWorstContinent();
 
 
     const mostElement =
@@ -782,9 +1292,7 @@ function displayStatistics() {
         );
 
 
-    if (
-        mostElement
-    ) {
+    if (mostElement) {
 
         mostElement.textContent =
             mostContinent || "-";
@@ -792,9 +1300,7 @@ function displayStatistics() {
     }
 
 
-    if (
-        bestContinentElement
-    ) {
+    if (bestContinentElement) {
 
         bestContinentElement.textContent =
             bestContinent || "-";
@@ -802,9 +1308,7 @@ function displayStatistics() {
     }
 
 
-    if (
-        worstContinentElement
-    ) {
+    if (worstContinentElement) {
 
         worstContinentElement.textContent =
             worstContinent || "-";
@@ -818,7 +1322,7 @@ function displayStatistics() {
 // VERSUCHSVERTEILUNG
 // ==========================================
 
-function displayGuessDistribution(
+async function displayGuessDistribution(
     continent = null
 ) {
 
@@ -834,9 +1338,7 @@ function displayGuessDistribution(
         );
 
 
-    if (
-        !container
-    ) {
+    if (!container) {
 
         return;
 
@@ -844,16 +1346,14 @@ function displayGuessDistribution(
 
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     let distribution =
         statistics.guessDistribution;
 
 
-    if (
-        continent
-    ) {
+    if (continent) {
 
         const continentStatistics =
             statistics.continents[
@@ -873,9 +1373,7 @@ function displayGuessDistribution(
         "";
 
 
-    if (
-        title
-    ) {
+    if (title) {
 
         title.textContent =
             continent
@@ -901,9 +1399,7 @@ function displayGuessDistribution(
             );
 
 
-    if (
-        entries.length === 0
-    ) {
+    if (entries.length === 0) {
 
         const empty =
             document.createElement(
@@ -1044,7 +1540,7 @@ function displayGuessDistribution(
 // KONTINENT-DETAILS
 // ==========================================
 
-function displayContinentDetails(
+async function displayContinentDetails(
     selectedContinent = null
 ) {
 
@@ -1054,9 +1550,7 @@ function displayContinentDetails(
         );
 
 
-    if (
-        !container
-    ) {
+    if (!container) {
 
         return;
 
@@ -1064,7 +1558,7 @@ function displayContinentDetails(
 
 
     const statistics =
-        getStatistics();
+        await getStatistics();
 
 
     container.innerHTML =
@@ -1081,9 +1575,7 @@ function displayContinentDetails(
             );
 
 
-    if (
-        continents.length === 0
-    ) {
+    if (continents.length === 0) {
 
         const empty =
             document.createElement(
@@ -1121,9 +1613,7 @@ function displayContinentDetails(
                 ];
 
 
-            if (
-                !data
-            ) {
+            if (!data) {
 
                 return;
 
@@ -1172,7 +1662,7 @@ function displayContinentDetails(
             details.textContent =
                 `${data.games} Spiele · ` +
                 `${data.wins} Siege · ` +
-                `${data.losses} Niederlagen· ` +
+                `${data.losses} Niederlagen · ` +
                 `Ø ${average} Versuche`;
 
 
@@ -1212,16 +1702,16 @@ function displayContinentDetails(
 // DETAILSTATISTIK
 // ==========================================
 
-function displayDetailedStatistics(
+async function displayDetailedStatistics(
     continent = null
 ) {
 
-    displayGuessDistribution(
+    await displayGuessDistribution(
         continent
     );
 
 
-    displayContinentDetails(
+    await displayContinentDetails(
         continent
     );
 
@@ -1232,4 +1722,8 @@ function displayDetailedStatistics(
 // STATISTIK INITIALISIEREN
 // ==========================================
 
-displayStatistics();
+async function initializeStatistics() {
+
+    await displayStatistics();
+
+}
