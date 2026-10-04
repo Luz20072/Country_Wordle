@@ -3,6 +3,8 @@
 
 <head>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +17,7 @@
     <link rel="stylesheet" href="css/start.css">
     <link rel="stylesheet" href="css/hints.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/rankings.css">
 
 </head>
 
@@ -377,6 +380,116 @@
             <button class="statistics-details-button" id="statistics-details-button" type="button">
                 Mehr Details
             </button>
+
+        </section>
+
+        <!-- ==========================================
+     RANKINGS
+     ========================================== -->
+
+        <section class="rankings-container">
+
+            <h2>
+                Rankings
+            </h2>
+
+
+            <!-- ==========================================
+         RANKING-TABS
+         ========================================== -->
+
+            <div class="ranking-tabs">
+
+                <button class="ranking-tab active" type="button" data-ranking="average">
+                    Durchschnitt
+                </button>
+
+
+                <button class="ranking-tab" type="button" data-ranking="continents">
+                    Kontinente
+                </button>
+
+
+                <button class="ranking-tab" type="button" data-ranking="games">
+                    Spiele
+                </button>
+
+
+                <button class="ranking-tab" type="button" data-ranking="wins">
+                    Siege
+                </button>
+
+            </div>
+
+
+            <!-- ==========================================
+         KONTINENT-AUSWAHL
+         ========================================== -->
+
+            <div class="ranking-continent-selection" id="ranking-continent-selection" hidden>
+
+                <button class="ranking-continent active" type="button" data-continent="europa">
+                    Europa
+                </button>
+
+                <button class="ranking-continent" type="button" data-continent="asien">
+                    Asien
+                </button>
+
+                <button class="ranking-continent" type="button" data-continent="afrika">
+                    Afrika
+                </button>
+
+                <button class="ranking-continent" type="button" data-continent="nordamerika">
+                    Nordamerika
+                </button>
+
+                <button class="ranking-continent" type="button" data-continent="suedamerika">
+                    Südamerika
+                </button>
+
+                <button class="ranking-continent" type="button" data-continent="ozeanien">
+                    Ozeanien
+                </button>
+
+            </div>
+
+
+            <!-- ==========================================
+         RANKING-TABELLE
+         ========================================== -->
+
+            <div class="ranking-table-container">
+
+                <table class="ranking-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Rang
+                            </th>
+
+                            <th>
+                                Spieler
+                            </th>
+
+                            <th id="ranking-value-header">
+                                Ø Versuche
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="ranking-table-body">
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </section>
 
@@ -796,6 +909,7 @@
          ========================================== -->
 
     <script src="js/statistics.js"></script>
+    <script src="js/rankings.js"></script>
 
 
     <script>
