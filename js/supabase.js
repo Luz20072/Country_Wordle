@@ -148,7 +148,7 @@ async function logoutUser() {
 }
 
 
-// ==========================================
+/// ==========================================
 // SUPABASE REQUEST
 // ==========================================
 
@@ -156,10 +156,6 @@ async function supabaseRequest(
     endpoint,
     options = {}
 ) {
-
-    const session =
-        await getCurrentSession();
-
 
     const headers = {
 
@@ -174,13 +170,35 @@ async function supabaseRequest(
     };
 
 
+    /*
+     * Standardmäßig öffentliche Requests
+     * mit dem Publishable Key ausführen.
+     */
+
     if (
-        session &&
-        session.access_token
+        options.authenticated === true
     ) {
 
-        headers.Authorization =
-            `Bearer ${session.access_token}`;
+        const session =
+            await getCurrentSession();
+
+
+        if (
+            session &&
+            session.access_token
+        ) {
+
+            headers.Authorization =
+                `Bearer ${session.access_token}`;
+
+        }
+
+        else {
+
+            headers.Authorization =
+                `Bearer ${SUPABASE_KEY}`;
+
+        }
 
     }
 
