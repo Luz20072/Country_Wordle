@@ -5,6 +5,9 @@
 const RANKING_LIMIT =
     5;
 
+const EXCLUDED_RANKING_USER_IDS = [
+    "daf419c1-e467-4e93-96aa-5e7e7bcb83c5"
+];
 
 // ==========================================
 // AKTUELLER RANKING-TYP
@@ -333,7 +336,12 @@ async function getRankingProfiles() {
     }
 
 
-    return data || [];
+    return (data || []).filter(
+        profile =>
+            !EXCLUDED_RANKING_USER_IDS.includes(
+                profile.id
+            )
+    );
 
 }
 
