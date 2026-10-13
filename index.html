@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/rankings.css">
 
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+
 </head>
 
 
@@ -31,47 +34,63 @@
              BENUTZERBEREICH
              ========================================== -->
 
-        <section class="account-container">
+            <section class=account-header-actions>
+                        <section class=account-achievements> 
+                    <div class="achievements-navigation">
+                        <button
+                            class="achievements-button"
+                            id="achievements-button"
+                            type="button"
+                            onclick="window.location.href='achievements.html'">
 
-            <!-- NICHT ANGEMELDET -->
-
-            <div id="logged-out-view">
-
-                <button class="account-button" id="register-button" type="button">
-                    Registrieren
-                </button>
-
-                <button class="account-button" id="login-button" type="button">
-                    Anmelden
-                </button>
-
-            </div>
+                            <i data-lucide="trophy" aria-hidden="true"></i>
+                            Achievements
+                        </button>
+                    </div>
+                </section>
 
 
-            <!-- ANGEMELDET -->
+                <section class="account-container">
 
-            <div id="logged-in-view" hidden>
+                    <!-- NICHT ANGEMELDET -->
 
-                <div class="account-username">
+                    <div id="logged-out-view">
 
-                    <span class="account-user-label">
-                        Angemeldet als
-                    </span>
+                        <button class="account-button" id="register-button" type="button">
+                            Registrieren
+                        </button>
 
-                    <span id="account-username">
-                        -
-                    </span>
+                        <button class="account-button" id="login-button" type="button">
+                            Anmelden
+                        </button>
 
-                </div>
+                    </div>
 
-                <button class="account-button" id="logout-button" type="button">
-                    Abmelden
-                </button>
 
-            </div>
+                    <!-- ANGEMELDET -->
 
-        </section>
+                    <div id="logged-in-view" hidden>
 
+                        <div class="account-username">
+
+                            <span class="account-user-label">
+                                Angemeldet als
+                            </span>
+
+                            <span id="account-username">
+                                -
+                            </span>
+
+                        </div>
+
+                        <button class="account-button" id="logout-button" type="button">
+                            Abmelden
+                        </button>
+
+                    </div>
+
+                </section>
+            </section>
 
         <!-- ==========================================
              HEADER
@@ -88,7 +107,6 @@
             </p>
 
         </header>
-
 
         <!-- ==========================================
              KONTINENT-AUSWAHL

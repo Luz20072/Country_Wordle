@@ -482,7 +482,10 @@ async function getStatistics() {
 
         const result =
             await supabaseRequest(
-                `profiles?select=*&id=eq.${user.id}`
+                `profiles?select=*&id=eq.${user.id}`,
+                {
+                    authenticated: true
+                }
             );
 
 
@@ -547,7 +550,8 @@ function saveLocalStatistics(
 async function recordGame(
     continent,
     guesses,
-    won = true
+    won = true,
+    gameDetails = {}
 ) {
 
     if (
@@ -735,7 +739,10 @@ async function recordGame(
 
         const result =
             await supabaseRequest(
-                `profiles?select=*&id=eq.${user.id}`
+                `profiles?select=*&id=eq.${user.id}`,
+                {
+                    authenticated: true
+                }
             );
 
 
@@ -901,24 +908,33 @@ async function recordGame(
         await supabaseRequest(
             `profiles?id=eq.${user.id}`,
             {
-
-                method:
-                    "PATCH",
-
+                method: "PATCH",
+                authenticated: true,
                 headers: {
-
-                    Prefer:
-                        "return=minimal"
-
+                    Prefer: "return=minimal"
                 },
-
-                body:
-                    JSON.stringify(
-                        updateData
-                    )
-
+                body: JSON.stringify(updateData)
             }
         );
+
+        // ==========================================
+        // ACHIEVEMENTS AKTUALISIEREN
+        // ==========================================
+
+        try {
+            await trackAchievementsAfterGame({
+                continent: continent,
+                guesses: guesses,
+                won: won,
+                targetCountryId: gameDetails.targetCountryId,
+                hintsEnabled: gameDetails.hintsEnabled
+            });
+        } catch (error) {
+            console.error(
+                "Fehler beim Aktualisieren der Achievements:",
+                error
+            );
+        }
 
     }
 

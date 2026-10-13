@@ -18,10 +18,74 @@
     <link rel="stylesheet" href="css/hints.css">
     <link rel="stylesheet" href="css/victory.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/achievementPopup.css">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+
 </head>
+
+<!-- ==========================================
+     ACHIEVEMENT-POPUP
+     ========================================== -->
+
+<div
+    class="achievement-popup-overlay"
+    id="achievement-popup-overlay"
+    aria-hidden="true"
+>
+    <section
+        class="achievement-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="achievement-popup-title"
+        aria-describedby="achievement-popup-description"
+    >
+        <button
+            class="achievement-popup-close"
+            id="achievement-popup-close"
+            type="button"
+            aria-label="Popup schließen"
+        >
+            &times;
+        </button>
+
+        <div
+            class="achievement-popup-icon"
+            aria-hidden="true"
+        >
+            ★
+        </div>
+
+        <p class="achievement-popup-label">
+            ERFOLG FREIGESCHALTET
+        </p>
+
+        <h2 id="achievement-popup-title">
+            Neuer Erfolg!
+        </h2>
+
+        <p id="achievement-popup-description">
+            Du hast einen neuen Erfolg freigeschaltet.
+        </p>
+
+        <p
+            class="achievement-popup-queue"
+            id="achievement-popup-queue"
+            aria-live="polite"
+        ></p>
+
+        <button
+            class="achievement-popup-next"
+            id="achievement-popup-next"
+            type="button"
+        >
+            Weiter
+        </button>
+    </section>
+</div>
 
 <body>
 
@@ -326,6 +390,9 @@
     <script src="js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/achievementPopup.js"></script>
+    <script src="js/achievementTracker.js"></script>
 
     <script src="js/gameData.js"></script>
     <script src="js/comparison.js"></script>
