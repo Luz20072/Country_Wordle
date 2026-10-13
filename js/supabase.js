@@ -147,8 +147,7 @@ async function logoutUser() {
 
 }
 
-
-/// ==========================================
+// ==========================================
 // SUPABASE REQUEST
 // ==========================================
 
@@ -170,10 +169,9 @@ async function supabaseRequest(
     };
 
 
-    /*
-     * Standardmäßig öffentliche Requests
-     * mit dem Publishable Key ausführen.
-     */
+    // ==========================================
+    // AUTHENTIFIZIERUNG
+    // ==========================================
 
     if (
         options.authenticated === true
@@ -210,6 +208,28 @@ async function supabaseRequest(
     }
 
 
+    // ==========================================
+    // REQUEST-BODY VORBEREITEN
+    // ==========================================
+
+    let requestBody = options.body;
+
+    if (
+        requestBody !== undefined &&
+        requestBody !== null &&
+        typeof requestBody !== "string"
+    ) {
+
+        requestBody =
+            JSON.stringify(requestBody);
+
+    }
+
+
+    // ==========================================
+    // REQUEST AUSFÜHREN
+    // ==========================================
+
     const response =
         await fetch(
             `${SUPABASE_URL}/rest/v1/${endpoint}`,
@@ -221,11 +241,15 @@ async function supabaseRequest(
                 headers,
 
                 body:
-                    options.body
+                    requestBody
 
             }
         );
 
+
+    // ==========================================
+    // FEHLERBEHANDLUNG
+    // ==========================================
 
     if (!response.ok) {
 
@@ -235,6 +259,10 @@ async function supabaseRequest(
 
     }
 
+
+    // ==========================================
+    // ANTWORT VERARBEITEN
+    // ==========================================
 
     const text =
         await response.text();

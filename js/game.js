@@ -1074,7 +1074,11 @@ async function makeGuess() {
         await recordGame(
             targetCountry.continent,
             guessedCountries.length,
-            true
+            true,
+            {
+                targetCountryId: targetCountry.id,
+                hintsEnabled: areHintsEnabled()
+            }
         );
 
 
@@ -1219,7 +1223,11 @@ async function makeGuess() {
             await recordGame(
                 targetCountry.continent,
                 guessedCountries.length,
-                false
+                false,
+                {
+                    targetCountryId: targetCountry.id,
+                    hintsEnabled: areHintsEnabled()
+                }
             );
 
 

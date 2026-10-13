@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Country Wordle – Achievements</title>
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/achievements.css">
+</head>
+
+<body>
+
+    <main class="achievements-page">
+
+        <!-- KOPFBEREICH -->
+
+        <header class="achievements-header">
+
+            <a href="index.html" class="back-button">
+                Zurück zum Start
+            </a>
+
+            <div class="achievements-heading">
+                <span class="eyebrow">COUNTRY WORDLE</span>
+                <h1>Achievements</h1>
+                <p>
+                    Entdecke die Welt, meistere Herausforderungen
+                    und sammle Erfolge.
+                </p>
+            </div>
+
+        </header>
+
+
+        <!-- GAST-HINWEIS -->
+
+        <section
+            id="guestNotice"
+            class="guest-notice"
+            hidden
+        >
+            <div class="notice-icon">!</div>
+
+            <div>
+                <h2>Achievements nur mit Account</h2>
+
+                <p>
+                    Melde dich an, um deine Achievements
+                    freizuschalten und dauerhaft zu speichern.
+                </p>
+
+                <a href="index.html" class="notice-button">
+                    Zum Start
+                </a>
+            </div>
+        </section>
+
+
+        <!-- FEHLERMELDUNG -->
+
+        <div
+            id="achievementsError"
+            class="achievements-error"
+            role="alert"
+            hidden
+        ></div>
+
+
+        <!-- LADEANZEIGE -->
+
+        <div
+            id="achievementsLoading"
+            class="achievements-loading"
+            role="status"
+        >
+            <div class="loading-spinner"></div>
+            <p>Achievements werden geladen …</p>
+        </div>
+
+
+        <!-- HAUPTINHALT -->
+
+        <section
+            id="achievementsContent"
+            hidden
+        >
+
+            <!-- FORTSCHRITT -->
+
+            <section class="progress-panel">
+
+                <div class="progress-top">
+
+                    <div>
+                        <span class="section-label">
+                            DEIN FORTSCHRITT
+                        </span>
+
+                        <h2 id="progressTitle">
+                            Deine Sammlung
+                        </h2>
+                    </div>
+
+                    <div class="progress-count">
+                        <span id="unlockedCount">0</span>
+                        <span class="progress-divider">/</span>
+                        <span id="totalCount">36</span>
+                    </div>
+
+                </div>
+
+                <div
+                    class="progress-track"
+                    role="progressbar"
+                    aria-label="Achievement-Fortschritt"
+                    aria-valuemin="0"
+                    aria-valuemax="36"
+                    aria-valuenow="0"
+                    id="overallProgressBar"
+                >
+                    <div
+                        id="overallProgressFill"
+                        class="progress-fill"
+                    ></div>
+                </div>
+
+                <div class="progress-bottom">
+                    <span id="progressPercentage">0 % abgeschlossen</span>
+                    <span id="remainingCount">36 noch offen</span>
+                </div>
+
+            </section>
+
+
+            <!-- FILTER -->
+
+            <section class="achievement-controls">
+
+                <div class="filter-heading">
+                    <h2>Deine Achievements</h2>
+                </div>
+
+                <div class="filter-row">
+
+                    <label
+                        class="filter-option"
+                        for="categoryFilter"
+                    >
+                        Kategorie
+
+                        <select id="categoryFilter">
+                            <option value="all">
+                                Alle Kategorien
+                            </option>
+
+                            <option value="games">
+                                Spiele
+                            </option>
+
+                            <option value="wins">
+                                Siege
+                            </option>
+
+                            <option value="losses">
+                                Niederlagen
+                            </option>
+
+                            <option value="special">
+                                Besondere Erfolge
+                            </option>
+
+                            <option value="discovery">
+                                Entdeckungen
+                            </option>
+
+                            <option value="continents">
+                                Kontinente
+                            </option>
+                        </select>
+                    </label>
+
+
+                    <label
+                        class="filter-option"
+                        for="statusFilter"
+                    >
+                        Status
+
+                        <select id="statusFilter">
+                            <option value="all">
+                                Alle
+                            </option>
+
+                            <option value="unlocked">
+                                Freigeschaltet
+                            </option>
+
+                            <option value="locked">
+                                Noch gesperrt
+                            </option>
+                        </select>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- ACHIEVEMENT-KARTEN -->
+
+            <section
+                id="achievementGroups"
+                class="achievement-groups"
+                aria-live="polite"
+            ></section>
+
+
+            <!-- LEERER FILTER -->
+
+            <div
+                id="emptyAchievements"
+                class="empty-achievements"
+                hidden
+            >
+                <div class="empty-icon">◇</div>
+
+                <h3>Keine Achievements gefunden</h3>
+
+                <p>
+                    Für diese Filterauswahl gibt es
+                    keine passenden Erfolge.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+        <!-- ACHIEVEMENT-DETAILS -->
+
+        <div
+            id="achievementInfoModal"
+            class="achievement-info-modal"
+            hidden
+        >
+            <div
+                class="achievement-info-backdrop"
+                data-close-achievement-info
+            ></div>
+
+            <section
+                class="achievement-info-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="achievementInfoTitle"
+            >
+                <button
+                    type="button"
+                    class="achievement-info-close"
+                    aria-label="Informationen schließen"
+                    data-close-achievement-info
+                >
+                    &times;
+                </button>
+
+                <span class="achievement-info-eyebrow">
+                    COUNTRY WORDLE
+                </span>
+
+                <h2 id="achievementInfoTitle">
+                    Achievement-Informationen
+                </h2>
+
+                <p
+                    id="achievementInfoDescription"
+                    class="achievement-info-description"
+                ></p>
+
+                <div
+                    id="achievementInfoProgress"
+                    class="achievement-info-progress"
+                    hidden
+                ></div>
+
+                <div
+                    id="achievementInfoHistory"
+                    class="achievement-info-history"
+                ></div>
+            </section>
+        </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/achievements.js"></script>
+
+</body>
+</html>
