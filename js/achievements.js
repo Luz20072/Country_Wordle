@@ -1236,16 +1236,27 @@ const totalPlayers = achievementGlobalUnlockCounts.total_players;
 
 const globalCountText =
     Number.isFinite(globalCount) &&
+    Number.isFinite(totalPlayers)
+        ? `${globalCount} von ${totalPlayers} Spielern`
+        : "Globale Daten nicht verfügbar";
+
+let globalRatioText =
+    "Globale Freischaltungsquote derzeit nicht verfügbar.";
+
+if (
+    Number.isFinite(globalCount) &&
     Number.isFinite(totalPlayers) &&
-    totalPlayers > 0
-        ? `${((globalCount / (totalPlayers - 1)) * 100).toLocaleString(
-              "de-DE",
-              {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 1
-              }
-          )} % der Spieler haben dieses Achievement freigeschaltet.`
-        : "Globale Freischaltungsquote derzeit nicht verfügbar.";
+    totalPlayers > 1
+) {
+    const ratio =
+        globalCount === totalPlayers
+            ? 100
+            : (globalCount / (totalPlayers - 1)) * 100;
+
+    globalRatioText = `${ratio.toLocaleString("de-DE", {
+        maximumFractionDigits: 1
+    })} % der Spieler haben dieses Achievement freigeschaltet.`;
+}
 
 item.innerHTML = `
     <div class="achievement-history-icon" aria-hidden="true">
@@ -1280,7 +1291,7 @@ item.innerHTML = `
         ${progressHTML}
 
         <p class="achievement-global-count">
-            ${achievementEscapeHTML(globalCountText)}
+            ${achievementEscapeHTML(globalRatioText)}
         </p>
     </div>
 `;
