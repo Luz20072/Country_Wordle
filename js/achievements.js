@@ -1238,7 +1238,7 @@ const globalCountText =
     Number.isFinite(globalCount) &&
     Number.isFinite(totalPlayers) &&
     totalPlayers > 0
-        ? `${((globalCount / totalPlayers) * 100).toLocaleString(
+        ? `${((globalCount / (totalPlayers - 1)) * 100).toLocaleString(
               "de-DE",
               {
                   minimumFractionDigits: 0,
