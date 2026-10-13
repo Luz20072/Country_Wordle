@@ -10,37 +10,67 @@
 const ACHIEVEMENT_CONTINENTS = {
     "Afrika": {
         key: "afrika",
-        expert: "achievement_africa_expert",
+        expert: {
+            bronze: "achievement_africa_expert_bronze",
+            silver: "achievement_africa_expert_silver",
+            gold: "achievement_africa_expert_gold",
+            platinum: "achievement_africa_expert_platinum"
+        },
         connoisseur: "achievement_africa_connoisseur"
     },
 
     "Asien": {
         key: "asien",
-        expert: "achievement_asia_expert",
+        expert: {
+            bronze: "achievement_asia_expert_bronze",
+            silver: "achievement_asia_expert_silver",
+            gold: "achievement_asia_expert_gold",
+            platinum: "achievement_asia_expert_platinum"
+        },
         connoisseur: "achievement_asia_connoisseur"
     },
 
     "Europa": {
         key: "europa",
-        expert: "achievement_europe_expert",
+        expert: {
+            bronze: "achievement_europe_expert_bronze",
+            silver: "achievement_europe_expert_silver",
+            gold: "achievement_europe_expert_gold",
+            platinum: "achievement_europe_expert_platinum"
+        },
         connoisseur: "achievement_europe_connoisseur"
     },
 
     "Nordamerika": {
         key: "nordamerika",
-        expert: "achievement_north_america_expert",
+        expert: {
+            bronze: "achievement_north_america_expert_bronze",
+            silver: "achievement_north_america_expert_silver",
+            gold: "achievement_north_america_expert_gold",
+            platinum: "achievement_north_america_expert_platinum"
+        },
         connoisseur: "achievement_north_america_connoisseur"
     },
 
     "Südamerika": {
         key: "suedamerika",
-        expert: "achievement_south_america_expert",
+        expert: {
+            bronze: "achievement_south_america_expert_bronze",
+            silver: "achievement_south_america_expert_silver",
+            gold: "achievement_south_america_expert_gold",
+            platinum: "achievement_south_america_expert_platinum"
+        },
         connoisseur: "achievement_south_america_connoisseur"
     },
 
     "Ozeanien": {
         key: "ozeanien",
-        expert: "achievement_oceania_expert",
+        expert: {
+            bronze: "achievement_oceania_expert_bronze",
+            silver: "achievement_oceania_expert_silver",
+            gold: "achievement_oceania_expert_gold",
+            platinum: "achievement_oceania_expert_platinum"
+        },
         connoisseur: "achievement_oceania_connoisseur"
     }
 };
@@ -63,13 +93,6 @@ const ACHIEVEMENT_COLUMNS = [
     "achievement_geographic_genius",
     "achievement_hellseher",
     "achievement_world_traveler",
-
-    "achievement_africa_expert",
-    "achievement_asia_expert",
-    "achievement_europe_expert",
-    "achievement_north_america_expert",
-    "achievement_south_america_expert",
-    "achievement_oceania_expert",
 
     "achievement_series_master",
 
@@ -97,6 +120,14 @@ const ACHIEVEMENT_COLUMNS = [
     "achievement_bitter_end",
     "achievement_losing_streak"
 ];
+
+for (const config of Object.values(ACHIEVEMENT_CONTINENTS)) {
+    Object.values(config.expert).forEach(column => {
+        if (!ACHIEVEMENT_COLUMNS.includes(column)) {
+            ACHIEVEMENT_COLUMNS.push(column);
+        }
+    });
+}
 
 
 // ==========================================
@@ -792,6 +823,13 @@ async function trackAchievementsAfterGame(gameResult) {
         // 14. Kontinent-Experten
         // --------------------------------------
 
+        const EXPERT_THRESHOLDS = {
+            bronze: 10,
+            silver: 50,
+            gold: 100,
+            platinum: 250
+        };
+
         for (const [name, config] of Object.entries(
             ACHIEVEMENT_CONTINENTS
         )) {
@@ -801,12 +839,16 @@ async function trackAchievementsAfterGame(gameResult) {
                     name
                 );
 
-            achievementUnlock(
-                updateData,
-                currentStats,
-                config.expert,
-                continentStats.wins >= 10
-            );
+            for (const [tier, threshold] of Object.entries(
+                EXPERT_THRESHOLDS
+            )) {
+                achievementUnlock(
+                    updateData,
+                    currentStats,
+                    config.expert[tier],
+                    continentStats.wins >= threshold
+                );
+            }
         }
 
         // --------------------------------------
@@ -876,7 +918,19 @@ async function trackAchievementsAfterGame(gameResult) {
         );
 
         // --------------------------------------
-        // 18. Achievement-Daten speichern
+        // 18. Neue Achievements ermitteln
+        // --------------------------------------
+
+        const newlyUnlockedAchievements =
+            Object.keys(updateData).filter(
+                column =>
+                    ACHIEVEMENT_COLUMNS.includes(column) &&
+                    updateData[column] === true &&
+                    currentStats[column] !== true
+            );
+
+        // --------------------------------------
+        // 19. Achievement-Daten speichern
         // --------------------------------------
 
         const updateKeys = Object.keys(updateData);
@@ -897,13 +951,24 @@ async function trackAchievementsAfterGame(gameResult) {
             }
         );
 
-    } catch (error) {
-        // Fehler im Achievement-System dürfen das Spiel
-        // oder die regulären Spielstatistiken nicht abbrechen.
+        // --------------------------------------
+        // 20. Neue Achievements in die Popup-Warteschlange
+        // --------------------------------------
 
+        if (
+            newlyUnlockedAchievements.length > 0 &&
+            typeof achievementPopupEnqueue === "function"
+        ) {
+            achievementPopupEnqueue(
+                newlyUnlockedAchievements
+            );
+        }
+
+    } catch (error) {
         console.error(
             "Fehler beim Aktualisieren der Achievements:",
             error
         );
     }
+
 }

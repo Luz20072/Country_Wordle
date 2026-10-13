@@ -54,7 +54,7 @@ const ACHIEVEMENTS = [
         id: "achievement_wins_1",
         title: "Erster Erfolg",
         description: "Gewinne dein erstes Spiel.",
-        icon: "🏆",
+        icon: "🥉",
         category: "wins",
         categoryName: "Siege"
     },
@@ -62,7 +62,7 @@ const ACHIEVEMENTS = [
         id: "achievement_wins_10",
         title: "Auf Erfolgskurs",
         description: "Gewinne insgesamt 10 Spiele.",
-        icon: "🥉",
+        icon: "🥈",
         category: "wins",
         categoryName: "Siege"
     },
@@ -70,7 +70,7 @@ const ACHIEVEMENTS = [
         id: "achievement_wins_50",
         title: "Erfolgreicher Entdecker",
         description: "Gewinne insgesamt 50 Spiele.",
-        icon: "🥈",
+        icon: "🥇",
         category: "wins",
         categoryName: "Siege"
     },
@@ -78,7 +78,7 @@ const ACHIEVEMENTS = [
         id: "achievement_wins_100",
         title: "Meister der Welt",
         description: "Gewinne insgesamt 100 Spiele.",
-        icon: "🥇",
+        icon: "💎",
         category: "wins",
         categoryName: "Siege"
     },
@@ -226,7 +226,7 @@ const ACHIEVEMENTS = [
         id: "achievement_asia_expert_bronze",
         title: "Marco Polos Lehrling",
         description: "Gewinne 10 Spiele mit einem Zielland aus Asien.",
-        icon: "🐅",
+        icon: "🏯",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Bronze",
@@ -236,7 +236,7 @@ const ACHIEVEMENTS = [
         id: "achievement_asia_expert_silver",
         title: "Dschingis Khans Wegweiser",
         description: "Gewinne 50 Spiele mit einem Zielland aus Asien.",
-        icon: "🐅",
+        icon: "🏯",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Silber",
@@ -246,7 +246,7 @@ const ACHIEVEMENTS = [
         id: "achievement_asia_expert_gold",
         title: "Marco Polos Rivale",
         description: "Gewinne 100 Spiele mit einem Zielland aus Asien.",
-        icon: "🐅",
+        icon: "🏯",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Gold",
@@ -256,7 +256,7 @@ const ACHIEVEMENTS = [
         id: "achievement_asia_expert_platinum",
         title: "Dschingis Khans Legende",
         description: "Gewinne 250 Spiele mit einem Zielland aus Asien.",
-        icon: "🐅",
+        icon: "🏯",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Platin",
@@ -316,7 +316,7 @@ const ACHIEVEMENTS = [
         id: "achievement_north_america_expert_bronze",
         title: "Pionier der Neuen Welt",
         description: "Gewinne 10 Spiele mit einem Zielland aus Nordamerika.",
-        icon: "🦅",
+        icon: "🗽",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Bronze",
@@ -326,7 +326,7 @@ const ACHIEVEMENTS = [
         id: "achievement_north_america_expert_silver",
         title: "Lewis und Clarks Gefährte",
         description: "Gewinne 50 Spiele mit einem Zielland aus Nordamerika.",
-        icon: "🦅",
+        icon: "🗽",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Silber",
@@ -336,7 +336,7 @@ const ACHIEVEMENTS = [
         id: "achievement_north_america_expert_gold",
         title: "Kolumbus' Nachfolger",
         description: "Gewinne 100 Spiele mit einem Zielland aus Nordamerika.",
-        icon: "🦅",
+        icon: "🗽",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Gold",
@@ -346,7 +346,7 @@ const ACHIEVEMENTS = [
         id: "achievement_north_america_expert_platinum",
         title: "Meister der Wildnis",
         description: "Gewinne 250 Spiele mit einem Zielland aus Nordamerika.",
-        icon: "🦅",
+        icon: "🗽",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Platin",
@@ -361,7 +361,7 @@ const ACHIEVEMENTS = [
         id: "achievement_south_america_expert_bronze",
         title: "Cabrals Entdecker",
         description: "Gewinne 10 Spiele mit einem Zielland aus Südamerika.",
-        icon: "🐆",
+        icon: "🗿",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Bronze",
@@ -371,7 +371,7 @@ const ACHIEVEMENTS = [
         id: "achievement_south_america_expert_silver",
         title: "Humboldts Gefährte",
         description: "Gewinne 50 Spiele mit einem Zielland aus Südamerika.",
-        icon: "🐆",
+        icon: "🗿",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Silber",
@@ -381,7 +381,7 @@ const ACHIEVEMENTS = [
         id: "achievement_south_america_expert_gold",
         title: "Cabrals Wegbereiter",
         description: "Gewinne 100 Spiele mit einem Zielland aus Südamerika.",
-        icon: "🐆",
+        icon: "🗿",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Gold",
@@ -391,7 +391,7 @@ const ACHIEVEMENTS = [
         id: "achievement_south_america_expert_platinum",
         title: "Humboldts Vermächtnis",
         description: "Gewinne 250 Spiele mit einem Zielland aus Südamerika.",
-        icon: "🐆",
+        icon: "🗿",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Platin",
@@ -406,7 +406,7 @@ const ACHIEVEMENTS = [
         id: "achievement_oceania_expert_bronze",
         title: "Cooks Schiffsjunge",
         description: "Gewinne 10 Spiele mit einem Zielland aus Ozeanien.",
-        icon: "🦈",
+        icon: "🪃",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Bronze",
@@ -416,7 +416,7 @@ const ACHIEVEMENTS = [
         id: "achievement_oceania_expert_silver",
         title: "Kartograf der Inselwelt",
         description: "Gewinne 50 Spiele mit einem Zielland aus Ozeanien.",
-        icon: "🦈",
+        icon: "🪃",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Silber",
@@ -426,7 +426,7 @@ const ACHIEVEMENTS = [
         id: "achievement_oceania_expert_gold",
         title: "Cooks Nachfolger",
         description: "Gewinne 100 Spiele mit einem Zielland aus Ozeanien.",
-        icon: "🦈",
+        icon: "🪃",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Gold",
@@ -436,7 +436,7 @@ const ACHIEVEMENTS = [
         id: "achievement_oceania_expert_platinum",
         title: "Herr der Südsee",
         description: "Gewinne 250 Spiele mit einem Zielland aus Ozeanien.",
-        icon: "🦈",
+        icon: "🪃",
         category: "continents",
         categoryName: "Kontinente",
         tier: "Platin",
@@ -467,7 +467,7 @@ const ACHIEVEMENTS = [
         id: "achievement_europe_connoisseur",
         title: "Europa-Kenner",
         description: "Errate jedes spielbare Land Europas als Zielland.",
-        icon: "🏛️",
+        icon: "🐺",
         category: "continents",
         categoryName: "Kontinente"
     },
@@ -536,7 +536,7 @@ const ACHIEVEMENTS = [
         id: "achievement_bitter_end",
         title: "Bis zum bitteren Ende",
         description: "Verliere ein Spiel nach allen 20 Versuchen.",
-        icon: "⌛",
+        icon: "🥀",
         category: "losses",
         categoryName: "Niederlagen"
     },
@@ -549,6 +549,8 @@ const ACHIEVEMENTS = [
         categoryName: "Niederlagen"
     }
 ];
+// Achievement-Liste global für andere Skripte verfügbar machen.
+window.ACHIEVEMENTS = ACHIEVEMENTS;
 
 
 // ==========================================
@@ -781,7 +783,7 @@ const ACHIEVEMENT_PROGRESS_TARGETS = {
     achievement_lost_100: 100
 };
 
-const ACHIEVEMENT_CONTINENTS = {
+const ACHIEVEMENT_CONTINENTS_METADATA = {
     africa: {
         experts: [
             "achievement_africa_expert_bronze",
@@ -962,7 +964,7 @@ if (id.startsWith("achievement_games_")) {
 
 } else {
     for (const [continent, data] of Object.entries(
-        ACHIEVEMENT_CONTINENTS
+        ACHIEVEMENT_CONTINENTS_METADATA
     )) {
         const expertIndex = data.experts.indexOf(id);
 
@@ -1034,7 +1036,7 @@ function achievementGetTierGroups() {
             "achievement_lost_50",
             "achievement_lost_100"
         ],
-        ...Object.values(ACHIEVEMENT_CONTINENTS).map(
+        ...Object.values(ACHIEVEMENT_CONTINENTS_METADATA).map(
             continent => continent.experts
         )
     ];
